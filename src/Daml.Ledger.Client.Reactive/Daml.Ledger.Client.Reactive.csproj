@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.1.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
+  </ItemGroup>
+</Project>

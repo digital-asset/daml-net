@@ -1,0 +1,46 @@
+#!/bin/bash
+# Generates the Ledger API bindings for C#
+# Takes the SDK version as input, eg `generate-bindings 
+
+if [ -z "$1" ]; then echo "Please pass the SDK version as an argument" && exit 1; fi;
+
+GR='\033[0;32m'
+NC='\033[0m' # No Color
+NUGET_PLATFORM=macosx_x64
+GRPC_TOOLS_VERSION=1.22.0
+GOOGLE_PROTOBUF_TOOLS_VERSION=3.9.0
+FILE_API=ledger-api-protos-10$1.tar.gz
+FILE_LF=daml-lf-archive-protos-10$1.tar.gz
+
+# Install tooling (assumes nuget is installed and available)
+nuget install Grpc.Tools -OutputDirectory packages -Version $GRPC_TOOLS_VERSION
+nuget install Google.Protobuf.Tools -OutputDirectory packages -Version $GOOGLE_PROTOBUF_TOOLS_VERSION
+
+# Cleanup
+rm src/Daml.Ledger.Api/V1/*.cs
+rm src/Daml.Ledger.Api/V1/Admin/*.cs
+rm src/Daml.Ledger.Api/V1/Testing/*.cs
+rm src/Daml.Ledger.Fragment/DamlLf.cs
+rm src/Daml.Ledger.Fragment/DamlLf0.cs
+rm src/Daml.Ledger.Fragment/DamlLf1.cs
+
+mkdir -p tmp/grpc-definitions/google/rpc
+
+# Download and unpack dependencies
+curl https://raw.githubusercontent.com/googleapis/googleapis/master/google/rpc/status.proto --output tmp/grpc-definitions/google/rpc/status.proto
+curl https://digitalassetsdk.bintray.com/DigitalAssetSDK/com/digitalasset/ledger-api-protos/10$1/$FILE_API --output tmp/$FILE_API
+curl https://digitalassetsdk.bintray.com/DigitalAssetSDK/com/digitalasset/daml-lf-archive-protos/10$1/$FILE_LF --output tmp/$FILE_LF
+tar -xf tmp/$FILE_API -C tmp/
+tar -xf tmp/$FILE_LF -C tmp/
+
+# Generate bindings
+packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1 --grpc_out ./src/Daml.Ledger.Api/V1 tmp/grpc-definitions/com/digitalasset/ledger/api/v1/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
+packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Admin --grpc_out ./src/Daml.Ledger.Api/V1/Admin tmp/grpc-definitions/com/digitalasset/ledger/api/v1/admin/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
+packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Testing --grpc_out ./src/Daml.Ledger.Api/V1/Testing tmp/grpc-definitions/com/digitalasset/ledger/api/v1/testing/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
+packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/daml-lf-archive-protos/protobuf/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Fragment --grpc_out ./src/Daml.Ledger.Fragment tmp/daml-lf-archive-protos/protobuf/da/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
+
+# Uninstall tooling and cleanup
+rm -rf packages/Grpc.Tools.1.22.0
+rm -rf packages/Google.Protobuf.Tools.3.8.0
+rm -rf tmp
+echo -e "${GR}Successfully generated bindings.${NC}"

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="V1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Api.CommonProtos" Version="1.6.0" />
+    <PackageReference Include="Grpc.Core" Version="1.22.0" />
+  </ItemGroup>
+</Project>
