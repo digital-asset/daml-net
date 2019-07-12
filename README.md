@@ -1,10 +1,10 @@
-﻿# Overview
+# Overview
 
 This is the home of the .Net ecosystem around the Ledger API and DAML-LF. It is a community-supported effort, so contributions are welcome.
 
 ## Updating the generated bindings to a new SDK version
 
-To generate both, Ledger API and DAML-LF bindings, for a new DAML SDK version, run the script:
+To generate both Ledger API and DAML-LF bindings, for a new DAML SDK version, run the script:
 ```
 ./generate-bindings $SDK_VERSION
 ```
