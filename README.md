@@ -1,10 +1,46 @@
-﻿# Overview
+﻿# .Net bindings for DAML
 
-This is the home of the .Net ecosystem around the Ledger API and DAML-LF. It is a community-supported effort, so contributions are welcome.
+This repository hosts .Net bindings for the [DAML](https://www.daml.com) Ledger API and DAML-LF.
 
-## Updating the generated bindings to a new SDK version
+# Status
 
-To generate both, Ledger API and DAML-LF bindings, for a new DAML SDK version, run the script:
+The library is considered experimental, so breaking changes are to be expected. It currently consists of a thin layer of interfaces and helper classes around the generated gRPC code. A minimal implementation of stateful and stateless automation bots is also provided.
+
+# Support
+
+This project is a community-driven effort and contributions are welcome. For questions or support with using the library please join the [DAML Community Slack channel](https://damldriven.slack.com/)
+
+# Usage
+
+## Prerequisites
+
+- `nuget`
+- `msbuild`
+
+## Building the library
+
+The library targets `.Net Standard 2.0` so it can be used from projects targeting the .Net Framework, .Net Core or Mono.  Note that the local build process has only been tested on MacOS Mojave (v10.14.5).
+
+To build the solution using `msbuild`:
+```
+nuget restore
+msbuild Daml.Ledger.sln
+```
+
+To build the solution using `dotnet`:
+```
+dotnet build
+```
+
+Nuget packages are not yet published for this library, so you'll have to reference the generated DLL directly.
+
+## Generating the bindings 
+
+The script uses the `nuget`, `curl` and `tar` utilities.
+
+Note: the `generate-bindings` script has only been tested on MacOS Mojave (v10.14.5). 
+
+To generate both, Ledger API and DAML-LF bindings, for a specific DAML SDK version, run the script:
 ```
 ./generate-bindings $SDK_VERSION
 ```
@@ -15,5 +51,3 @@ For example:
 ```
 
 This will download all required tools, generate bindings for the Ledger API as well as DAML-LF, and clean up afterwards.
-
-There is no script for Windows yet, contributions for this are welcome.

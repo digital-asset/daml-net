@@ -39,8 +39,6 @@ packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_pat
 packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Testing --grpc_out ./src/Daml.Ledger.Api/V1/Testing tmp/grpc-definitions/com/digitalasset/ledger/api/v1/testing/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
 packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/daml-lf-archive-protos/protobuf/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Fragment --grpc_out ./src/Daml.Ledger.Fragment tmp/daml-lf-archive-protos/protobuf/da/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
 
-# Uninstall tooling and cleanup
-rm -rf packages/Grpc.Tools.1.22.0
-rm -rf packages/Google.Protobuf.Tools.3.8.0
+# Cleanup
 rm -rf tmp
 echo -e "${GR}Successfully generated bindings.${NC}"
