@@ -40,7 +40,7 @@ The script uses the `nuget`, `curl` and `tar` utilities.
 
 Note: the `generate-bindings` script has only been tested on MacOS Mojave (v10.14.5). 
 
-To generate both, Ledger API and DAML-LF bindings, for a specific DAML SDK version, run the script:
+To generate bindings for the Ledger API and DAML-LF for a specific DAML SDK version:
 ```
 ./generate-bindings $SDK_VERSION
 ```
