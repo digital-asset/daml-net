@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{57137540
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daml.Ledger.QuickStart", "src\Daml.Ledger.QuickStart\Daml.Ledger.QuickStart.csproj", "{5906A42A-1688-4277-B03C-A54605C1D9D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -43,5 +45,9 @@ Global
 		{C28365C5-6F64-4468-8FFC-93121553C2EA}.Debug|x86.Build.0 = Debug|Any CPU
 		{C28365C5-6F64-4468-8FFC-93121553C2EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{C28365C5-6F64-4468-8FFC-93121553C2EA}.Release|x86.Build.0 = Release|Any CPU
+		{5906A42A-1688-4277-B03C-A54605C1D9D9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5906A42A-1688-4277-B03C-A54605C1D9D9}.Debug|x86.Build.0 = Debug|Any CPU
+		{5906A42A-1688-4277-B03C-A54605C1D9D9}.Release|x86.ActiveCfg = Release|Any CPU
+		{5906A42A-1688-4277-B03C-A54605C1D9D9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

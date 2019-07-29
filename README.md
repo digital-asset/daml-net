@@ -17,6 +17,10 @@ This project is a community-driven effort and contributions are welcome. For que
 - `nuget`
 - `msbuild`
 
+## Quick start
+
+The quick start project shows how to read from and write to the ledger using for a simple model. You can find instructions on how to run it [here](src/Daml.Ledger.QuickStart/).
+
 ## Building the library
 
 The library targets `.Net Standard 2.0` so it can be used from projects targeting the .Net Framework, .Net Core or Mono.  Note that the local build process has only been tested on MacOS Mojave (v10.14.5).
