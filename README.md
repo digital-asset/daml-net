@@ -19,7 +19,7 @@ This project is a community-driven effort and contributions are welcome. For que
 
 ## Quick start
 
-The quick start project shows how to read from and write to the ledger using for a simple model. You can find instructions on how to run it [here](Daml.Ledger.QuickStart/).
+The quick start project shows how to read from and write to the ledger using for a simple model. You can find instructions on how to run it [here](src/Daml.Ledger.QuickStart/).
 
 ## Building the library
 
