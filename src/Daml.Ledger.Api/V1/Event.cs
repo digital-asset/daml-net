@@ -42,25 +42,24 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             "LlN0cmluZ1ZhbHVlIpABCg1BcmNoaXZlZEV2ZW50EhAKCGV2ZW50X2lkGAEg",
             "ASgJEhMKC2NvbnRyYWN0X2lkGAIgASgJEj8KC3RlbXBsYXRlX2lkGAMgASgL",
             "MiouY29tLmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLklkZW50aWZpZXIS",
-            "FwoPd2l0bmVzc19wYXJ0aWVzGAQgAygJIo8DCg5FeGVyY2lzZWRFdmVudBIQ",
+            "FwoPd2l0bmVzc19wYXJ0aWVzGAQgAygJIvECCg5FeGVyY2lzZWRFdmVudBIQ",
             "CghldmVudF9pZBgBIAEoCRITCgtjb250cmFjdF9pZBgCIAEoCRI/Cgt0ZW1w",
             "bGF0ZV9pZBgDIAEoCzIqLmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52",
-            "MS5JZGVudGlmaWVyEiIKGmNvbnRyYWN0X2NyZWF0aW5nX2V2ZW50X2lkGAQg",
-            "ASgJEg4KBmNob2ljZRgFIAEoCRI+Cg9jaG9pY2VfYXJndW1lbnQYBiABKAsy",
-            "JS5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuVmFsdWUSFgoOYWN0",
-            "aW5nX3BhcnRpZXMYByADKAkSEQoJY29uc3VtaW5nGAggASgIEhcKD3dpdG5l",
-            "c3NfcGFydGllcxgKIAMoCRIXCg9jaGlsZF9ldmVudF9pZHMYCyADKAkSPgoP",
-            "ZXhlcmNpc2VfcmVzdWx0GAwgASgLMiUuY29tLmRpZ2l0YWxhc3NldC5sZWRn",
-            "ZXIuYXBpLnYxLlZhbHVlSgQICRAKQlIKHmNvbS5kaWdpdGFsYXNzZXQubGVk",
-            "Z2VyLmFwaS52MUIPRXZlbnRPdXRlckNsYXNzqgIeQ29tLkRpZ2l0YWxBc3Nl",
-            "dC5MZWRnZXIuQXBpLlYxYgZwcm90bzM="));
+            "MS5JZGVudGlmaWVyEg4KBmNob2ljZRgFIAEoCRI+Cg9jaG9pY2VfYXJndW1l",
+            "bnQYBiABKAsyJS5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuVmFs",
+            "dWUSFgoOYWN0aW5nX3BhcnRpZXMYByADKAkSEQoJY29uc3VtaW5nGAggASgI",
+            "EhcKD3dpdG5lc3NfcGFydGllcxgKIAMoCRIXCg9jaGlsZF9ldmVudF9pZHMY",
+            "CyADKAkSPgoPZXhlcmNpc2VfcmVzdWx0GAwgASgLMiUuY29tLmRpZ2l0YWxh",
+            "c3NldC5sZWRnZXIuYXBpLnYxLlZhbHVlSgQIBBAFSgQICRAKQlIKHmNvbS5k",
+            "aWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MUIPRXZlbnRPdXRlckNsYXNzqgIe",
+            "Q29tLkRpZ2l0YWxBc3NldC5MZWRnZXIuQXBpLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Com.DigitalAsset.Ledger.Api.V1.ValueReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Event), global::Com.DigitalAsset.Ledger.Api.V1.Event.Parser, new[]{ "Created", "Archived" }, new[]{ "Event" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.CreatedEvent), global::Com.DigitalAsset.Ledger.Api.V1.CreatedEvent.Parser, new[]{ "EventId", "ContractId", "TemplateId", "ContractKey", "CreateArguments", "WitnessParties", "Signatories", "Observers", "AgreementText" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent), global::Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent.Parser, new[]{ "EventId", "ContractId", "TemplateId", "WitnessParties" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent), global::Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent.Parser, new[]{ "EventId", "ContractId", "TemplateId", "ContractCreatingEventId", "Choice", "ChoiceArgument", "ActingParties", "Consuming", "WitnessParties", "ChildEventIds", "ExerciseResult" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent), global::Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent.Parser, new[]{ "EventId", "ContractId", "TemplateId", "Choice", "ChoiceArgument", "ActingParties", "Consuming", "WitnessParties", "ChildEventIds", "ExerciseResult" }, null, null, null)
           }));
     }
     #endregion
@@ -953,7 +952,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       eventId_ = other.eventId_;
       contractId_ = other.contractId_;
       templateId_ = other.templateId_ != null ? other.templateId_.Clone() : null;
-      contractCreatingEventId_ = other.contractCreatingEventId_;
       choice_ = other.choice_;
       choiceArgument_ = other.choiceArgument_ != null ? other.choiceArgument_.Clone() : null;
       actingParties_ = other.actingParties_.Clone();
@@ -1013,22 +1011,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       get { return templateId_; }
       set {
         templateId_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "contract_creating_event_id" field.</summary>
-    public const int ContractCreatingEventIdFieldNumber = 4;
-    private string contractCreatingEventId_ = "";
-    /// <summary>
-    /// The ID of the event in which the target contract has been created.
-    /// Must be a valid LedgerString (as described in ``value.proto``).
-    /// Required
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ContractCreatingEventId {
-      get { return contractCreatingEventId_; }
-      set {
-        contractCreatingEventId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1130,7 +1112,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     /// References to further events in the same transaction that appeared as a result of this ``ExercisedEvent``.
     /// It contains only the immediate children of this event, not all members of the subtree rooted at this node.
     ///
-    /// Each element must be a valid PartyIdString (as described in ``value.proto``).
+    /// Each element must be a valid LedgerString (as described in ``value.proto``).
     ///
     /// Optional
     /// </summary>
@@ -1170,7 +1152,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (EventId != other.EventId) return false;
       if (ContractId != other.ContractId) return false;
       if (!object.Equals(TemplateId, other.TemplateId)) return false;
-      if (ContractCreatingEventId != other.ContractCreatingEventId) return false;
       if (Choice != other.Choice) return false;
       if (!object.Equals(ChoiceArgument, other.ChoiceArgument)) return false;
       if(!actingParties_.Equals(other.actingParties_)) return false;
@@ -1187,7 +1168,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (EventId.Length != 0) hash ^= EventId.GetHashCode();
       if (ContractId.Length != 0) hash ^= ContractId.GetHashCode();
       if (templateId_ != null) hash ^= TemplateId.GetHashCode();
-      if (ContractCreatingEventId.Length != 0) hash ^= ContractCreatingEventId.GetHashCode();
       if (Choice.Length != 0) hash ^= Choice.GetHashCode();
       if (choiceArgument_ != null) hash ^= ChoiceArgument.GetHashCode();
       hash ^= actingParties_.GetHashCode();
@@ -1219,10 +1199,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (templateId_ != null) {
         output.WriteRawTag(26);
         output.WriteMessage(TemplateId);
-      }
-      if (ContractCreatingEventId.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(ContractCreatingEventId);
       }
       if (Choice.Length != 0) {
         output.WriteRawTag(42);
@@ -1259,9 +1235,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       }
       if (templateId_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TemplateId);
-      }
-      if (ContractCreatingEventId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ContractCreatingEventId);
       }
       if (Choice.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Choice);
@@ -1300,9 +1273,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
           TemplateId = new global::Com.DigitalAsset.Ledger.Api.V1.Identifier();
         }
         TemplateId.MergeFrom(other.TemplateId);
-      }
-      if (other.ContractCreatingEventId.Length != 0) {
-        ContractCreatingEventId = other.ContractCreatingEventId;
       }
       if (other.Choice.Length != 0) {
         Choice = other.Choice;
@@ -1349,10 +1319,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
               TemplateId = new global::Com.DigitalAsset.Ledger.Api.V1.Identifier();
             }
             input.ReadMessage(TemplateId);
-            break;
-          }
-          case 34: {
-            ContractCreatingEventId = input.ReadString();
             break;
           }
           case 42: {

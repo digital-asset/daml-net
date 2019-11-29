@@ -207,6 +207,8 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     /// <summary>
     /// Roots of the transaction tree.
     /// Each element must be a valid LedgerString (as describe in ``value.proto``).
+    /// The elements are in the same order as the commands in the
+    /// corresponding Commands object that triggerd this transaction.
     /// Required
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

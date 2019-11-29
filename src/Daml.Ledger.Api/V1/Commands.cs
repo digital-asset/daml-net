@@ -175,7 +175,8 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     private string commandId_ = "";
     /// <summary>
     /// Uniquely identified the command. This identifier should be unique for each new command within an
-    /// application domain. It can be used for matching the requests with their respective completions.
+    /// application domain, i.e., the triple (application_id, party, command_id) must be unique.
+    /// It can be used for matching the requests with their respective completions.
     /// Must be a valid LedgerString (as described in ``value.proto``).
     /// Required
     /// </summary>

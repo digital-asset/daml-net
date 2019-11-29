@@ -3,7 +3,7 @@
 //     source: com/digitalasset/ledger/api/v1/active_contracts_service.proto
 // </auto-generated>
 // Original file comments:
-// Copyright (c) 2019 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+// Copyright (c) 2019 The DAML Authors. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 //
 #pragma warning disable 0414, 1591
@@ -40,7 +40,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     public abstract partial class ActiveContractsServiceBase
     {
       /// <summary>
-      /// Returns a stream of the latest snapshot of active contracts. Getting an empty stream means that the active contracts set is empty and the client should listen to transactions using ``LEDGER_BEGIN``.
+      /// Returns a stream of the latest snapshot of active contracts.
+      /// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
+      /// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
       /// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
       /// </summary>
       /// <param name="request">The request received from the client.</param>
@@ -78,7 +80,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       }
 
       /// <summary>
-      /// Returns a stream of the latest snapshot of active contracts. Getting an empty stream means that the active contracts set is empty and the client should listen to transactions using ``LEDGER_BEGIN``.
+      /// Returns a stream of the latest snapshot of active contracts.
+      /// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
+      /// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
       /// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
@@ -91,7 +95,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         return GetActiveContracts(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
-      /// Returns a stream of the latest snapshot of active contracts. Getting an empty stream means that the active contracts set is empty and the client should listen to transactions using ``LEDGER_BEGIN``.
+      /// Returns a stream of the latest snapshot of active contracts.
+      /// If there are no active contracts, the stream returns a single GetActiveContractsResponse message with the offset at which the snapshot has been taken.
+      /// Clients SHOULD use the offset in the last GetActiveContractsResponse message to continue streaming transactions with the transaction service.
       /// Clients SHOULD NOT assume that the set of active contracts they receive reflects the state at the ledger end.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
