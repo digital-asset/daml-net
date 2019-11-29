@@ -27,52 +27,58 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             "Cipjb20vZGlnaXRhbGFzc2V0L2xlZGdlci9hcGkvdjEvdmFsdWUucHJvdG8S",
             "HmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MRobZ29vZ2xlL3Byb3Rv",
             "YnVmL2VtcHR5LnByb3RvGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnBy",
-            "b3RvGh5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8iowQKBVZhbHVl",
+            "b3RvGh5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8i3gQKBVZhbHVl",
             "EjgKBnJlY29yZBgBIAEoCzImLmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFw",
             "aS52MS5SZWNvcmRIABI6Cgd2YXJpYW50GAIgASgLMicuY29tLmRpZ2l0YWxh",
             "c3NldC5sZWRnZXIuYXBpLnYxLlZhcmlhbnRIABIVCgtjb250cmFjdF9pZBgD",
             "IAEoCUgAEjQKBGxpc3QYBCABKAsyJC5jb20uZGlnaXRhbGFzc2V0LmxlZGdl",
-            "ci5hcGkudjEuTGlzdEgAEhMKBWludDY0GAUgASgSQgIwAUgAEhEKB2RlY2lt",
-            "YWwYBiABKAlIABIOCgR0ZXh0GAggASgJSAASFwoJdGltZXN0YW1wGAkgASgQ",
+            "ci5hcGkudjEuTGlzdEgAEhMKBWludDY0GAUgASgSQgIwAUgAEhEKB251bWVy",
+            "aWMYBiABKAlIABIOCgR0ZXh0GAggASgJSAASFwoJdGltZXN0YW1wGAkgASgQ",
             "QgIwAUgAEg8KBXBhcnR5GAsgASgJSAASDgoEYm9vbBgMIAEoCEgAEiYKBHVu",
             "aXQYDSABKAsyFi5nb29nbGUucHJvdG9idWYuRW1wdHlIABIOCgRkYXRlGA4g",
             "ASgFSAASPAoIb3B0aW9uYWwYDyABKAsyKC5jb20uZGlnaXRhbGFzc2V0Lmxl",
             "ZGdlci5hcGkudjEuT3B0aW9uYWxIABIyCgNtYXAYECABKAsyIy5jb20uZGln",
             "aXRhbGFzc2V0LmxlZGdlci5hcGkudjEuTWFwSAASNAoEZW51bRgRIAEoCzIk",
-            "LmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5FbnVtSABCBQoDU3Vt",
-            "IoQBCgZSZWNvcmQSPQoJcmVjb3JkX2lkGAEgASgLMiouY29tLmRpZ2l0YWxh",
-            "c3NldC5sZWRnZXIuYXBpLnYxLklkZW50aWZpZXISOwoGZmllbGRzGAIgAygL",
-            "MisuY29tLmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLlJlY29yZEZpZWxk",
-            "IlIKC1JlY29yZEZpZWxkEg0KBWxhYmVsGAEgASgJEjQKBXZhbHVlGAIgASgL",
-            "MiUuY29tLmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLlZhbHVlIlwKCklk",
-            "ZW50aWZpZXISEgoKcGFja2FnZV9pZBgBIAEoCRIQCgRuYW1lGAIgASgJQgIY",
-            "ARITCgttb2R1bGVfbmFtZRgDIAEoCRITCgtlbnRpdHlfbmFtZRgEIAEoCSKU",
-            "AQoHVmFyaWFudBI+Cgp2YXJpYW50X2lkGAEgASgLMiouY29tLmRpZ2l0YWxh",
-            "c3NldC5sZWRnZXIuYXBpLnYxLklkZW50aWZpZXISEwoLY29uc3RydWN0b3IY",
-            "AiABKAkSNAoFdmFsdWUYAyABKAsyJS5jb20uZGlnaXRhbGFzc2V0LmxlZGdl",
-            "ci5hcGkudjEuVmFsdWUiWAoERW51bRI7CgdlbnVtX2lkGAEgASgLMiouY29t",
-            "LmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLklkZW50aWZpZXISEwoLY29u",
-            "c3RydWN0b3IYAiABKAkiPwoETGlzdBI3CghlbGVtZW50cxgBIAMoCzIlLmNv",
-            "bS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5WYWx1ZSJACghPcHRpb25h",
-            "bBI0CgV2YWx1ZRgBIAEoCzIlLmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFw",
-            "aS52MS5WYWx1ZSKNAQoDTWFwEjoKB2VudHJpZXMYASADKAsyKS5jb20uZGln",
-            "aXRhbGFzc2V0LmxlZGdlci5hcGkudjEuTWFwLkVudHJ5GkoKBUVudHJ5EgsK",
-            "A2tleRgBIAEoCRI0CgV2YWx1ZRgCIAEoCzIlLmNvbS5kaWdpdGFsYXNzZXQu",
-            "bGVkZ2VyLmFwaS52MS5WYWx1ZUJSCh5jb20uZGlnaXRhbGFzc2V0LmxlZGdl",
-            "ci5hcGkudjFCD1ZhbHVlT3V0ZXJDbGFzc6oCHkNvbS5EaWdpdGFsQXNzZXQu",
-            "TGVkZ2VyLkFwaS5WMWIGcHJvdG8z"));
+            "LmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5FbnVtSAASOQoHZ2Vu",
+            "X21hcBgSIAEoCzImLmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5H",
+            "ZW5NYXBIAEIFCgNTdW0ihAEKBlJlY29yZBI9CglyZWNvcmRfaWQYASABKAsy",
+            "Ki5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuSWRlbnRpZmllchI7",
+            "CgZmaWVsZHMYAiADKAsyKy5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGku",
+            "djEuUmVjb3JkRmllbGQiUgoLUmVjb3JkRmllbGQSDQoFbGFiZWwYASABKAkS",
+            "NAoFdmFsdWUYAiABKAsyJS5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGku",
+            "djEuVmFsdWUiUAoKSWRlbnRpZmllchISCgpwYWNrYWdlX2lkGAEgASgJEhMK",
+            "C21vZHVsZV9uYW1lGAMgASgJEhMKC2VudGl0eV9uYW1lGAQgASgJSgQIAhAD",
+            "IpQBCgdWYXJpYW50Ej4KCnZhcmlhbnRfaWQYASABKAsyKi5jb20uZGlnaXRh",
+            "bGFzc2V0LmxlZGdlci5hcGkudjEuSWRlbnRpZmllchITCgtjb25zdHJ1Y3Rv",
+            "chgCIAEoCRI0CgV2YWx1ZRgDIAEoCzIlLmNvbS5kaWdpdGFsYXNzZXQubGVk",
+            "Z2VyLmFwaS52MS5WYWx1ZSJYCgRFbnVtEjsKB2VudW1faWQYASABKAsyKi5j",
+            "b20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuSWRlbnRpZmllchITCgtj",
+            "b25zdHJ1Y3RvchgCIAEoCSI/CgRMaXN0EjcKCGVsZW1lbnRzGAEgAygLMiUu",
+            "Y29tLmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLlZhbHVlIkAKCE9wdGlv",
+            "bmFsEjQKBXZhbHVlGAEgASgLMiUuY29tLmRpZ2l0YWxhc3NldC5sZWRnZXIu",
+            "YXBpLnYxLlZhbHVlIo0BCgNNYXASOgoHZW50cmllcxgBIAMoCzIpLmNvbS5k",
+            "aWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5NYXAuRW50cnkaSgoFRW50cnkS",
+            "CwoDa2V5GAEgASgJEjQKBXZhbHVlGAIgASgLMiUuY29tLmRpZ2l0YWxhc3Nl",
+            "dC5sZWRnZXIuYXBpLnYxLlZhbHVlIroBCgZHZW5NYXASPQoHZW50cmllcxgB",
+            "IAMoCzIsLmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52MS5HZW5NYXAu",
+            "RW50cnkacQoFRW50cnkSMgoDa2V5GAEgASgLMiUuY29tLmRpZ2l0YWxhc3Nl",
+            "dC5sZWRnZXIuYXBpLnYxLlZhbHVlEjQKBXZhbHVlGAIgASgLMiUuY29tLmRp",
+            "Z2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLlZhbHVlQlIKHmNvbS5kaWdpdGFs",
+            "YXNzZXQubGVkZ2VyLmFwaS52MUIPVmFsdWVPdXRlckNsYXNzqgIeQ29tLkRp",
+            "Z2l0YWxBc3NldC5MZWRnZXIuQXBpLlYxYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Value), global::Com.DigitalAsset.Ledger.Api.V1.Value.Parser, new[]{ "Record", "Variant", "ContractId", "List", "Int64", "Decimal", "Text", "Timestamp", "Party", "Bool", "Unit", "Date", "Optional", "Map", "Enum" }, new[]{ "Sum" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Value), global::Com.DigitalAsset.Ledger.Api.V1.Value.Parser, new[]{ "Record", "Variant", "ContractId", "List", "Int64", "Numeric", "Text", "Timestamp", "Party", "Bool", "Unit", "Date", "Optional", "Map", "Enum", "GenMap" }, new[]{ "Sum" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Record), global::Com.DigitalAsset.Ledger.Api.V1.Record.Parser, new[]{ "RecordId", "Fields" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.RecordField), global::Com.DigitalAsset.Ledger.Api.V1.RecordField.Parser, new[]{ "Label", "Value" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Identifier), global::Com.DigitalAsset.Ledger.Api.V1.Identifier.Parser, new[]{ "PackageId", "Name", "ModuleName", "EntityName" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Identifier), global::Com.DigitalAsset.Ledger.Api.V1.Identifier.Parser, new[]{ "PackageId", "ModuleName", "EntityName" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Variant), global::Com.DigitalAsset.Ledger.Api.V1.Variant.Parser, new[]{ "VariantId", "Constructor", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Enum), global::Com.DigitalAsset.Ledger.Api.V1.Enum.Parser, new[]{ "EnumId", "Constructor" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.List), global::Com.DigitalAsset.Ledger.Api.V1.List.Parser, new[]{ "Elements" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Optional), global::Com.DigitalAsset.Ledger.Api.V1.Optional.Parser, new[]{ "Value" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Map), global::Com.DigitalAsset.Ledger.Api.V1.Map.Parser, new[]{ "Entries" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Map.Types.Entry), global::Com.DigitalAsset.Ledger.Api.V1.Map.Types.Entry.Parser, new[]{ "Key", "Value" }, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Map), global::Com.DigitalAsset.Ledger.Api.V1.Map.Parser, new[]{ "Entries" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Map.Types.Entry), global::Com.DigitalAsset.Ledger.Api.V1.Map.Types.Entry.Parser, new[]{ "Key", "Value" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.GenMap), global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Parser, new[]{ "Entries" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry), global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry.Parser, new[]{ "Key", "Value" }, null, null, null)})
           }));
     }
     #endregion
@@ -130,8 +136,8 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         case SumOneofCase.Int64:
           Int64 = other.Int64;
           break;
-        case SumOneofCase.Decimal:
-          Decimal = other.Decimal;
+        case SumOneofCase.Numeric:
+          Numeric = other.Numeric;
           break;
         case SumOneofCase.Text:
           Text = other.Text;
@@ -159,6 +165,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
           break;
         case SumOneofCase.Enum:
           Enum = other.Enum.Clone();
+          break;
+        case SumOneofCase.GenMap:
+          GenMap = other.GenMap.Clone();
           break;
       }
 
@@ -232,20 +241,21 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       }
     }
 
-    /// <summary>Field number for the "decimal" field.</summary>
-    public const int DecimalFieldNumber = 6;
+    /// <summary>Field number for the "numeric" field.</summary>
+    public const int NumericFieldNumber = 6;
     /// <summary>
-    /// A decimal value with precision 38 (38 decimal digits), of which
-    /// 10 after the comma / period. in other words a decimal is a number
-    /// of the form ``x / 10^10`` where ``|x| &lt; 10^38``.
-    /// The number can start with a leading sign [+-] followed by digits
+    /// A Numeric, that is a decimal value with precision 38 (at most 38 significant digits) and a
+    /// scale between 0 and 37 (significant digits on the right of the decimal point).
+    /// The field has to match the regex
+    ///   [+-]?\d{1,38}(.\d{0,37})?
+    /// and should be representable by a Numeric without loss of precision.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Decimal {
-      get { return sumCase_ == SumOneofCase.Decimal ? (string) sum_ : ""; }
+    public string Numeric {
+      get { return sumCase_ == SumOneofCase.Numeric ? (string) sum_ : ""; }
       set {
         sum_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        sumCase_ = SumOneofCase.Decimal;
+        sumCase_ = SumOneofCase.Numeric;
       }
     }
 
@@ -383,6 +393,20 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       }
     }
 
+    /// <summary>Field number for the "gen_map" field.</summary>
+    public const int GenMapFieldNumber = 18;
+    /// <summary>
+    /// The GenMap type
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Com.DigitalAsset.Ledger.Api.V1.GenMap GenMap {
+      get { return sumCase_ == SumOneofCase.GenMap ? (global::Com.DigitalAsset.Ledger.Api.V1.GenMap) sum_ : null; }
+      set {
+        sum_ = value;
+        sumCase_ = value == null ? SumOneofCase.None : SumOneofCase.GenMap;
+      }
+    }
+
     private object sum_;
     /// <summary>Enum of possible cases for the "Sum" oneof.</summary>
     public enum SumOneofCase {
@@ -392,7 +416,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       ContractId = 3,
       List = 4,
       Int64 = 5,
-      Decimal = 6,
+      Numeric = 6,
       Text = 8,
       Timestamp = 9,
       Party = 11,
@@ -402,6 +426,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       Optional = 15,
       Map = 16,
       Enum = 17,
+      GenMap = 18,
     }
     private SumOneofCase sumCase_ = SumOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -433,7 +458,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (ContractId != other.ContractId) return false;
       if (!object.Equals(List, other.List)) return false;
       if (Int64 != other.Int64) return false;
-      if (Decimal != other.Decimal) return false;
+      if (Numeric != other.Numeric) return false;
       if (Text != other.Text) return false;
       if (Timestamp != other.Timestamp) return false;
       if (Party != other.Party) return false;
@@ -443,6 +468,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (!object.Equals(Optional, other.Optional)) return false;
       if (!object.Equals(Map, other.Map)) return false;
       if (!object.Equals(Enum, other.Enum)) return false;
+      if (!object.Equals(GenMap, other.GenMap)) return false;
       if (SumCase != other.SumCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -455,7 +481,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (sumCase_ == SumOneofCase.ContractId) hash ^= ContractId.GetHashCode();
       if (sumCase_ == SumOneofCase.List) hash ^= List.GetHashCode();
       if (sumCase_ == SumOneofCase.Int64) hash ^= Int64.GetHashCode();
-      if (sumCase_ == SumOneofCase.Decimal) hash ^= Decimal.GetHashCode();
+      if (sumCase_ == SumOneofCase.Numeric) hash ^= Numeric.GetHashCode();
       if (sumCase_ == SumOneofCase.Text) hash ^= Text.GetHashCode();
       if (sumCase_ == SumOneofCase.Timestamp) hash ^= Timestamp.GetHashCode();
       if (sumCase_ == SumOneofCase.Party) hash ^= Party.GetHashCode();
@@ -465,6 +491,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (sumCase_ == SumOneofCase.Optional) hash ^= Optional.GetHashCode();
       if (sumCase_ == SumOneofCase.Map) hash ^= Map.GetHashCode();
       if (sumCase_ == SumOneofCase.Enum) hash ^= Enum.GetHashCode();
+      if (sumCase_ == SumOneofCase.GenMap) hash ^= GenMap.GetHashCode();
       hash ^= (int) sumCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -499,9 +526,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         output.WriteRawTag(40);
         output.WriteSInt64(Int64);
       }
-      if (sumCase_ == SumOneofCase.Decimal) {
+      if (sumCase_ == SumOneofCase.Numeric) {
         output.WriteRawTag(50);
-        output.WriteString(Decimal);
+        output.WriteString(Numeric);
       }
       if (sumCase_ == SumOneofCase.Text) {
         output.WriteRawTag(66);
@@ -539,6 +566,10 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         output.WriteRawTag(138, 1);
         output.WriteMessage(Enum);
       }
+      if (sumCase_ == SumOneofCase.GenMap) {
+        output.WriteRawTag(146, 1);
+        output.WriteMessage(GenMap);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -562,8 +593,8 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (sumCase_ == SumOneofCase.Int64) {
         size += 1 + pb::CodedOutputStream.ComputeSInt64Size(Int64);
       }
-      if (sumCase_ == SumOneofCase.Decimal) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Decimal);
+      if (sumCase_ == SumOneofCase.Numeric) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Numeric);
       }
       if (sumCase_ == SumOneofCase.Text) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Text);
@@ -591,6 +622,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       }
       if (sumCase_ == SumOneofCase.Enum) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(Enum);
+      }
+      if (sumCase_ == SumOneofCase.GenMap) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(GenMap);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -628,8 +662,8 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         case SumOneofCase.Int64:
           Int64 = other.Int64;
           break;
-        case SumOneofCase.Decimal:
-          Decimal = other.Decimal;
+        case SumOneofCase.Numeric:
+          Numeric = other.Numeric;
           break;
         case SumOneofCase.Text:
           Text = other.Text;
@@ -669,6 +703,12 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             Enum = new global::Com.DigitalAsset.Ledger.Api.V1.Enum();
           }
           Enum.MergeFrom(other.Enum);
+          break;
+        case SumOneofCase.GenMap:
+          if (GenMap == null) {
+            GenMap = new global::Com.DigitalAsset.Ledger.Api.V1.GenMap();
+          }
+          GenMap.MergeFrom(other.GenMap);
           break;
       }
 
@@ -719,7 +759,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             break;
           }
           case 50: {
-            Decimal = input.ReadString();
+            Numeric = input.ReadString();
             break;
           }
           case 66: {
@@ -776,6 +816,15 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             }
             input.ReadMessage(subBuilder);
             Enum = subBuilder;
+            break;
+          }
+          case 146: {
+            global::Com.DigitalAsset.Ledger.Api.V1.GenMap subBuilder = new global::Com.DigitalAsset.Ledger.Api.V1.GenMap();
+            if (sumCase_ == SumOneofCase.GenMap) {
+              subBuilder.MergeFrom(GenMap);
+            }
+            input.ReadMessage(subBuilder);
+            GenMap = subBuilder;
             break;
           }
         }
@@ -1156,7 +1205,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Identifier(Identifier other) : this() {
       packageId_ = other.packageId_;
-      name_ = other.name_;
       moduleName_ = other.moduleName_;
       entityName_ = other.entityName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1180,23 +1228,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       get { return packageId_; }
       set {
         packageId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 2;
-    private string name_ = "";
-    /// <summary>
-    /// The identifier of the entity (unique within the package)
-    /// DEPRECATED: use ``module_name`` and ``entity_name`` instead
-    /// Optional
-    /// </summary>
-    [global::System.ObsoleteAttribute]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Name {
-      get { return name_; }
-      set {
-        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1244,7 +1275,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         return true;
       }
       if (PackageId != other.PackageId) return false;
-      if (Name != other.Name) return false;
       if (ModuleName != other.ModuleName) return false;
       if (EntityName != other.EntityName) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1254,7 +1284,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
     public override int GetHashCode() {
       int hash = 1;
       if (PackageId.Length != 0) hash ^= PackageId.GetHashCode();
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (ModuleName.Length != 0) hash ^= ModuleName.GetHashCode();
       if (EntityName.Length != 0) hash ^= EntityName.GetHashCode();
       if (_unknownFields != null) {
@@ -1274,10 +1303,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
         output.WriteRawTag(10);
         output.WriteString(PackageId);
       }
-      if (Name.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Name);
-      }
       if (ModuleName.Length != 0) {
         output.WriteRawTag(26);
         output.WriteString(ModuleName);
@@ -1296,9 +1321,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       int size = 0;
       if (PackageId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PackageId);
-      }
-      if (Name.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
       if (ModuleName.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ModuleName);
@@ -1320,9 +1342,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
       if (other.PackageId.Length != 0) {
         PackageId = other.PackageId;
       }
-      if (other.Name.Length != 0) {
-        Name = other.Name;
-      }
       if (other.ModuleName.Length != 0) {
         ModuleName = other.ModuleName;
       }
@@ -1342,10 +1361,6 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
             break;
           case 10: {
             PackageId = input.ReadString();
-            break;
-          }
-          case 18: {
-            Name = input.ReadString();
             break;
           }
           case 26: {
@@ -2292,6 +2307,303 @@ namespace Com.DigitalAsset.Ledger.Api.V1 {
                 break;
               case 10: {
                 Key = input.ReadString();
+                break;
+              }
+              case 18: {
+                if (value_ == null) {
+                  Value = new global::Com.DigitalAsset.Ledger.Api.V1.Value();
+                }
+                input.ReadMessage(Value);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+    }
+    #endregion
+
+  }
+
+  public sealed partial class GenMap : pb::IMessage<GenMap> {
+    private static readonly pb::MessageParser<GenMap> _parser = new pb::MessageParser<GenMap>(() => new GenMap());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GenMap> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Com.DigitalAsset.Ledger.Api.V1.ValueReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GenMap() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GenMap(GenMap other) : this() {
+      entries_ = other.entries_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GenMap Clone() {
+      return new GenMap(this);
+    }
+
+    /// <summary>Field number for the "entries" field.</summary>
+    public const int EntriesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry> _repeated_entries_codec
+        = pb::FieldCodec.ForMessage(10, global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry.Parser);
+    private readonly pbc::RepeatedField<global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry> entries_ = new pbc::RepeatedField<global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry> Entries {
+      get { return entries_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GenMap);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GenMap other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!entries_.Equals(other.entries_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= entries_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      entries_.WriteTo(output, _repeated_entries_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += entries_.CalculateSize(_repeated_entries_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GenMap other) {
+      if (other == null) {
+        return;
+      }
+      entries_.Add(other.entries_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            entries_.AddEntriesFrom(input, _repeated_entries_codec);
+            break;
+          }
+        }
+      }
+    }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the GenMap message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      public sealed partial class Entry : pb::IMessage<Entry> {
+        private static readonly pb::MessageParser<Entry> _parser = new pb::MessageParser<Entry>(() => new Entry());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Entry> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Com.DigitalAsset.Ledger.Api.V1.GenMap.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Entry() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Entry(Entry other) : this() {
+          key_ = other.key_ != null ? other.key_.Clone() : null;
+          value_ = other.value_ != null ? other.value_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Entry Clone() {
+          return new Entry(this);
+        }
+
+        /// <summary>Field number for the "key" field.</summary>
+        public const int KeyFieldNumber = 1;
+        private global::Com.DigitalAsset.Ledger.Api.V1.Value key_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Com.DigitalAsset.Ledger.Api.V1.Value Key {
+          get { return key_; }
+          set {
+            key_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "value" field.</summary>
+        public const int ValueFieldNumber = 2;
+        private global::Com.DigitalAsset.Ledger.Api.V1.Value value_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::Com.DigitalAsset.Ledger.Api.V1.Value Value {
+          get { return value_; }
+          set {
+            value_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Entry);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Entry other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (!object.Equals(Key, other.Key)) return false;
+          if (!object.Equals(Value, other.Value)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (key_ != null) hash ^= Key.GetHashCode();
+          if (value_ != null) hash ^= Value.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (key_ != null) {
+            output.WriteRawTag(10);
+            output.WriteMessage(Key);
+          }
+          if (value_ != null) {
+            output.WriteRawTag(18);
+            output.WriteMessage(Value);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (key_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Key);
+          }
+          if (value_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Value);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Entry other) {
+          if (other == null) {
+            return;
+          }
+          if (other.key_ != null) {
+            if (key_ == null) {
+              Key = new global::Com.DigitalAsset.Ledger.Api.V1.Value();
+            }
+            Key.MergeFrom(other.Key);
+          }
+          if (other.value_ != null) {
+            if (value_ == null) {
+              Value = new global::Com.DigitalAsset.Ledger.Api.V1.Value();
+            }
+            Value.MergeFrom(other.Value);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                if (key_ == null) {
+                  Key = new global::Com.DigitalAsset.Ledger.Api.V1.Value();
+                }
+                input.ReadMessage(Key);
                 break;
               }
               case 18: {
