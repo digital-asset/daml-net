@@ -17,6 +17,14 @@ This project is a community-driven effort and contributions are welcome. For que
 - `nuget`
 - `msbuild`
 
+## Windows Prerequisites
+
+- `64-bit Windows 10`
+- `Windows Subsystem for Linux (tested with the bash shell under WSL 1 and the Ubuntu-18.04 distro)`
+
+Note that the generate-bindings script file requires Unix style end of line characters so care should be taken not to edit with an editor
+that inserts CRLFs. The generate-bindings script assumes that nuget has been installed un the WSL environment
+
 ## Quick start
 
 The quick start project shows how to read from and write to the ledger using for a simple model. You can find instructions on how to run it [here](src/Daml.Ledger.QuickStart/).

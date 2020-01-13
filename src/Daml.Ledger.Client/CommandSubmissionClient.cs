@@ -1,6 +1,8 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using Daml.Ledger.Client.Auth.Client;
+
 namespace Daml.Ledger.Client
 {
     using System;
@@ -12,57 +14,56 @@ namespace Daml.Ledger.Client
 
     public class CommandSubmissionClient : ICommandSubmissionClient
     {
-        private readonly CommandSubmissionService.CommandSubmissionServiceClient commandSubmissionClient;
+        private readonly string _ledgerId;
+        private readonly ClientStub<CommandSubmissionService.CommandSubmissionServiceClient> _commandSubmissionClient;
 
-        public CommandSubmissionClient(Channel channel)
+        public CommandSubmissionClient(string ledgerId, Channel channel, string accessToken)
         {
-            this.commandSubmissionClient = new CommandSubmissionService.CommandSubmissionServiceClient(channel);
+            _ledgerId = ledgerId;
+            _commandSubmissionClient = new ClientStub<CommandSubmissionService.CommandSubmissionServiceClient>(new CommandSubmissionService.CommandSubmissionServiceClient(channel), accessToken);
         }
 
-        public void Submit(
-            string ledgerId,
+        public Empty Submit(
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitRequest { Commands = cmds };
-            this.commandSubmissionClient.Submit(request);
+            var request = new SubmitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+            
+            return _commandSubmissionClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.Submit(r, co), (c, r) => c.Submit(r));
         }
 
         public async Task SubmitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitRequest { Commands = cmds };
-            await this.commandSubmissionClient.SubmitAsync(request);
+            var request = new SubmitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            await _commandSubmissionClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAsync(r, co), (c, r) => c.SubmitAsync(r));
         }
 
-        public void Submit(Commands commands)
+        public Empty Submit(Commands commands, string accessToken = null)
         {
-            var request = new SubmitRequest { Commands = commands };
-            this.commandSubmissionClient.Submit(request);
+            return _commandSubmissionClient.WithAccess(accessToken).DispatchRequest(new SubmitRequest { Commands = commands }, (c, r, co) => c.Submit(r, co), (c, r) => c.Submit(r));
         }
 
-        public async Task SubmitAsync(Commands commands)
+        public async Task SubmitAsync(Commands commands, string accessToken = null)
         {
-            var request = new SubmitRequest { Commands = commands };
-            await this.commandSubmissionClient.SubmitAsync(request);
+            await _commandSubmissionClient.WithAccess(accessToken).DispatchRequest(new SubmitRequest { Commands = commands }, (c, r, co) => c.SubmitAsync(r, co), (c, r) => c.SubmitAsync(r));
         }
 
         private Commands BuildCommands(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -73,7 +74,7 @@ namespace Daml.Ledger.Client
         {
             var cmds = new Commands
             {
-                LedgerId = ledgerId,
+                LedgerId = _ledgerId,
                 ApplicationId = applicationId,
                 WorkflowId = workflowId,
                 CommandId = commandId,

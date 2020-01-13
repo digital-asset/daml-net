@@ -7,158 +7,162 @@ namespace Daml.Ledger.Client
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Google.Protobuf.WellKnownTypes;
     using Grpc.Core;
 
     public class CommandClient : ICommandClient
     {
-        private readonly CommandService.CommandServiceClient commandClient;
-
-        public CommandClient(Channel channel)
+        private readonly ClientStub<CommandService.CommandServiceClient> _commandClient;
+        private readonly string _ledgerId;
+        
+        public CommandClient(string ledgerId, Channel channel, string accessToken)
         {
-            this.commandClient = new CommandService.CommandServiceClient(channel);
+            _ledgerId = ledgerId;
+            _commandClient = new ClientStub<CommandService.CommandServiceClient>(new CommandService.CommandServiceClient(channel), accessToken);
         }
-
-        public void SubmitAndWait(
-            string ledgerId,
+        
+        public Empty SubmitAndWait(
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            this.commandClient.SubmitAndWait(request);
+            return SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
         public async Task SubmitAndWaitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            await this.commandClient.SubmitAndWaitAsync(request);
+            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
-        public void SubmitAndWait(Commands commands)
+        public Empty SubmitAndWait(Commands commands, string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = commands };
-            this.commandClient.SubmitAndWait(request);
+            return _commandClient.WithAccess(accessToken).DispatchRequest(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWait(r, co), (c, r) => c.SubmitAndWait(r));
         }
 
-        public async Task SubmitAndWaitAsync(Commands commands)
+        public async Task SubmitAndWaitAsync(Commands commands, string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = commands };
-            await this.commandClient.SubmitAndWaitAsync(request);
+            await _commandClient.WithAccess(accessToken).DispatchRequest(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWaitAsync(r, co), (c, r) => c.SubmitAndWaitAsync(r));
         }
 
         public Transaction SubmitAndWaitForTransaction(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = this.commandClient.SubmitAndWaitForTransaction(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var response = _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co), (c, r) => c.SubmitAndWaitForTransaction(r));
+            
             return response.Transaction;
         }
 
         public string SubmitAndWaitForTransactionId(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = this.commandClient.SubmitAndWaitForTransactionId(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var response = _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co), (c, r) => c.SubmitAndWaitForTransactionId(r));
+
             return response.TransactionId;
         }
 
         public TransactionTree SubmitAndWaitForTransactionTree(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = this.commandClient.SubmitAndWaitForTransactionTree(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var response = _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co), (c, r) => c.SubmitAndWaitForTransactionTree(r));
+
             return response.Transaction;
         }
 
         public async Task<Transaction> SubmitAndWaitForTransactionAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = await this.commandClient.SubmitAndWaitForTransactionAsync(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var response = await _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co), (c, r) => c.SubmitAndWaitForTransactionAsync(r));
+
             return response.Transaction;
         }
 
         public async Task<string> SubmitAndWaitForTransactionIdAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = await this.commandClient.SubmitAndWaitForTransactionIdAsync(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var response = await _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co), (c, r) => c.SubmitAndWaitForTransactionIdAsync(r));
+
             return response.TransactionId;
         }
 
         public async Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitAndWaitRequest { Commands = cmds };
-            var response = await this.commandClient.SubmitAndWaitForTransactionTreeAsync(request);
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
+
+            var callOptions = LedgerCallCredentials.MakeCallOptions(accessToken);
+
+            var response = await _commandClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co), (c, r) => c.SubmitAndWaitForTransactionTreeAsync(r));
+            
             return response.Transaction;
         }
 
         private Commands BuildCommands(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -169,7 +173,7 @@ namespace Daml.Ledger.Client
         {
             var cmds = new Commands
                 {
-                    LedgerId = ledgerId,
+                    LedgerId = _ledgerId,
                     ApplicationId = applicationId,
                     WorkflowId = workflowId,
                     CommandId = commandId,

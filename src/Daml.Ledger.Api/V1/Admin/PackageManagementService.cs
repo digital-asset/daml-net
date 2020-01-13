@@ -33,25 +33,26 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
             "ZURldGFpbHMihwEKDlBhY2thZ2VEZXRhaWxzEhIKCnBhY2thZ2VfaWQYASAB",
             "KAkSFAoMcGFja2FnZV9zaXplGAIgASgEEi8KC2tub3duX3NpbmNlGAMgASgL",
             "MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIaChJzb3VyY2VfZGVzY3Jp",
-            "cHRpb24YBCABKAkiKAoUVXBsb2FkRGFyRmlsZVJlcXVlc3QSEAoIZGFyX2Zp",
-            "bGUYASABKAwiFwoVVXBsb2FkRGFyRmlsZVJlc3BvbnNlMrwCChhQYWNrYWdl",
-            "TWFuYWdlbWVudFNlcnZpY2USlAEKEUxpc3RLbm93blBhY2thZ2VzEj4uY29t",
-            "LmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLmFkbWluLkxpc3RLbm93blBh",
-            "Y2thZ2VzUmVxdWVzdBo/LmNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFwaS52",
-            "MS5hZG1pbi5MaXN0S25vd25QYWNrYWdlc1Jlc3BvbnNlEogBCg1VcGxvYWRE",
-            "YXJGaWxlEjouY29tLmRpZ2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLmFkbWlu",
-            "LlVwbG9hZERhckZpbGVSZXF1ZXN0GjsuY29tLmRpZ2l0YWxhc3NldC5sZWRn",
-            "ZXIuYXBpLnYxLmFkbWluLlVwbG9hZERhckZpbGVSZXNwb25zZUJxCiRjb20u",
-            "ZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuYWRtaW5CIlBhY2thZ2VNYW5h",
-            "Z2VtZW50U2VydmljZU91dGVyQ2xhc3OqAiRDb20uRGlnaXRhbEFzc2V0Lkxl",
-            "ZGdlci5BcGkuVjEuQWRtaW5iBnByb3RvMw=="));
+            "cHRpb24YBCABKAkiPwoUVXBsb2FkRGFyRmlsZVJlcXVlc3QSEAoIZGFyX2Zp",
+            "bGUYASABKAwSFQoNc3VibWlzc2lvbl9pZBgCIAEoCSIXChVVcGxvYWREYXJG",
+            "aWxlUmVzcG9uc2UyvAIKGFBhY2thZ2VNYW5hZ2VtZW50U2VydmljZRKUAQoR",
+            "TGlzdEtub3duUGFja2FnZXMSPi5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5h",
+            "cGkudjEuYWRtaW4uTGlzdEtub3duUGFja2FnZXNSZXF1ZXN0Gj8uY29tLmRp",
+            "Z2l0YWxhc3NldC5sZWRnZXIuYXBpLnYxLmFkbWluLkxpc3RLbm93blBhY2th",
+            "Z2VzUmVzcG9uc2USiAEKDVVwbG9hZERhckZpbGUSOi5jb20uZGlnaXRhbGFz",
+            "c2V0LmxlZGdlci5hcGkudjEuYWRtaW4uVXBsb2FkRGFyRmlsZVJlcXVlc3Qa",
+            "Oy5jb20uZGlnaXRhbGFzc2V0LmxlZGdlci5hcGkudjEuYWRtaW4uVXBsb2Fk",
+            "RGFyRmlsZVJlc3BvbnNlQnEKJGNvbS5kaWdpdGFsYXNzZXQubGVkZ2VyLmFw",
+            "aS52MS5hZG1pbkIiUGFja2FnZU1hbmFnZW1lbnRTZXJ2aWNlT3V0ZXJDbGFz",
+            "c6oCJENvbS5EaWdpdGFsQXNzZXQuTGVkZ2VyLkFwaS5WMS5BZG1pbmIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.ListKnownPackagesRequest), global::Com.DigitalAsset.Ledger.Api.V1.Admin.ListKnownPackagesRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.ListKnownPackagesResponse), global::Com.DigitalAsset.Ledger.Api.V1.Admin.ListKnownPackagesResponse.Parser, new[]{ "PackageDetails" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.PackageDetails), global::Com.DigitalAsset.Ledger.Api.V1.Admin.PackageDetails.Parser, new[]{ "PackageId", "PackageSize", "KnownSince", "SourceDescription" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileRequest), global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileRequest.Parser, new[]{ "DarFile" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileRequest), global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileRequest.Parser, new[]{ "DarFile", "SubmissionId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileResponse), global::Com.DigitalAsset.Ledger.Api.V1.Admin.UploadDarFileResponse.Parser, null, null, null, null)
           }));
     }
@@ -550,6 +551,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UploadDarFileRequest(UploadDarFileRequest other) : this() {
       darFile_ = other.darFile_;
+      submissionId_ = other.submissionId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -575,6 +577,21 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
       }
     }
 
+    /// <summary>Field number for the "submission_id" field.</summary>
+    public const int SubmissionIdFieldNumber = 2;
+    private string submissionId_ = "";
+    /// <summary>
+    /// Unique submission identifier.
+    /// Optional, defaults to a random identifier.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string SubmissionId {
+      get { return submissionId_; }
+      set {
+        submissionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as UploadDarFileRequest);
@@ -589,6 +606,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
         return true;
       }
       if (DarFile != other.DarFile) return false;
+      if (SubmissionId != other.SubmissionId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -596,6 +614,7 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
     public override int GetHashCode() {
       int hash = 1;
       if (DarFile.Length != 0) hash ^= DarFile.GetHashCode();
+      if (SubmissionId.Length != 0) hash ^= SubmissionId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -613,6 +632,10 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
         output.WriteRawTag(10);
         output.WriteBytes(DarFile);
       }
+      if (SubmissionId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(SubmissionId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -623,6 +646,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
       int size = 0;
       if (DarFile.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(DarFile);
+      }
+      if (SubmissionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SubmissionId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -638,6 +664,9 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
       if (other.DarFile.Length != 0) {
         DarFile = other.DarFile;
       }
+      if (other.SubmissionId.Length != 0) {
+        SubmissionId = other.SubmissionId;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -651,6 +680,10 @@ namespace Com.DigitalAsset.Ledger.Api.V1.Admin {
             break;
           case 10: {
             DarFile = input.ReadBytes();
+            break;
+          }
+          case 18: {
+            SubmissionId = input.ReadString();
             break;
           }
         }

@@ -1,7 +1,9 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Daml.Ledger.Client
+using Daml.Ledger.Client.Auth.Client;
+
+namespace Daml.Ledger.Client.Testing
 {
     using System;
     using System.Collections.Generic;
@@ -12,23 +14,25 @@ namespace Daml.Ledger.Client
 
     public class TimeClient : ITimeClient
     {
-        private readonly TimeService.TimeServiceClient timeClient;
+        private readonly string _ledgerId;
+        private readonly ClientStub<TimeService.TimeServiceClient> _timeClient;
 
-        public TimeClient(Channel channel)
+        public TimeClient(string ledgerId, Channel channel, string accessToken)
         {
-            this.timeClient = new TimeService.TimeServiceClient(channel);
+            _ledgerId = ledgerId;
+            _timeClient = new ClientStub<TimeService.TimeServiceClient>(new TimeService.TimeServiceClient(channel), accessToken);
         }
 
-        public IAsyncEnumerator<GetTimeResponse> GetTime(string ledgerId)
+        public IAsyncEnumerator<GetTimeResponse> GetTime(string accessToken = null)
         {
-            var request = new GetTimeRequest { LedgerId = ledgerId };
-            var call = this.timeClient.GetTime(request);
-            return call.ResponseStream;
+            var response = _timeClient.WithAccess(accessToken).DispatchRequest(new GetTimeRequest { LedgerId = _ledgerId }, (c, r, co) => c.GetTime(r, co), (c, r) => c.GetTime(r));
+            
+            return response.ResponseStream;
         }
 
-        public IEnumerable<GetTimeResponse> GetTimeSync(string ledgerId)
+        public IEnumerable<GetTimeResponse> GetTimeSync(string accessToken = null)
         {
-            using (var stream = this.GetTime(ledgerId))
+            using (var stream = GetTime(accessToken))
             {
                 while (stream.MoveNext().Result)
                 {
@@ -37,16 +41,29 @@ namespace Daml.Ledger.Client
             }
         }
 
-        public void SetTime(string ledgerId, DateTime currentTime, DateTime newTime)
+        public Empty SetTime(DateTime currentTime, DateTime newTime, string accessToken = null)
         {
-            var request = new SetTimeRequest { LedgerId = ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-            this.timeClient.SetTime(request);
+            if (currentTime >= newTime)
+                throw new SetTimeException(currentTime, newTime);
+
+            var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
+
+            return _timeClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SetTime(r, co), (c, r) => c.SetTime(r));
         }
 
-        public async Task SetTimeAsync(string ledgerId, DateTime currentTime, DateTime newTime)
+        public async Task SetTimeAsync(DateTime currentTime, DateTime newTime, string accessToken = null)
         {
-            var request = new SetTimeRequest { LedgerId = ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-            await this.timeClient.SetTimeAsync(request);
+            var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
+
+            await _timeClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.SetTimeAsync(r, co), (c, r) => c.SetTimeAsync(r));
+        }
+
+        private class SetTimeException : Exception
+        {
+            public SetTimeException(DateTimeOffset currentTime, DateTimeOffset newTime)
+                : base($"Cannot set a new time smaller or equal to the current one. That new time tried is {newTime.ToString()} but the current one is {currentTime.ToString()}")
+            {
+            }
         }
     }
 }

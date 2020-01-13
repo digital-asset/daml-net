@@ -1,40 +1,36 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using Grpc.Core;
+
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
-    using System.Collections.Generic;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using Com.DigitalAsset.Ledger.Api.V1;
-    using Daml.Ledger.Client;
+    using Util;
+    using Com.Daml.Ledger.Api.Util;
+
+    using GetActiveContractsResponse = Com.Daml.Ledger.Api.Data.GetActiveContractsResponse;
+    using TransactionFilter = Com.Daml.Ledger.Api.Data.TransactionFilter;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
 
     public class ActiveContractsClient
     {
-        private readonly IActiveContractsClient activeContractsClient;
+        private readonly IActiveContractsClient _activeContractsClient;
+        private readonly IScheduler _scheduler;
 
-        public ActiveContractsClient(IActiveContractsClient activeContractsClient)
+        public ActiveContractsClient(string ledgerId, Channel channel, Optional<string> accessToken, IScheduler scheduler = null)
         {
-            this.activeContractsClient = activeContractsClient;
+            _activeContractsClient = new Client.ActiveContractsClient(ledgerId, channel, accessToken.Reduce((string) null));
+            _scheduler = scheduler;
         }
 
-        public IObservable<GetActiveContractsResponse> GetActiveContracts(string ledgerId, TransactionFilter transactionFilter, bool verbose = true, TraceContext traceContext = null)
+        public IObservable<GetActiveContractsResponse> GetActiveContracts(TransactionFilter transactionFilter, bool verbose = true, Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetActiveContractsResponse>(async observer =>
-            {
-                using (var stream = this.activeContractsClient.GetActiveContracts(ledgerId, transactionFilter, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
+            var response = _activeContractsClient.GetActiveContracts(transactionFilter.ToProto(), verbose, accessToken?.Reduce((string) null), traceContext);
 
-            return observable;
+            return response.CreateAsyncObservable(_scheduler).Select(GetActiveContractsResponse.FromProto);
         }
-
     }
 }

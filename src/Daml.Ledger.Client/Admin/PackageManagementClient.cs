@@ -7,44 +7,49 @@ namespace Daml.Ledger.Client.Admin
     using System.IO;
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Daml.Ledger.Client.Auth.Client;
     using Google.Protobuf;
     using Grpc.Core;
 
     public class PackageManagementClient : IPackageManagementClient
     {
-        private readonly PackageManagementService.PackageManagementServiceClient packageManagementClient;
+        private readonly ClientStub<PackageManagementService.PackageManagementServiceClient> _packageManagementClient;
 
-        public PackageManagementClient(Channel channel)
+        public PackageManagementClient(Channel channel, string accessToken)
         {
-            this.packageManagementClient = new PackageManagementService.PackageManagementServiceClient(channel);
+            _packageManagementClient = new ClientStub<PackageManagementService.PackageManagementServiceClient>(new PackageManagementService.PackageManagementServiceClient(channel), accessToken);
         }
 
-        public IEnumerable<PackageDetails> ListKnownPackages()
+        public IEnumerable<PackageDetails> ListKnownPackages(string accessToken = null)
         {
-            var request = new ListKnownPackagesRequest();
-            var response = this.packageManagementClient.ListKnownPackages(request);
+            var response = _packageManagementClient.WithAccess(accessToken).DispatchRequest(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackages(r, co), (c, r) => c.ListKnownPackages(r));
             return response.PackageDetails;
         }
 
-        public async Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync()
+        public async Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync(string accessToken = null)
         {
-            var request = new ListKnownPackagesRequest();
-            var response = await this.packageManagementClient.ListKnownPackagesAsync (request);
+            var response = await _packageManagementClient.WithAccess(accessToken).DispatchRequest(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackagesAsync(r, co), (c, r) => c.ListKnownPackagesAsync(r));
+
             return response.PackageDetails;
         }
 
-        public void UploadDarFile(Stream stream)
+        public void UploadDarFile(Stream stream, string submissionId = null, string accessToken = null)
         {
-            var byteString = ByteString.FromStream(stream);
-            var request = new UploadDarFileRequest { DarFile = byteString };
-            this.packageManagementClient.UploadDarFile(request);
+            var request = new UploadDarFileRequest { DarFile = ByteString.FromStream(stream) };
+            if (!string.IsNullOrEmpty(submissionId))
+                request.SubmissionId = submissionId;
+            
+            _packageManagementClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.UploadDarFile(r, co), (c, r) => c.UploadDarFile(r));
         }
 
-        public async Task UploadDarFileAsync(Stream stream)
+        public async Task UploadDarFileAsync(Stream stream, string submissionId = null, string accessToken = null)
         {
             var byteString = await ByteString.FromStreamAsync(stream);
             var request = new UploadDarFileRequest { DarFile = byteString };
-            await this.packageManagementClient.UploadDarFileAsync(request);
+            if (!string.IsNullOrEmpty(submissionId))
+                request.SubmissionId = submissionId;
+
+            await _packageManagementClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.UploadDarFileAsync(r, co), (c, r) => c.UploadDarFileAsync(r));
         }
     }
 }

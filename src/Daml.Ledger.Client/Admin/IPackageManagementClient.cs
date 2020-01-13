@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Daml.Ledger.Client
+namespace Daml.Ledger.Client.Admin
 {
     using System.Collections.Generic;
     using System.IO;
@@ -10,12 +10,12 @@ namespace Daml.Ledger.Client
 
     public interface IPackageManagementClient
     {
-        IEnumerable<PackageDetails> ListKnownPackages();
+        IEnumerable<PackageDetails> ListKnownPackages(string accessToken = null);
 
-        Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync();
+        Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync(string accessToken = null);
 
-        void UploadDarFile(Stream stream);
+        void UploadDarFile(Stream stream, string submissionId = null, string accessToken = null);
 
-        Task UploadDarFileAsync(Stream stream);
+        Task UploadDarFileAsync(Stream stream, string submissionId = null, string accessToken = null);
     }
 }

@@ -11,37 +11,36 @@ namespace Daml.Ledger.Automation
 
     public class StatefulBot<TState>
     {
-        private readonly ITransactionsClient transactionsClient;
-        private readonly ICommandClient commandClient;
-        private readonly Func<TState, Transaction, TState> update;
-        private readonly Func<TState, Commands> handler;
-        private TState state;
+        private readonly ITransactionsClient _transactionsClient;
+        private readonly ICommandClient _commandClient;
+        private readonly Func<TState, Transaction, TState> _update;
+        private readonly Func<TState, Commands> _handler;
+        private TState _state;
 
-        public StatefulBot(
-            ITransactionsClient transactionsClient,
+        public StatefulBot(ITransactionsClient transactionsClient,
             ICommandClient commandClient,
             TState initial,
             Func<TState, Transaction, TState> update,
             Func<TState, Commands> handler)
         {
-            this.transactionsClient = transactionsClient;
-            this.commandClient = commandClient;
-            this.state = initial;
-            this.update = update;
-            this.handler = handler;
+            _transactionsClient = transactionsClient;
+            _commandClient = commandClient;
+            _state = initial;
+            _update = update;
+            _handler = handler;
         }
 
-        public async Task Run(string ledgerId, TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, TraceContext traceContext = null)
+        public async Task Run(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, string accessToken = null, TraceContext traceContext = null)
         {
-            using (var stream = this.transactionsClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {
                     foreach (var tx in stream.Current.Transactions)
                     {
-                        this.state = update(this.state, tx);
-                        var commands = handler(this.state);
-                        await this.commandClient.SubmitAndWaitAsync(commands);
+                        _state = _update(_state, tx);
+                        var commands = _handler(_state);
+                        await _commandClient.SubmitAndWaitAsync(commands);
                     }
                 }
             }

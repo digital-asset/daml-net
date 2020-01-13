@@ -7,8 +7,8 @@ namespace Daml.Ledger.Client
 
     public interface ILedgerIdentityClient
     {
-        string GetLedgerIdentity();
+        string GetLedgerIdentity(string accessToken = null);
 
-        Task<string> GetLedgerIdentityAsync();
+        Task<string> GetLedgerIdentityAsync(string accessToken = null);
     }
 }

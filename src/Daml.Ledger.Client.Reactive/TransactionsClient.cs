@@ -1,69 +1,69 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using Grpc.Core;
+
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
     using System.Collections.Generic;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using Com.DigitalAsset.Ledger.Api.V1;
-    using Daml.Ledger.Client;
+    using Com.Daml.Ledger.Api.Data;
+    using Com.Daml.Ledger.Api.Util;
+    using Util;
+
+    using Single = Com.Daml.Ledger.Api.Util.Single;
+    using Transaction = Com.Daml.Ledger.Api.Data.Transaction;
+    using LedgerOffset = Com.Daml.Ledger.Api.Data.LedgerOffset;
+    using TransactionFilter = Com.Daml.Ledger.Api.Data.TransactionFilter;
+    using TransactionTree = Com.Daml.Ledger.Api.Data.TransactionTree;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
 
     public class TransactionsClient
     {
-        private readonly ITransactionsClient transactionsClient;
+        private readonly ITransactionsClient _transactionClient;
+        private readonly IScheduler _scheduler;
 
-        public TransactionsClient(ITransactionsClient transactionsClient)
+        public TransactionsClient(string ledgerId, Channel channel, Optional<string> accessToken, IScheduler scheduler = null)
         {
-            this.transactionsClient = transactionsClient;
+            _transactionClient = new Client.TransactionsClient(ledgerId, channel, accessToken.Reduce((string) null));
+            _scheduler = scheduler;
         }
 
-        public IObservable<GetTransactionsResponse> GetTransactions(
-            string ledgerId,
-            TransactionFilter transactionFilter,
-            LedgerOffset beginOffset,
-            LedgerOffset endOffset = null,
-            bool verbose = true,
-            TraceContext traceContext = null)
+        public IObservable<Transaction> GetTransactions(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset = null, bool verbose = true, Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetTransactionsResponse>(async observer =>
-            {
-                using (var stream = this.transactionsClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _transactionClient.GetTransactions(transactionFilter?.ToProto(), beginOffset?.ToProto(), endOffset?.ToProto(), verbose, accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler).Select(GetTransactionsResponse.FromProto).SelectMany(r => r.Transactions);
         }
 
-        public IObservable<GetTransactionTreesResponse> GetTransactionTrees(
-            string ledgerId,
-            TransactionFilter transactionFilter,
-            LedgerOffset beginOffset,
-            LedgerOffset endOffset = null,
-            bool verbose = true,
-            TraceContext traceContext = null)
+        public IObservable<TransactionTree> GetTransactionsTrees(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset = null, bool verbose = true, Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetTransactionTreesResponse>(async observer =>
-            {
-                using (var stream = this.transactionsClient.GetTransactionTrees(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
+            return _transactionClient.GetTransactionTrees(transactionFilter?.ToProto(), beginOffset?.ToProto(), endOffset?.ToProto(), verbose, accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler).Select(GetTransactionTreesResponse.FromProto).SelectMany(r => r.Transactions);
+        }
 
-            return observable;
+        public Single<TransactionTree> GetTransactionByEventId(string eventId, IEnumerable<string> requestingParties, Optional<string> accessToken = null, TraceContext traceContext = null)
+        {
+            return Single.Just(TransactionTree.FromProto(_transactionClient.GetTransactionByEventId(eventId, requestingParties, accessToken?.Reduce((string) null), traceContext).Transaction));
+        }
+
+        public Single<TransactionTree> GetTransactionById(string transactionId, IEnumerable<string> requestingParties, Optional<string> accessToken = null, TraceContext traceContext = null)
+        {
+            return Single.Just(TransactionTree.FromProto(_transactionClient.GetTransactionById(transactionId, requestingParties, accessToken?.Reduce((string) null), traceContext).Transaction));
+        }
+
+        public Single<Transaction> GetFlatTransactionByEventId(string eventId, HashSet<string> requestingParties, Optional<string> accessToken = null, TraceContext traceContext = null)
+        {
+            return Single.Just(Transaction.FromProto(_transactionClient.GetFlatTransactionByEventId(eventId, requestingParties, accessToken?.Reduce((string) null), traceContext).Transaction));
+        }
+
+        public Single<Transaction> GetFlatTransactionById(string transactionId, HashSet<string> requestingParties, Optional<string> accessToken = null, TraceContext traceContext = null)
+        {
+            return Single.Just(Transaction.FromProto(_transactionClient.GetFlatTransactionById(transactionId, requestingParties, accessToken?.Reduce((string) null), traceContext).Transaction));
+        }
+
+        public Single<LedgerOffset> GetLedgerEnd(Optional<string> accessToken = null, TraceContext traceContext = null)
+        {
+            return Single.Just(LedgerOffset.FromProto(_transactionClient.GetLedgerEnd(accessToken?.Reduce((string) null), traceContext)));
         }
     }
 }

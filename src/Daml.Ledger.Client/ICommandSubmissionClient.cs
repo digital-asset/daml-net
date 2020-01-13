@@ -6,32 +6,33 @@ namespace Daml.Ledger.Client
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Google.Protobuf.WellKnownTypes;
     using Com.DigitalAsset.Ledger.Api.V1;
 
     public interface ICommandSubmissionClient
     {
-        void Submit(
-            string ledgerId,
+        Empty Submit(
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task SubmitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
-        void Submit(Commands commands);
+        Empty Submit(Commands commands, string accessToken = null);
 
-        Task SubmitAsync(Commands commands);
+        Task SubmitAsync(Commands commands, string accessToken = null);
     }
 }

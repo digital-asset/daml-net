@@ -12,33 +12,27 @@ namespace DigitalAsset.Ledger.Automation
 
     public class StatelessBot
     {
-        private readonly ITransactionsClient transactionClient;
-        private readonly ICommandClient commandClient;
-        private readonly Func<Transaction, Commands> handler;
+        private readonly ITransactionsClient _transactionClient;
+        private readonly ICommandClient _commandClient;
+        private readonly Func<Transaction, Commands> _handler;
 
-        public StatelessBot(Channel channel, Func<Transaction, Commands> handler)
+        public StatelessBot(string ledgerId, Channel channel, string accessToken, Func<Transaction, Commands> handler)
         {
-            this.transactionClient = new TransactionsClient(channel);
-            this.commandClient = new CommandClient(channel);
-            this.handler = handler;
+            _transactionClient = new TransactionsClient(ledgerId, channel, accessToken);
+            _commandClient = new CommandClient(ledgerId, channel, accessToken);
+            _handler = handler;
         }
 
-        public async Task Run(
-            string ledgerId,
-            TransactionFilter transactionFilter,
-            LedgerOffset beginOffset,
-            LedgerOffset endOffset = null,
-            bool verbose = true,
-            TraceContext traceContext = null)
+        public async Task Run(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset = null, bool verbose = true, string accessToken = null, TraceContext traceContext = null)
         {
-            using (var stream = this.transactionClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = _transactionClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {
                     foreach (var tx in stream.Current.Transactions)
                     {
-                        var commands = handler(tx);
-                        await this.commandClient.SubmitAndWaitAsync(commands);
+                        var commands = _handler(tx);
+                        await _commandClient.SubmitAndWaitAsync(commands);
                     }
                 }
             }

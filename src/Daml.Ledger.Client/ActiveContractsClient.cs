@@ -5,35 +5,40 @@ namespace Daml.Ledger.Client
 {
     using System.Collections.Generic;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class ActiveContractsClient : IActiveContractsClient
     {
-        private readonly ActiveContractsService.ActiveContractsServiceClient activeContractsClient;
+        private readonly string _ledgerId;
+        private readonly ClientStub<ActiveContractsService.ActiveContractsServiceClient> _activeContractsClient;
 
-        public ActiveContractsClient(Channel channel)
+        public ActiveContractsClient(string ledgerId, Channel channel, string accessToken)
         {
-            this.activeContractsClient = new ActiveContractsService.ActiveContractsServiceClient(channel);
+            _ledgerId = ledgerId;
+            _activeContractsClient = new ClientStub<ActiveContractsService.ActiveContractsServiceClient>(new ActiveContractsService.ActiveContractsServiceClient(channel), accessToken);
         }
 
         public IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
-            string ledgerId,
             TransactionFilter transactionFilter,
-            bool verbose = true,
-            TraceContext traceContext = null)
+            bool verbose,
+            string accessToken,
+            TraceContext traceContext)
         {
-            var request = new GetActiveContractsRequest { LedgerId = ledgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
-            var call = this.activeContractsClient.GetActiveContracts(request);
-            return call.ResponseStream;
+            var request = new GetActiveContractsRequest { LedgerId = _ledgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
+
+            var response = _activeContractsClient.WithAccess(accessToken).DispatchRequest(request, (c, r, co) => c.GetActiveContracts(r, co), (c, r) => c.GetActiveContracts(r));
+
+            return response.ResponseStream;
         }
 
         public IEnumerable<GetActiveContractsResponse> GetActiveContractsSync(
-            string ledgerId,
             TransactionFilter transactionFilter,
-            bool verbose = true,
-            TraceContext traceContext = null)
+            bool verbose,
+            string accessToken,
+            TraceContext traceContext)
         {
-            using (var stream = this.GetActiveContracts(ledgerId, transactionFilter, verbose, traceContext))
+            using (var stream = GetActiveContracts(transactionFilter, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {

@@ -1,6 +1,8 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using Google.Protobuf.WellKnownTypes;
+
 namespace Daml.Ledger.Client
 {
     using System;
@@ -10,88 +12,88 @@ namespace Daml.Ledger.Client
 
     public interface ICommandClient
     {
-        void SubmitAndWait(
-            string ledgerId,
+        Empty SubmitAndWait(
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task SubmitAndWaitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
-        void SubmitAndWait(Commands commands);
+        Empty SubmitAndWait(Commands commands, string accessToken = null);
 
-        Task SubmitAndWaitAsync(Commands commands);
+        Task SubmitAndWaitAsync(Commands commands, string accessToken = null);
 
         Transaction SubmitAndWaitForTransaction(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands, 
+            string accessToken = null);
 
         string SubmitAndWaitForTransactionId(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         TransactionTree SubmitAndWaitForTransactionTree(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands, 
+            string accessToken = null);
 
         Task<Transaction> SubmitAndWaitForTransactionAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands, 
+            string accessToken = null);
 
         Task<string> SubmitAndWaitForTransactionIdAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands, 
+            string accessToken = null);
 
         Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands, 
+            string accessToken = null);
     }
 }

@@ -5,28 +5,29 @@ namespace Daml.Ledger.Client
 {
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class LedgerIdentityClient : ILedgerIdentityClient
     {
-        private readonly LedgerIdentityService.LedgerIdentityServiceClient ledgerIdentityClient;
+        private readonly ClientStub<LedgerIdentityService.LedgerIdentityServiceClient> _ledgerIdentityClient;
 
-        public LedgerIdentityClient(Channel channel)
+        public LedgerIdentityClient(Channel channel, string accessToken)
         {
-            this.ledgerIdentityClient = new LedgerIdentityService.LedgerIdentityServiceClient(channel);
+            _ledgerIdentityClient = new ClientStub<LedgerIdentityService.LedgerIdentityServiceClient>(new LedgerIdentityService.LedgerIdentityServiceClient(channel), accessToken);
         }
 
-        public string GetLedgerIdentity()
+        public string GetLedgerIdentity(string accessToken = null)
         {
-            var request = new GetLedgerIdentityRequest();
-            var response = this.ledgerIdentityClient.GetLedgerIdentity(request);
+            var response = _ledgerIdentityClient.WithAccess(accessToken).DispatchRequest(new GetLedgerIdentityRequest(), (c, r, co) => c.GetLedgerIdentity(r, co), (c, r) => c.GetLedgerIdentity(r));
+
             return response.LedgerId;
         }
 
-        public async Task<string> GetLedgerIdentityAsync()
+        public async Task<string> GetLedgerIdentityAsync(string accessToken = null)
         {
-            var request = new GetLedgerIdentityRequest();
-            var response = await this.ledgerIdentityClient.GetLedgerIdentityAsync(request);
+            var response = await _ledgerIdentityClient.WithAccess(accessToken).DispatchRequest(new GetLedgerIdentityRequest(), (c, r, co) => c.GetLedgerIdentityAsync(r, co), (c, r) => c.GetLedgerIdentityAsync(r));
+                
             return response.LedgerId;
         }
     }

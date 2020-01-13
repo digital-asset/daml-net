@@ -1,13 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Google.Api.CommonProtos" Version="1.6.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.9.0" />
+    <PackageReference Include="Grpc" Version="1.22.0" />
+    <PackageReference Include="Grpc.Tools" Version="1.22.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../protobuf/daml-lf/**/*.proto" LinkBase="protobuf" />
+  </ItemGroup>
+
+
+  <PropertyGroup>
+    <Protobuf_StandardImportsPath>$(Protobuf_StandardImportsPath);../../protobuf/daml-lf</Protobuf_StandardImportsPath>
+    <Protobuf_NoWarnMissingExpected>true</Protobuf_NoWarnMissingExpected>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Protobuf Include="../../protobuf/daml-lf/**/*.proto" OutputDir="." CompileOutputs="false"/>
+  </ItemGroup>
+
 </Project>
