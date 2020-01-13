@@ -195,13 +195,8 @@ namespace Daml.Ledger.Automation
         //    return Flowable.concat(activeContracts, transactions);
         //}
 
-        private static (SubmitCommandsRequest, LedgerViewObservable.SubmissionFailure) CommandsFailuresFromSubmissions(CommandSubmissionClient commandSubmissionClient)
-        {
-            //_logger.DebugFormat("Submitting: {0}", cs);
-            //var t = ObservableLogger.Log()
-
-            SubmitCommandsRequest request = new SubmitCommandsRequest("workflowid);
-            var r = commandSubmissionClient.Submit()
+        //private static (SubmitCommandsRequest, LedgerViewObservable.SubmissionFailure) CommandsFailuresFromSubmissions(CommandSubmissionClient commandSubmissionClient)
+        //{
             //    return cs-> {
             //        logger.debug("Submitting: {}", cs);
             //        return FlowableLogger.log(commandSubmissionClient.submit(cs.getWorkflowId(), cs.getApplicationId(),
@@ -212,7 +207,7 @@ namespace Daml.Ledger.Automation
             //                .onErrorReturn(t-> new LedgerViewFlowable.SubmissionFailure(cs.getCommandId(), t))
             //                , "commandSubmissions");
             //    };
-            return (null, null);
-        }
+        //    return (null, null);
+        //}
     }
 }
