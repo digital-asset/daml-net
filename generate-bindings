@@ -6,39 +6,59 @@ if [ -z "$1" ]; then echo "Please pass the SDK version as an argument" && exit 1
 
 GR='\033[0;32m'
 NC='\033[0m' # No Color
-NUGET_PLATFORM=macosx_x64
 GRPC_TOOLS_VERSION=1.22.0
 GOOGLE_PROTOBUF_TOOLS_VERSION=3.9.0
 FILE_API=ledger-api-protos-10$1.tar.gz
 FILE_LF=daml-lf-1.7-archive-proto-10$1.tar.gz
 
+if [[ -n "${WSL_DISTRO_NAME}" ]]; then
+  PROTOC=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/windows_x64/protoc.exe
+  GRPC_CSHARP_PLUGIN=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/windows_x64/grpc_csharp_plugin.exe
+elif [[ "$(uname -s)" == "Linux" ]]; then
+  PROTOC=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/linux_x64/protoc
+  GRPC_CSHARP_PLUGIN=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/linux_x64/grpc_csharp_plugin
+else
+  PROTOC=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/macosx_x64/protoc
+  GRPC_CSHARP_PLUGIN=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/macosx_x64/grpc_csharp_plugin
+fi
+
 # Install tooling (assumes nuget is installed and available)
 nuget install Grpc.Tools -OutputDirectory packages -Version $GRPC_TOOLS_VERSION
 nuget install Google.Protobuf.Tools -OutputDirectory packages -Version $GOOGLE_PROTOBUF_TOOLS_VERSION
 
-# Cleanup
-rm src/Daml.Ledger.Api/V1/*.cs
-rm src/Daml.Ledger.Api/V1/Admin/*.cs
-rm src/Daml.Ledger.Api/V1/Testing/*.cs
-rm src/Daml.Ledger.Fragment/DamlLf.cs
-rm src/Daml.Ledger.Fragment/DamlLf0.cs
-rm src/Daml.Ledger.Fragment/DamlLf1.cs
+chmod a+x $PROTOC
+chmod a+x $GRPC_CSHARP_PLUGIN
 
-mkdir -p tmp/grpc-definitions/google/rpc
+# Cleanup
+rm -f Directory.Build.props
+rm -f src/Daml.Ledger.Api/V1/*.cs
+rm -f src/Daml.Ledger.Api/V1/Admin/*.cs
+rm -f src/Daml.Ledger.Api/V1/Testing/*.cs
+rm -f src/Daml.Ledger.Fragment/DamlLf.cs
+rm -f src/Daml.Ledger.Fragment/DamlLf0.cs
+rm -f src/Daml.Ledger.Fragment/DamlLf1.cs
+rm -rf protobuf
+
+printf "<Project>\n <PropertyGroup>\n   <Version>$1</Version>\n </PropertyGroup>\n</Project>" > Directory.Build.props
+
+mkdir -p protobuf/ledger-api/grpc-definitions/google/rpc
+mkdir -p protobuf/daml-lf
+#mkdir -p protobuf/daml-lf/com/digitalasset/daml_lf_1_7
+mkdir -p tmp
 
 # Download and unpack dependencies
-curl https://raw.githubusercontent.com/googleapis/googleapis/master/google/rpc/status.proto --output tmp/grpc-definitions/google/rpc/status.proto
+curl https://raw.githubusercontent.com/googleapis/googleapis/master/google/rpc/status.proto --output protobuf/ledger-api/grpc-definitions/google/rpc/status.proto
 curl https://digitalassetsdk.bintray.com/DigitalAssetSDK/com/digitalasset/ledger-api-protos/10$1/$FILE_API --output tmp/$FILE_API
 curl https://digitalassetsdk.bintray.com/DigitalAssetSDK/com/digitalasset/daml-lf-1.7-archive-proto/10$1/$FILE_LF --output tmp/$FILE_LF
-tar -xf tmp/$FILE_API -C tmp/
-tar -xf tmp/$FILE_LF -C tmp/
-mv tmp/com/digitalasset/daml_lf/ tmp/com/digitalasset/daml_lf_1_7/
-# Generate bindings
-packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1 --grpc_out ./src/Daml.Ledger.Api/V1 tmp/grpc-definitions/com/digitalasset/ledger/api/v1/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
-packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Admin --grpc_out ./src/Daml.Ledger.Api/V1/Admin tmp/grpc-definitions/com/digitalasset/ledger/api/v1/admin/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
-packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Testing --grpc_out ./src/Daml.Ledger.Api/V1/Testing tmp/grpc-definitions/com/digitalasset/ledger/api/v1/testing/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
-packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/protoc --proto_path tmp/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Fragment --grpc_out ./src/Daml.Ledger.Fragment tmp/com/digitalasset/daml_lf_1_7/*.proto --plugin=protoc-gen-grpc=packages/Grpc.Tools.$GRPC_TOOLS_VERSION/tools/$NUGET_PLATFORM/grpc_csharp_plugin
+tar -xf tmp/$FILE_API -C protobuf/ledger-api
+tar -xf tmp/$FILE_LF -C protobuf/daml-lf
+mv protobuf/daml-lf/com/digitalasset/daml_lf  protobuf/daml-lf/com/digitalasset/daml_lf_1_7
 
+# Generate bindings
+$PROTOC --proto_path protobuf/ledger-api/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1 --grpc_out ./src/Daml.Ledger.Api/V1 protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/*.proto --plugin=protoc-gen-grpc=$GRPC_CSHARP_PLUGIN
+$PROTOC --proto_path protobuf/ledger-api/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Admin --grpc_out ./src/Daml.Ledger.Api/V1/Admin protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/admin/*.proto --plugin=protoc-gen-grpc=$GRPC_CSHARP_PLUGIN
+$PROTOC --proto_path protobuf/ledger-api/grpc-definitions/ --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Api/V1/Testing --grpc_out ./src/Daml.Ledger.Api/V1/Testing protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/testing/*.proto --plugin=protoc-gen-grpc=$GRPC_CSHARP_PLUGIN
+$PROTOC --proto_path protobuf/daml-lf --proto_path packages/Google.Protobuf.Tools.$GOOGLE_PROTOBUF_TOOLS_VERSION/tools/ --csharp_out ./src/Daml.Ledger.Fragment --grpc_out ./src/Daml.Ledger.Fragment protobuf/daml-lf/com/digitalasset/daml_lf_1_7/*.proto --plugin=protoc-gen-grpc=$GRPC_CSHARP_PLUGIN
 # Cleanup
 rm -rf tmp
 echo -e "${GR}Successfully generated bindings.${NC}"
