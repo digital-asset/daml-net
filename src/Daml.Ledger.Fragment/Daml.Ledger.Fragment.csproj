@@ -5,9 +5,41 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.9.0" />
+    <PackageReference Include="Grpc" Version="1.22.0" />
     <PackageReference Include="Google.Api.CommonProtos" Version="1.6.0" />
   </ItemGroup>
+
+  <Choose>
+    <!-- Test for whether generate-bindings has been run and downloaded the gRPC files -->
+    <When Condition="Exists('../../protobuf')">
+
+      <!-- Define the base include paths for the gRPC files so imports get resolved -->
+      <PropertyGroup>
+        <Protobuf_StandardImportsPath>$(Protobuf_StandardImportsPath);../../protobuf/daml-lf</Protobuf_StandardImportsPath>
+        <Protobuf_NoWarnMissingExpected>true</Protobuf_NoWarnMissingExpected>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <PackageReference Include="Grpc.Tools" Version="1.22.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+      </ItemGroup>
+
+      <!-- Add the gRPC files to the Protobuf target so they get compiled to C# if missing or on rebuild. Suppress them being shown as an unstructured collection in the Visual Studio Solution Explorer window -->
+      <ItemGroup>
+        <Protobuf Include="../../protobuf/daml-lf/**/*.proto" OutputDir="." Visible="false" CompileOutputs="false"/>
+      </ItemGroup>
+
+      <!-- Show the gRPC files in the Visual Studio Solution Explorer window with the original folder structure so they can be easily browsed -->
+      <ItemGroup>
+        <None Include="../../protobuf/daml-lf/**/*.proto">
+          <Link>grpc-definitions\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+        </None>
+      </ItemGroup>
+
+    </When>
+  </Choose>
+
 </Project>

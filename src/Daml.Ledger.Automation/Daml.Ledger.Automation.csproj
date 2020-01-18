@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" />
     <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
   </ItemGroup>
 </Project>
