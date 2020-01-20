@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{57137540
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daml.Ledger.QuickStart", "src\Daml.Ledger.QuickStart\Daml.Ledger.QuickStart.csproj", "{5906A42A-1688-4277-B03C-A54605C1D9D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daml.Ledger.QuickStart", "src\Daml.Ledger.Examples.Test\Daml.Ledger.Examples.Test.csproj", "{5906A42A-1688-4277-B03C-A54605C1D9D9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{658CEB77-4F21-40B9-9963-896C41E64B67} = {658CEB77-4F21-40B9-9963-896C41E64B67}
 	EndProjectSection
