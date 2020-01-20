@@ -16,7 +16,7 @@ This project is a community-driven effort and contributions are welcome. For que
 
 # Usage
 
-The repo as cloned contains the C# source generated from the DAML Ledger API and DAML-LF gRPC files and so can build the bindings directly. The version of the DAML SDK that the gRPC files are from is contained in the file Directory.Build.props.
+The repo as cloned contains the C# source generated from the DAML Ledger API and DAML-LF gRPC files and so can build the bindings directly. The version of the DAML SDK that the gRPC files are from is contained in the file `Directory.Build.props`.
 
 However a `generate-bindings` script is provided that can be used to install locally a different (or the same) version of the gRPC files and then regenerate the C# source from them.
 
@@ -27,17 +27,30 @@ The Daml.Ledger solution references the following projects:
 ```
   Daml.Ledger.Api               - the C# generated from the DAML Ledger API gRPC files
   Daml.Ledger.Fragment          - the C# generated from the DAML-LF gRPC files
-  Daml.Ledger.Client            - a client wrapepr around the Ledger API classes
+  Daml.Ledger.Client            - a client wrapper around the Ledger API classes
   Daml.Ledger.Client.Reactive   - a rudimentary wrapper of Daml.Ledger.Client to provide a more reactive interface
   Daml.Ledger.Automation        - a minimal implementation of stateful and stateless automation bots
   Daml.Ledger.Quickstart        - an example project utilising the Test DAML template
 ```
 
+Nuget packages are now created (but haven't been published) for the following:
+```
+  Daml.Ledger.Fragment.<ver>.nupkg
+  Daml.Ledger.Api.<ver>.nupkg 
+  Daml.Ledger.Client.<ver>.nupkg
+  Daml.Ledger.Client.Reactive.<ver>.nupkg
+  Daml.Ledger.Automation.<ver>.nupkg
+
+  where <ver> is the version of the Ledger API the bindings are built for, as listed in the file `Directory.Build.props`.
+```
+
+The nuget packages are only built for the Release configuration. Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
+
 ## Prerequisites
 
 The relevant dotnet SDK should be installed (`2.2` for this release) in order to build the bindings.
 
-Additionally the command line version of `nuget` should be installed if the generate-bindings script is to be run.
+Additionally a Bash shell and the command line version of `nuget` should be installed if the generate-bindings script is to be run.
 
 ## Platform Notes
 
@@ -48,7 +61,7 @@ Most tools depend on the xcode command line tools, which can be installed with t
 Nuget can be installed using `Homebrew` but the `Mono` framework should be installed first to avoid problems with Mono library version mismatches when using
 Visual Studio Code. See https://www.mono-project.com/download/stable/ where the Visual Studio channel release is probably the best choice.
 
-Howbrew can be installed from https://brew.sh/ and https://docs.brew.sh/FAQ has instructions to uninstall it if problems are found with the Mono library versions
+Homebrew can be installed from https://brew.sh/ and https://docs.brew.sh/FAQ has instructions to uninstall it if problems are found with the Mono library versions
 and you need to experiment with alternate releases of Mono.
 
 You may have issues installing certain packages because of signing. In these cases it is often better to save the package and then right-click on the package in
@@ -86,8 +99,6 @@ To build the solution using `dotnet`:
 ```
 dotnet build
 ```
-
-Nuget packages are not yet published for this library, so you'll have to reference the generated DLL directly.
 
 ## (Re) Generating the bindings
 

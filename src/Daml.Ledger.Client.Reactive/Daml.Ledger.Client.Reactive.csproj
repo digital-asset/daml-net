@@ -2,15 +2,36 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+     <PackageId>Daml.Ledger.Client.Reactive</PackageId>
+    <RootNamespace>Daml.Ledger.Client.Reactive</RootNamespace>
+    <PackageTags>.net C# daml ledger Rx.Net api</PackageTags>
+    <Product>net reactive bindings</Product>
+    <Authors>Georg Schneider</Authors>
+    <Company>Digital Asset</Company>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <Configuration>Release</Configuration>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(ProjectDir)..\..\packages\</PackageOutputPath>
+    <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
-  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <ItemGroup>
+        <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
+        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
 </Project>

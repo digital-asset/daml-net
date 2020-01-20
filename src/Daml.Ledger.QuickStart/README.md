@@ -48,6 +48,8 @@ Open another shell in the `src/Daml.Ledger.QuickStart` folder.
 Now you can start the quickstart program passing in the package identifier from above:
 ```
 dotnet run localhost 6865 91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7 Alice Bob
+
+(use dotnet run -c Release to run the release configuration which uses nuget references - so ensure that the whole Daml.Ledger solution has first been built with `dotnet build -c Release`)
 ```
 
 The resulting output shows information about the ledger and its transactions:

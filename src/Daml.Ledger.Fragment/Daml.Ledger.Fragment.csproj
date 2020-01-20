@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Daml.Ledger.Fragment</PackageId>
+    <RootNamespace>Com.DigitalAsset.Daml_Lf_1_7.DamlLf</RootNamespace>
+    <PackageTags>.NET C# DAML Ledger Fragment</PackageTags>
+    <Product>DAML .NET Ledger Fragment</Product>
+    <Authors>Georg Schneider</Authors>
+    <Company>Digital Asset</Company>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <Configuration>Release</Configuration>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(ProjectDir)..\..\packages\</PackageOutputPath>
+    <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +41,7 @@
 
       <!-- Add the gRPC files to the Protobuf target so they get compiled to C# if missing or on rebuild. Suppress them being shown as an unstructured collection in the Visual Studio Solution Explorer window -->
       <ItemGroup>
-        <Protobuf Include="../../protobuf/daml-lf/**/*.proto" OutputDir="." Visible="false" CompileOutputs="false"/>
+        <Protobuf Include="../../protobuf/daml-lf/**/*.proto" OutputDir="." Visible="false" CompileOutputs="false" />
       </ItemGroup>
 
       <!-- Show the gRPC files in the Visual Studio Solution Explorer window with the original folder structure so they can be easily browsed -->
