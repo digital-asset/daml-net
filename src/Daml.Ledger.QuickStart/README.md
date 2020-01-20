@@ -2,20 +2,20 @@
 
 The Quickstart project shows how to read contracts and transactions from the ledger and how to send create and exercise commands. It assumes the standard skeleton DAML model created with `daml new`.
 
-First, create a new project:
+First, open a shell and create a new project (anywhere):
 ```
 daml new test
 ```
 
-Then, build the DAR package:
+Then, change to the test folder and build the DAR package:
 ```
 daml build
 ```
-
 Inspect the DAR to retrieve the package identifier of the compiled package:
 ```
-daml damlc inspect-dar .daml/dist/test.dar
+daml damlc inspect-dar .daml/dist/test-<ver>.dar
 ```
+where ver is the version reported from the daml-build output.
 
 This will print out information about the package:
 ```
@@ -32,25 +32,22 @@ data/test.conf
 
 DAR archive contains the following packages:
 
-test "3d08a012eddfc136e8961845dbb60f48eabd5715b700b0339fd25295ac13d4ac"
-daml-prim "662f4f2e953020537a8b47ebad880ebdd3be8a9110fc9f4cd45863b54d6c7d5c"
-daml-stdlib "33eff689d79d36ff70855fea91cbacdf41e75d61d28b67809fcf9f6845b942d7"
+daml-prim-662f4f2e953020537a8b47ebad880ebdd3be8a9110fc9f4cd45863b54d6c7d5c "662f4f2e953020537a8b47ebad880ebdd3be8a9110fc9f4cd45863b54d6c7d5c"
+daml-stdlib-33eff689d79d36ff70855fea91cbacdf41e75d61d28b67809fcf9f6845b942d7 "33eff689d79d36ff70855fea91cbacdf41e75d61d28b67809fcf9f6845b942d7"
+test-<ver>-91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7 "91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7"
 ```
-Note down the package identifier for package `test` as you will pass it as a command line argument to the quickstart project.
+Note down the package identifier for package `test-<ver>` (here 91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7) as you will pass it as a command line argument to the quickstart project.
 
-Next, build the solution:
+Start the DAML Sandbox:
 ```
-nuget restore
-msbuild Daml.Ledger.sln
+daml start
 ```
-or via `dotnet`:
-```
-dotnet build
-```
+
+Open another shell in the `src/Daml.Ledger.QuickStart` folder.
 
 Now you can start the quickstart program passing in the package identifier from above:
 ```
-Daml.Ledger.Quickstart localhost 6865 3d08a012eddfc136e8961845dbb60f48eabd5715b700b0339fd25295ac13d4ac Alice Bob
+dotnet run localhost 6865 91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7 Alice Bob
 ```
 
 The resulting output shows information about the ledger and its transactions:
