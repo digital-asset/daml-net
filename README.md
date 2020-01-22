@@ -43,8 +43,16 @@ Nuget packages are now created (but haven't been published) for the following:
 
   where <ver> is the version of the Ledger API the bindings are built for, as listed in the file `Directory.Build.props`.
 ```
+Nuget packages are built for several of the projects and are placed in the `packages` folder, and a `nuget.config` will add this path to the nuget search process.
 
-The nuget packages are only built for the Release configuration. Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
+Note that when making source changes and rebuiding, or changing releases, then the previous versions of the nuget packages will likely be in the nuget cache and dependencies 
+will be resolved from there in preference to the `packages` folder. 
+
+Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache) in order to refresh the nuget cache.  
+
+Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
+
+When running the examples with `dotnet run` it appears that nuget linkages are used if available.
 
 ## Prerequisites
 
@@ -120,6 +128,9 @@ The required tools are downloaded to the 'packages' folder and the gRPC files ar
 
 The DAML SDK version is also written to the file Directory.Build.props.
 
-## Quick start
+## Examples
 
-The quick start project shows how to read from and write to the ledger using for a simple model. You can find instructions on how to run it [here](src/Daml.Ledger.QuickStart/).
+Two examples are provided :
+```
+Daml.Ledger.Examples.Test     - implements an example based on the Test template used in `daml new`
+Daml.Ledger.Examples.Bindings - a port of the  [ex-java-bindings](https://github.com/digital-asset/ex-java-bindings) example
