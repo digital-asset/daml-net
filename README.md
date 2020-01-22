@@ -48,7 +48,7 @@ Nuget packages are built for several of the projects and are placed in the `pack
 Note that when making source changes and rebuiding, or changing releases, then the previous versions of the nuget packages will likely be in the nuget cache and dependencies 
 will be resolved from there in preference to the `packages` folder. 
 
-Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache) in order to refresh the nuget cache.  
+Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache, or on Ubuntu delete the cached packages from your ~/.nuget folder) in order to refresh the nuget cache.  
 
 Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
 
