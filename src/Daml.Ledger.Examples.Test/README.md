@@ -1,6 +1,6 @@
 ﻿# Quick Start
 
-The Quickstart project shows how to read contracts and transactions from the ledger and how to send create and exercise commands. It assumes the standard skeleton DAML model created with `daml new`.
+The Daml.Ledger.Examples.Test project shows how to read contracts and transactions from the ledger and how to send create and exercise commands. It assumes the standard skeleton DAML model created with `daml new test`.
 
 First, open a shell and create a new project (anywhere):
 ```
@@ -43,9 +43,9 @@ Start the DAML Sandbox:
 daml start
 ```
 
-Open another shell in the `src/Daml.Ledger.QuickStart` folder.
+Open another shell in the `src/Daml.Ledger.Examples.Test` folder.
 
-Now you can start the quickstart program passing in the package identifier from above:
+Now you can start the test program passing in the package identifier from above:
 ```
 dotnet run localhost 6865 91d382196ba52dfc4af0e0cce7e52154b5117c75c83877ba600381a86169b4f7 Alice Bob
 
