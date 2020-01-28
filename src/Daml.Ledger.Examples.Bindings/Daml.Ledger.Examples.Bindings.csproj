@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="1.22.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include=".daml\dist\" />
+    <Folder Include=".daml\interfaces\daml\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <ItemGroup>
+        <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
+        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+        <ProjectReference Include="..\Daml.Ledger.Fragment\Daml.Ledger.Fragment.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>
