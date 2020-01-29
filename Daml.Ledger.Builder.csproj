@@ -45,7 +45,7 @@
     <PropertyGroup>
       <Project>Daml.Ledger.Examples.Bindings</Project>
     </PropertyGroup>
-    <Exec Command="dotnet build -c Release ./src/$(Project)/$(Project).csproj" />
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
   </Target>
 
   <Target Name="TestExample" DependsOnTargets="Client">

@@ -2,15 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Daml.Ledger.Automation</PackageId>
     <RootNamespace>Daml.Ledger.Automation</RootNamespace>
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageId>Daml.Ledger.Automation</PackageId>
     <PackageTags>.NET DAML Ledger Automation</PackageTags>
     <Product>.NET DAML Ledger Automation</Product>
     <Authors>Georg Schneider</Authors>
     <Company>Digital Asset</Company>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
-    <Configuration>Release</Configuration>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>$(ProjectDir)..\..\packages\</PackageOutputPath>
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>

@@ -108,7 +108,7 @@ dotnet build Daml.Ledger.Builder.csproj -c Debug
 ```
 The Release configuration of the projects should only be built using the `Daml.Ledger.Builder.csproj` file as this will enforce a strict ordering on the build which will ensure that the required nuget packages are available at the correct stages of the build:
 ```
-dotnet build Daml.Ledger.Builder.csproj -c Release
+dotnet build Daml.Ledger.Builder.csproj
 ```
 Building the Release configuration with either `Daml.Ledger.sln` or Visual Studio may or may not work depending on the presence or not of the base nuget packages (e.g. `Daml.Ledger.Api`), and in any case Visual Studio appears to be inconsistent in being able to resolve 
 the project interdependencies.

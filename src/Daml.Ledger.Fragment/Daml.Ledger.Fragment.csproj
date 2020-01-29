@@ -2,15 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Daml.Ledger.Fragment</PackageId>
     <RootNamespace>Com.DigitalAsset.Daml_Lf_1_7.DamlLf</RootNamespace>
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageId>Daml.Ledger.Fragment</PackageId>
     <PackageTags>.NET C# DAML Ledger Fragment</PackageTags>
     <Product>DAML .NET Ledger Fragment</Product>
     <Authors>Georg Schneider</Authors>
     <Company>Digital Asset</Company>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
-    <Configuration>Release</Configuration>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>$(ProjectDir)..\..\packages\</PackageOutputPath>
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
