@@ -2,7 +2,10 @@
   <PropertyGroup>
     <Configuration>Release</Configuration>
   </PropertyGroup>
-    
+
+  <Target Name="Build" DependsOnTargets="AutoBuild">
+  </Target>
+
   <Target Name="AutoBuild" DependsOnTargets="Reactive;Automation;BindingsExample;TestExample">
   </Target>
 
