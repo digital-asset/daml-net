@@ -4,37 +4,24 @@
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reactive.Linq;
+    using System.Reactive.Concurrency;
     using Com.DigitalAsset.Ledger.Api.V1;
-    using Daml.Ledger.Client;
+    using Daml.Ledger.Client.Reactive.Util;
 
     public class ActiveContractsClient
     {
-        private readonly IActiveContractsClient activeContractsClient;
+        private readonly IActiveContractsClient _activeContractsClient;
+        private readonly IScheduler _scheduler;
 
-        public ActiveContractsClient(IActiveContractsClient activeContractsClient)
+        public ActiveContractsClient(IActiveContractsClient activeContractsClient, IScheduler scheduler = null)
         {
-            this.activeContractsClient = activeContractsClient;
+            _activeContractsClient = activeContractsClient;
+            _scheduler = scheduler;
         }
 
         public IObservable<GetActiveContractsResponse> GetActiveContracts(string ledgerId, TransactionFilter transactionFilter, bool verbose = true, TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetActiveContractsResponse>(async observer =>
-            {
-                using (var stream = this.activeContractsClient.GetActiveContracts(ledgerId, transactionFilter, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _activeContractsClient.GetActiveContracts(ledgerId, transactionFilter, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
-
     }
 }
