@@ -2,20 +2,33 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Daml.Ledger.Client</PackageId>
     <RootNamespace>Daml.Ledger.Client</RootNamespace>
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
+    <PackageId>Daml.Ledger.Client</PackageId>
     <PackageTags>.NET C# DAML Ledger Client</PackageTags>
     <Product>DAML .NET Ledger Client</Product>
     <Authors>Georg Schneider</Authors>
     <Company>Digital Asset</Company>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
-    <Configuration>Release</Configuration>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>$(ProjectDir)..\..\packages\</PackageOutputPath>
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <Folder Include="Admin\" />
     <Folder Include="Auth\" />
@@ -23,7 +36,7 @@
   </ItemGroup>
 
    <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
+    <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
         <PackageReference Include="Daml.Ledger.Api" Version="$(Version)" />
         <PackageReference Include="Daml.Ledger.Fragment" Version="$(Version)" />
@@ -38,5 +51,9 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
+
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
+    <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
+  </Target>
 
 </Project>

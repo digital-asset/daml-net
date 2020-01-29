@@ -1,1 +1,0 @@
-File to force a packages folder on clone - required for nuget resolve as configured as a local nuget source

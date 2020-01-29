@@ -1,0 +1,62 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="AutoBuild">
+  
+  <Target Name="Build" DependsOnTargets="AutoBuild">
+  </Target>
+
+  <Target Name="AutoBuild" DependsOnTargets="Reactive;Automation;BindingsExample;TestExample">
+  </Target>
+
+  <Target Name="Api">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Api</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="Fragment">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Fragment</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="Client" DependsOnTargets="Api;Fragment">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Client</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="Reactive" DependsOnTargets="Client">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Client.Reactive</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="Automation" DependsOnTargets="Reactive">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Automation</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="BindingsExample" DependsOnTargets="Reactive;Client">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Examples.Bindings</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="TestExample" DependsOnTargets="Client">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Examples.Test</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <PropertyGroup>
+    <ProjectGuid>{48DB49ED-97C8-4B96-B8F5-0498F3A1B373}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+</Project>

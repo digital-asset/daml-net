@@ -8,7 +8,7 @@ The library is considered experimental, so breaking changes are to be expected. 
 
 The library currently targets `.Net Standard 2.0` so it can be used from projects targeting the .Net Framework, .Net Core or Mono.
 
-The build process has been tested on 64bit Windows 10 (with WSl 1 for the bash shell), MacOS Mojave (v10.14.5) and Catalina (v10.15.2), and Ubuntu 18.04.3 (under Hyper-V).
+The build process has been tested on 64bit Windows 10 (with WSl 1 for the bash shell), MacOS Catalina (v10.15.2), and Ubuntu 18.04.3 (under Hyper-V).
 
 # Support
 
@@ -30,10 +30,11 @@ The Daml.Ledger solution references the following projects:
   Daml.Ledger.Client            - a client wrapper around the Ledger API classes
   Daml.Ledger.Client.Reactive   - a rudimentary wrapper of Daml.Ledger.Client to provide a more reactive interface
   Daml.Ledger.Automation        - a minimal implementation of stateful and stateless automation bots
-  Daml.Ledger.Quickstart        - an example project utilising the Test DAML template
+  Daml.Ledger.Examples.Test     - an example project utilising the Test DAML template
+  Daml.Ledger.Examples.Bindings - an example project demonstrating some of the Bindings - based on the ex-java-bindings example project
 ```
 
-Nuget packages are now created (but haven't been published) for the following:
+Nuget packages can now be created using the build configuration `ReleaseNuget` (but haven't been published) for the following:
 ```
   Daml.Ledger.Fragment.<ver>.nupkg
   Daml.Ledger.Api.<ver>.nupkg 
@@ -48,11 +49,9 @@ Nuget packages are built for several of the projects and are placed in the `pack
 Note that when making source changes and rebuiding, or changing releases, then the previous versions of the nuget packages will likely be in the nuget cache and dependencies 
 will be resolved from there in preference to the `packages` folder. 
 
-Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache, or on Ubuntu delete the cached packages from your ~/.nuget folder) in order to refresh the nuget cache.  
+Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache, or on Ubuntu delete the cached packages from your `~/.nuget folder`) in order to refresh the nuget cache.  
 
-Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
-
-When running the examples with `dotnet run` it appears that nuget linkages are used if available.
+Builds of all projects that have dependencies use nuget package references for the `ReleaseNuget` build configuration, but project references for the Debug build to ease debugging.
 
 ## Prerequisites
 
@@ -95,18 +94,26 @@ up the line-ending differences as a change. So be consistent with which type of 
 Also note that if Visual Studio Code is launched from the bash shell of WSL then it may complain that it requires the dotnet SDK to be installed in WSL in
 order to build. This has not been tested so prefer to run VSC from a Windows shell.
 
-## Building the library
+### Ubuntu
 
-To build the solution using `msbuild`:
-```
-nuget restore
-msbuild Daml.Ledger.sln
-```
+The nuget build appears ot be broken because of a conflict between .NETSTandard and .NET Core. This may be fixed in future with an upgrade to the Google.Api.CommonProtos package. 
 
-To build the solution using `dotnet`:
+## Building the libraries/Examples
+
+The Debug and Release configuration of the projects can be built using the `Daml.Ledger.sln` solution file, or the `Daml.Ledger.Builder.csproj` file:
 ```
-dotnet build
+dotnet build Daml.Ledger.sln -C Debug|Release
 ```
+or 
+```
+dotnet build Daml.Ledger.Builder.csproj -c Debug|Release
+```
+The ReleaseNuget configuration of the projects should only be built using the `Daml.Ledger.Builder.csproj` file as this will enforce a strict ordering on the build which will ensure that the required nuget packages are available at the correct stages of the build:
+```
+dotnet build Daml.Ledger.Builder.csproj -c ReleaseNuget
+```
+Building the ReleaseNUget configuration with either `Daml.Ledger.sln` or Visual Studio may or may not work depending on the presence or not of the base nuget packages (e.g. `Daml.Ledger.Api`), and in any case Visual Studio appears to be inconsistent in being able to resolve 
+the project interdependencies.
 
 ## (Re) Generating the bindings
 
