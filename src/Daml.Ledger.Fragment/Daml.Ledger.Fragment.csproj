@@ -54,4 +54,8 @@
     </When>
   </Choose>
 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'Release'" AfterTargets="Pack"> 
+    <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
+  </Target>
+
 </Project>
