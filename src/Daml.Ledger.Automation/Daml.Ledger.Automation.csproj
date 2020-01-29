@@ -6,7 +6,7 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
     <PackageId>Daml.Ledger.Automation</PackageId>
     <PackageTags>.NET DAML Ledger Automation</PackageTags>
     <Product>.NET DAML Ledger Automation</Product>
@@ -19,8 +19,19 @@
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
-   <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
         <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
         <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
@@ -35,7 +46,7 @@
     </Otherwise>
   </Choose>
 
-  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'Release'" AfterTargets="Pack"> 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
     <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
   </Target>
 

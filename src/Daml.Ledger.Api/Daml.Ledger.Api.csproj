@@ -6,7 +6,7 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
     <PackageId>Daml.Ledger.Api</PackageId>
     <PackageTags>.NET C# DAML Ledger Api</PackageTags>
     <Product>DAML .NET Ledger Api</Product>
@@ -19,6 +19,17 @@
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Folder Include="V1\Admin\" />
     <Folder Include="V1\Testing\" />
@@ -65,7 +76,7 @@
     </When>
   </Choose>
 
-  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'Release'" AfterTargets="Pack"> 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
     <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
   </Target>
 

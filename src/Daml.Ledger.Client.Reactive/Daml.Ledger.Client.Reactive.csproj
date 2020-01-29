@@ -6,7 +6,7 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
     <PackageId>Daml.Ledger.Client.Reactive</PackageId>
     <PackageTags>.net C# daml ledger Rx.Net api</PackageTags>
     <Product>net reactive bindings</Product>
@@ -19,12 +19,22 @@
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
 
   <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
+    <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
         <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
         <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
@@ -37,7 +47,7 @@
     </Otherwise>
   </Choose>
 
-  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'Release'" AfterTargets="Pack"> 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
     <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
   </Target>
 

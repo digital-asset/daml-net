@@ -6,7 +6,7 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
     <PackageId>Daml.Ledger.Fragment</PackageId>
     <PackageTags>.NET C# DAML Ledger Fragment</PackageTags>
     <Product>DAML .NET Ledger Fragment</Product>
@@ -19,6 +19,16 @@
     <PackageFile>$(PackageId).$(Version).nupkg</PackageFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.9.0" />
     <PackageReference Include="Grpc" Version="1.22.0" />
@@ -57,7 +67,7 @@
     </When>
   </Choose>
 
-  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'Release'" AfterTargets="Pack"> 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
     <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
   </Target>
 

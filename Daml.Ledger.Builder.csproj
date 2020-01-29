@@ -1,8 +1,5 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="AutoBuild">
-  <PropertyGroup>
-    <Configuration>Release</Configuration>
-  </PropertyGroup>
-
+  
   <Target Name="Build" DependsOnTargets="AutoBuild">
   </Target>
 

@@ -6,6 +6,16 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseNuget' ">
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ReleaseNuget</OutputPath>
+    <DefineConstants></DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>obj\ReleaseNuget</IntermediateOutputPath>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.Core" Version="1.22.0" />
   </ItemGroup>
@@ -17,7 +27,7 @@
   </ItemGroup>
 
   <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
+    <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
         <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
         <PackageReference Include="Daml.Ledger.Fragment" Version="$(Version)" />

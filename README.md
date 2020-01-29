@@ -34,7 +34,7 @@ The Daml.Ledger solution references the following projects:
   Daml.Ledger.Examples.Bindings - an example project demonstrating some of the Bindings - based on the ex-java-bindings example project
 ```
 
-Nuget packages are now created (but haven't been published) for the following:
+Nuget packages can now be created using the build configuration `ReleaseNuget` (but haven't been published) for the following:
 ```
   Daml.Ledger.Fragment.<ver>.nupkg
   Daml.Ledger.Api.<ver>.nupkg 
@@ -49,11 +49,9 @@ Nuget packages are built for several of the projects and are placed in the `pack
 Note that when making source changes and rebuiding, or changing releases, then the previous versions of the nuget packages will likely be in the nuget cache and dependencies 
 will be resolved from there in preference to the `packages` folder. 
 
-Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache, or on Ubuntu delete the cached packages from your ~/.nuget folder) in order to refresh the nuget cache.  
+Therefore you may have to flush the nuget cache (for example `nuget locals all -clear` to clear the whole cache, or on Ubuntu delete the cached packages from your `~/.nuget folder`) in order to refresh the nuget cache.  
 
-Release builds of all projects that have dependencies use nuget package references for the Release build, but project references for the Debug build to ease debugging.
-
-When running the examples with `dotnet run` it appears that nuget linkages are used if available.
+Builds of all projects that have dependencies use nuget package references for the `ReleaseNuget` build configuration, but project references for the Debug build to ease debugging.
 
 ## Prerequisites
 
@@ -96,21 +94,25 @@ up the line-ending differences as a change. So be consistent with which type of 
 Also note that if Visual Studio Code is launched from the bash shell of WSL then it may complain that it requires the dotnet SDK to be installed in WSL in
 order to build. This has not been tested so prefer to run VSC from a Windows shell.
 
+### Ubuntu
+
+The nuget build appears ot be broken because of a conflict between .NETSTandard and .NET Core. This may be fixed in future with an upgrade to the Google.Api.CommonProtos package. 
+
 ## Building the libraries/Examples
 
-The Debug configuration of the projects can be built using the `Daml.Ledger.sln` solution file, or the `Daml.Ledger.Builder.csproj` file:
+The Debug and Release configuration of the projects can be built using the `Daml.Ledger.sln` solution file, or the `Daml.Ledger.Builder.csproj` file:
 ```
-dotnet build Daml.Ledger.sln
+dotnet build Daml.Ledger.sln -C Debug|Release
 ```
 or 
 ```
-dotnet build Daml.Ledger.Builder.csproj -c Debug
+dotnet build Daml.Ledger.Builder.csproj -c Debug|Release
 ```
-The Release configuration of the projects should only be built using the `Daml.Ledger.Builder.csproj` file as this will enforce a strict ordering on the build which will ensure that the required nuget packages are available at the correct stages of the build:
+The ReleaseNuget configuration of the projects should only be built using the `Daml.Ledger.Builder.csproj` file as this will enforce a strict ordering on the build which will ensure that the required nuget packages are available at the correct stages of the build:
 ```
-dotnet build Daml.Ledger.Builder.csproj
+dotnet build Daml.Ledger.Builder.csproj -c ReleaseNuget
 ```
-Building the Release configuration with either `Daml.Ledger.sln` or Visual Studio may or may not work depending on the presence or not of the base nuget packages (e.g. `Daml.Ledger.Api`), and in any case Visual Studio appears to be inconsistent in being able to resolve 
+Building the ReleaseNUget configuration with either `Daml.Ledger.sln` or Visual Studio may or may not work depending on the presence or not of the base nuget packages (e.g. `Daml.Ledger.Api`), and in any case Visual Studio appears to be inconsistent in being able to resolve 
 the project interdependencies.
 
 ## (Re) Generating the bindings
