@@ -8,22 +8,23 @@ namespace Daml.Ledger.Client.Testing
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1.Testing;
     using Google.Protobuf.WellKnownTypes;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class TimeClient : ITimeClient
     {
         private readonly string _ledgerId;
-        private readonly TimeService.TimeServiceClient _timeClient;
+        private readonly ClientStub<TimeService.TimeServiceClient> _timeClient;
 
         public TimeClient(string ledgerId, Channel channel)
         {
           _ledgerId = ledgerId;
-           _timeClient = new TimeService.TimeServiceClient(channel);
+           _timeClient = new ClientStub<TimeService.TimeServiceClient>(new TimeService.TimeServiceClient(channel));
         }
 
         public IAsyncEnumerator<GetTimeResponse> GetTime()
         {
-            var response = _timeClient.GetTime(new GetTimeRequest { LedgerId = _ledgerId });
+            var response = _timeClient.Dispatch(new GetTimeRequest { LedgerId = _ledgerId }, (c, r, co) => c.GetTime(r, co));
             return response.ResponseStream;
         }
 
@@ -44,13 +45,13 @@ namespace Daml.Ledger.Client.Testing
                 throw new SetTimeException(currentTime, newTime);
 
             var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-             _timeClient.SetTime(request);
+             _timeClient.Dispatch(request, (c, r, co) => c.SetTime(r, co));
         }
 
         public async Task SetTimeAsync(DateTime currentTime, DateTime newTime)
         {
             var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-            await _timeClient.SetTimeAsync(request);
+            await _timeClient.Dispatch(request, (c, r, co) => c.SetTimeAsync(r, co));
         }
         
         private class SetTimeException : Exception

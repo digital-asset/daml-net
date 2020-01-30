@@ -7,18 +7,19 @@ namespace Daml.Ledger.Client
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Google.Protobuf.WellKnownTypes;
     using Grpc.Core;
 
     public class CommandSubmissionClient : ICommandSubmissionClient
     {
         private readonly string _ledgerId;
-        private readonly CommandSubmissionService.CommandSubmissionServiceClient _commandSubmissionClient;
+        private readonly ClientStub<CommandSubmissionService.CommandSubmissionServiceClient> _commandSubmissionClient;
 
         public CommandSubmissionClient(string ledgerId, Channel channel)
         {
             _ledgerId = ledgerId;
-            _commandSubmissionClient = new CommandSubmissionService.CommandSubmissionServiceClient(channel);
+            _commandSubmissionClient = new ClientStub<CommandSubmissionService.CommandSubmissionServiceClient>(new CommandSubmissionService.CommandSubmissionServiceClient(channel));
         }
 
         public void Submit(
@@ -47,12 +48,12 @@ namespace Daml.Ledger.Client
 
         public void Submit(Commands commands)
         {
-            _commandSubmissionClient.Submit(new SubmitRequest { Commands = commands });
+            _commandSubmissionClient.Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.Submit(r, co));
         }
 
         public async Task SubmitAsync(Commands commands)
         {
-            await _commandSubmissionClient.SubmitAsync(new SubmitRequest { Commands = commands });
+            await _commandSubmissionClient.Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.SubmitAsync(r, co));
         }
 
         private Commands BuildCommands(

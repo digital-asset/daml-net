@@ -7,18 +7,19 @@ namespace Daml.Ledger.Client
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Google.Protobuf.WellKnownTypes;
     using Grpc.Core;
 
     public class CommandClient : ICommandClient
     {
         private readonly string _ledgerId;
-        private readonly CommandService.CommandServiceClient _commandClient;
+        private readonly ClientStub<CommandService.CommandServiceClient> _commandClient;
 
         public CommandClient(string ledgerId, Channel channel)
         {
             _ledgerId = ledgerId;
-            _commandClient = new CommandService.CommandServiceClient(channel);
+            _commandClient = new ClientStub<CommandService.CommandServiceClient>(new CommandService.CommandServiceClient(channel));
         }
 
         public void SubmitAndWait(
@@ -47,12 +48,12 @@ namespace Daml.Ledger.Client
 
         public void SubmitAndWait(Commands commands)
         {
-            _commandClient.SubmitAndWait(new SubmitAndWaitRequest { Commands = commands });
+            _commandClient.Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWait(r, co));
         }
 
         public async Task SubmitAndWaitAsync(Commands commands)
         {
-            await _commandClient.SubmitAndWaitAsync(new SubmitAndWaitRequest { Commands = commands });
+            await _commandClient.Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWaitAsync(r, co));
         }
 
         public Transaction SubmitAndWaitForTransaction(
@@ -65,7 +66,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.SubmitAndWaitForTransaction(request);
+            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co));
             return response.Transaction;
         }
 
@@ -79,7 +80,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.SubmitAndWaitForTransactionId(request);
+            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co));
             return response.TransactionId;
         }
 
@@ -93,7 +94,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.SubmitAndWaitForTransactionTree(request);
+            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co));
             return response.Transaction;
         }
 
@@ -107,7 +108,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.SubmitAndWaitForTransactionAsync(request);
+            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co));
             return response.Transaction;
         }
 
@@ -121,7 +122,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.SubmitAndWaitForTransactionIdAsync(request);
+            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co));
             return response.TransactionId;
         }
 
@@ -135,7 +136,7 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.SubmitAndWaitForTransactionTreeAsync(request);
+            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co));
             return response.Transaction;
         }
 
