@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Com.DigitalAsset.Ledger.Api.V1s</RootNamespace>
+    <RootNamespace>Com.DigitalAsset.Ledger.Api.V1</RootNamespace>
     <Configuration>Release</Configuration>
   </PropertyGroup>
 

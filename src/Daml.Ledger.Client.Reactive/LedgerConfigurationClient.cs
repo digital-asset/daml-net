@@ -4,35 +4,24 @@
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reactive.Linq;
+    using System.Reactive.Concurrency;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Reactive.Util;
 
     public class LedgerConfigurationClient
     {
-        private readonly ILedgerConfigurationClient ledgerConfigurationClient;
+        private readonly ILedgerConfigurationClient _ledgerConfigurationClient;
+        private readonly IScheduler _scheduler;
 
-        public LedgerConfigurationClient(ILedgerConfigurationClient ledgerConfigurationClient)
+        public LedgerConfigurationClient(ILedgerConfigurationClient ledgerConfigurationClient, IScheduler scheduler)
         {
-            this.ledgerConfigurationClient = ledgerConfigurationClient;
+            _ledgerConfigurationClient = ledgerConfigurationClient;
+            _scheduler = scheduler;
         }
 
         public IObservable<GetLedgerConfigurationResponse> GetLedgerConfiguration(string ledgerId, TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetLedgerConfigurationResponse>(async observer =>
-            {
-                using (var stream = this.ledgerConfigurationClient.GetLedgerConfiguration(ledgerId, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _ledgerConfigurationClient.GetLedgerConfiguration(ledgerId, traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }
