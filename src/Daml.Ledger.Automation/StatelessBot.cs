@@ -16,10 +16,10 @@ namespace DigitalAsset.Ledger.Automation
         private readonly ICommandClient _commandClient;
         private readonly Func<Transaction, Commands> _handler;
 
-        public StatelessBot(string ledgerId, Channel channel, Func<Transaction, Commands> handler)
+        public StatelessBot(string ledgerId, Channel channel, string accessToken, Func<Transaction, Commands> handler)
         {
-            _transactionClient = new TransactionsClient(ledgerId, channel);
-            _commandClient = new CommandClient(ledgerId, channel);
+            _transactionClient = new TransactionsClient(ledgerId, channel, accessToken);
+            _commandClient = new CommandClient(ledgerId, channel, accessToken);
             _handler = handler;
         }
 
@@ -28,9 +28,10 @@ namespace DigitalAsset.Ledger.Automation
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = _transactionClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = _transactionClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {

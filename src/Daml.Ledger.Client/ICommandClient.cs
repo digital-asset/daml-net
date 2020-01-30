@@ -17,7 +17,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task SubmitAndWaitAsync(
             string applicationId,
@@ -26,11 +27,12 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
-        void SubmitAndWait(Commands commands);
+        void SubmitAndWait(Commands commands, string accessToken = null);
 
-        Task SubmitAndWaitAsync(Commands commands);
+        Task SubmitAndWaitAsync(Commands commands, string accessToken = null);
 
         Transaction SubmitAndWaitForTransaction(
             string applicationId,
@@ -39,7 +41,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         string SubmitAndWaitForTransactionId(
             string applicationId,
@@ -48,7 +51,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         TransactionTree SubmitAndWaitForTransactionTree(
             string applicationId,
@@ -57,7 +61,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task<Transaction> SubmitAndWaitForTransactionAsync(
             string applicationId,
@@ -66,7 +71,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task<string> SubmitAndWaitForTransactionIdAsync(
             string applicationId,
@@ -75,7 +81,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
             string applicationId,
@@ -84,6 +91,7 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
     }
 }

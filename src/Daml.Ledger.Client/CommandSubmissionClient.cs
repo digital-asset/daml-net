@@ -16,10 +16,10 @@ namespace Daml.Ledger.Client
         private readonly string _ledgerId;
         private readonly ClientStub<CommandSubmissionService.CommandSubmissionServiceClient> _commandSubmissionClient;
 
-        public CommandSubmissionClient(string ledgerId, Channel channel)
+        public CommandSubmissionClient(string ledgerId, Channel channel, string accessToken)
         {
             _ledgerId = ledgerId;
-            _commandSubmissionClient = new ClientStub<CommandSubmissionService.CommandSubmissionServiceClient>(new CommandSubmissionService.CommandSubmissionServiceClient(channel));
+            _commandSubmissionClient = new ClientStub<CommandSubmissionService.CommandSubmissionServiceClient>(new CommandSubmissionService.CommandSubmissionServiceClient(channel), accessToken);
         }
 
         public void Submit(
@@ -29,9 +29,10 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            Submit(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
+            Submit(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
         public async Task SubmitAsync(
@@ -41,19 +42,20 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
+            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
-        public void Submit(Commands commands)
+        public void Submit(Commands commands, string accessToken = null)
         {
-            _commandSubmissionClient.Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.Submit(r, co));
+            _commandSubmissionClient.WithAccess(accessToken).Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.Submit(r, co));
         }
 
-        public async Task SubmitAsync(Commands commands)
+        public async Task SubmitAsync(Commands commands, string accessToken = null)
         {
-            await _commandSubmissionClient.Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.SubmitAsync(r, co));
+            await _commandSubmissionClient.WithAccess(accessToken).Dispatch(new SubmitRequest { Commands = commands }, (c, r, co) => c.SubmitAsync(r, co));
         }
 
         private Commands BuildCommands(

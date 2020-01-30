@@ -29,7 +29,8 @@ namespace Daml.Ledger.Client
             private readonly int _port;
             private string _expectedLedgerId;
             private ChannelCredentials _channelCredentials;
-      
+            private string _accessToken;
+
             public Builder(string host, int port)
             {
                 _host = host;
@@ -38,12 +39,17 @@ namespace Daml.Ledger.Client
 
             public Builder WithExpectedLedgerId(string expectedLedgerId)
             {
-                return new Builder(_host, _port, expectedLedgerId, _channelCredentials);
+                return new Builder(_host, _port, expectedLedgerId, _channelCredentials, _accessToken);
             }
 
             public Builder WithChannelCredentials(ChannelCredentials channelCredentials)
             {
-                return new Builder(_host, _port, _expectedLedgerId, channelCredentials);
+                return new Builder(_host, _port, _expectedLedgerId, channelCredentials, _accessToken);
+            }
+    
+            public Builder WithAccessToken(string accessToken)
+            {
+                return new Builder(_host, _port, _expectedLedgerId, _channelCredentials, accessToken);
             }
 
             public Clients Build()
@@ -51,38 +57,39 @@ namespace Daml.Ledger.Client
                 ChannelCredentials channelCredentials = _channelCredentials;
                     
                 if (channelCredentials == null)
-                    channelCredentials = ChannelCredentials.Insecure;
+                    channelCredentials = _accessToken != null ? new SslCredentials() : ChannelCredentials.Insecure;
 
-                return new Clients(new Channel($"{_host}:{_port}", channelCredentials), _expectedLedgerId);
+                return new Clients(new Channel($"{_host}:{_port}", channelCredentials), _expectedLedgerId, _accessToken);
             }
 
-            private Builder(string host, int port, string expectedLedgerId, ChannelCredentials channelCredentials)
+            private Builder(string host, int port, string expectedLedgerId, ChannelCredentials channelCredentials, string accessToken)
             {
                 _host = host;
                 _port = port;
                 _expectedLedgerId = expectedLedgerId;
                 _channelCredentials = channelCredentials;
+                _accessToken = accessToken;
             }
         }
 
-        private Clients(Channel channel, string expectedLedgerId = null)
+        private Clients(Channel channel, string expectedLedgerId, string accessToken)
         {
-            LedgerIdentityClient       = new LedgerIdentityClient(channel);
+            LedgerIdentityClient = new LedgerIdentityClient(channel, accessToken);
 
-            LedgerId = LedgerIdentityClient.GetLedgerIdentity();
+            LedgerId = LedgerIdentityClient.GetLedgerIdentity(accessToken);
 
             if (!string.IsNullOrEmpty(expectedLedgerId) && LedgerId != expectedLedgerId)
                 throw new LedgerIdMismatchException(expectedLedgerId, LedgerId);
-            
-            ActiveContractsClient      = new ActiveContractsClient(LedgerId, channel);
-            CommandClient              = new CommandClient(LedgerId, channel);
-            CommandCompletionClient    = new CommandCompletionClient(LedgerId, channel);
-            CommandSubmissionClient    = new CommandSubmissionClient(LedgerId, channel);
-            LedgerConfigurationClient  = new LedgerConfigurationClient(LedgerId, channel);
-            PackageClient              = new PackageClient(LedgerId, channel);
-            TransactionsClient         = new TransactionsClient(LedgerId, channel);
-            Admin                      = new AdminClients(channel);
-            Testing                    = new TestingClients(LedgerId, channel);
+
+            ActiveContractsClient      = new ActiveContractsClient(LedgerId, channel, accessToken);
+            CommandClient              = new CommandClient(LedgerId, channel, accessToken);
+            CommandCompletionClient    = new CommandCompletionClient(LedgerId, channel, accessToken);
+            CommandSubmissionClient    = new CommandSubmissionClient(LedgerId, channel, accessToken);
+            LedgerConfigurationClient  = new LedgerConfigurationClient(LedgerId, channel, accessToken);
+            PackageClient              = new PackageClient(LedgerId, channel, accessToken);
+            TransactionsClient         = new TransactionsClient(LedgerId, channel, accessToken);
+            Admin                      = new AdminClients(channel, accessToken);
+            Testing                    = new TestingClients(LedgerId, channel, accessToken);
         }
 
         public class AdminClients
@@ -91,11 +98,11 @@ namespace Daml.Ledger.Client
             public IPackageManagementClient PackageManagementClient { get; }
             public IPartyManagementClient PartyManagementClient { get; }
 
-            public AdminClients(Channel channel)
+            public AdminClients(Channel channel, string accessToken)
             {
-                ConfigManagementClient = new ConfigManagementClient(channel);
-                PackageManagementClient = new PackageManagementClient(channel);
-                PartyManagementClient = new PartyManagementClient(channel);
+                ConfigManagementClient = new ConfigManagementClient(channel, accessToken);
+                PackageManagementClient = new PackageManagementClient(channel, accessToken);
+                PartyManagementClient = new PartyManagementClient(channel, accessToken);
             }
         }
 
@@ -104,10 +111,10 @@ namespace Daml.Ledger.Client
             public ITimeClient TimeClient { get; }
             public IResetClient ResetClient { get; }
 
-            public TestingClients(string ledgerId, Channel channel)
+            public TestingClients(string ledgerId, Channel channel, string accessToken)
             {
-                TimeClient = new TimeClient(ledgerId, channel);
-                ResetClient = new ResetClient(ledgerId, channel);
+                TimeClient = new TimeClient(ledgerId, channel, accessToken);
+                ResetClient = new ResetClient(ledgerId, channel, accessToken);
             }
         }
         

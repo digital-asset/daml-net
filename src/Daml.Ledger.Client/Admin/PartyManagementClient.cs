@@ -13,46 +13,46 @@ namespace Daml.Ledger.Client.Admin
     {
         private readonly ClientStub<PartyManagementService.PartyManagementServiceClient> _partyManagementClient;
 
-        public PartyManagementClient(Channel channel)
+        public PartyManagementClient(Channel channel, string accessToken)
         {
-            _partyManagementClient = new ClientStub<PartyManagementService.PartyManagementServiceClient>(new PartyManagementService.PartyManagementServiceClient(channel));
+            _partyManagementClient = new ClientStub<PartyManagementService.PartyManagementServiceClient>(new PartyManagementService.PartyManagementServiceClient(channel), accessToken);
         }
 
-        public PartyDetails AllocateParty(string displayName, string partyIdHint)
+        public PartyDetails AllocateParty(string displayName, string partyIdHint, string accessToken = null)
         {
             var request = new AllocatePartyRequest { DisplayName = displayName, PartyIdHint = partyIdHint };
-            var response = _partyManagementClient.Dispatch(request, (c, r, co) => c.AllocateParty(r, co));
+            var response = _partyManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.AllocateParty(r, co));
             return response.PartyDetails;
         }
 
-        public async Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint)
+        public async Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint, string accessToken = null)
         {
             var request = new AllocatePartyRequest { DisplayName = displayName, PartyIdHint = partyIdHint };
-            var response = await _partyManagementClient.Dispatch(request, (c, r, co) => c.AllocatePartyAsync(r, co));
+            var response = await _partyManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.AllocatePartyAsync(r, co));
             return response.PartyDetails;
         }
 
-        public string GetParticipantId()
+        public string GetParticipantId(string accessToken = null)
         {
-            var response = _partyManagementClient.Dispatch(new GetParticipantIdRequest(), (c, r, co) => c.GetParticipantId(r, co));
+            var response = _partyManagementClient.WithAccess(accessToken).Dispatch(new GetParticipantIdRequest(), (c, r, co) => c.GetParticipantId(r, co));
             return response.ParticipantId;
         }
 
-        public async Task<string> GetParticipantIdAsync()
+        public async Task<string> GetParticipantIdAsync(string accessToken = null)
         {
-            var response = await _partyManagementClient.Dispatch(new GetParticipantIdRequest(), (c, r, co) => c.GetParticipantIdAsync(r, co));
+            var response = await _partyManagementClient.WithAccess(accessToken).Dispatch(new GetParticipantIdRequest(), (c, r, co) => c.GetParticipantIdAsync(r, co));
             return response.ParticipantId;
         }
 
-        public IEnumerable<PartyDetails> ListKnownParties()
+        public IEnumerable<PartyDetails> ListKnownParties(string accessToken = null)
         {
-            var response = _partyManagementClient.Dispatch(new ListKnownPartiesRequest(), (c, r, co) => c.ListKnownParties(r, co));
+            var response = _partyManagementClient.WithAccess(accessToken).Dispatch(new ListKnownPartiesRequest(), (c, r, co) => c.ListKnownParties(r, co));
             return response.PartyDetails;
         }
 
-        public async Task<IEnumerable<PartyDetails>> ListKnownPartiesAsync()
+        public async Task<IEnumerable<PartyDetails>> ListKnownPartiesAsync(string accessToken = null)
         {
-            var response = await _partyManagementClient.Dispatch(new ListKnownPartiesRequest(), (c, r, co) => c.ListKnownPartiesAsync(r, co));
+            var response = await _partyManagementClient.WithAccess(accessToken).Dispatch(new ListKnownPartiesRequest(), (c, r, co) => c.ListKnownPartiesAsync(r, co));
             return response.PartyDetails;
         }
     }

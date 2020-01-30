@@ -7,8 +7,8 @@ namespace Daml.Ledger.Client.Testing
 
     public interface IResetClient
     {
-        void Reset();
+        void Reset(string accessToken = null);
 
-        Task ResetAsync();
+        Task ResetAsync(string accessToken = null);
     }
 }

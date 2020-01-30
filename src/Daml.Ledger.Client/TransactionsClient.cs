@@ -14,80 +14,80 @@ namespace Daml.Ledger.Client
         private readonly string _ledgerId;
         private readonly ClientStub<TransactionService.TransactionServiceClient> _transactionsClient;
 
-        public TransactionsClient(string ledgerId, Channel channel)
+        public TransactionsClient(string ledgerId, Channel channel, string accessToken)
         {
             _ledgerId = ledgerId;
-            _transactionsClient = new ClientStub<TransactionService.TransactionServiceClient>(new TransactionService.TransactionServiceClient(channel));
+            _transactionsClient = new ClientStub<TransactionService.TransactionServiceClient>(new TransactionService.TransactionServiceClient(channel), accessToken);
         }
 
-        public GetFlatTransactionResponse GetFlatTransactionByEventId(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public GetFlatTransactionResponse GetFlatTransactionByEventId(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByEventIdRequest { LedgerId = _ledgerId, EventId = eventId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return _transactionsClient.Dispatch(request, (c, r, co) => c.GetFlatTransactionByEventId(r, co));
+            return _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetFlatTransactionByEventId(r, co));
         }
 
-        public async Task<GetFlatTransactionResponse> GetFlatTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public async Task<GetFlatTransactionResponse> GetFlatTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByEventIdRequest { LedgerId = _ledgerId, EventId = eventId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return await _transactionsClient.Dispatch(request, (c, r, co) => c.GetFlatTransactionByEventIdAsync(r, co));
+            return await _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetFlatTransactionByEventIdAsync(r, co));
         }
 
-        public GetFlatTransactionResponse GetFlatTransactionById(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public GetFlatTransactionResponse GetFlatTransactionById(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByIdRequest { LedgerId = _ledgerId, TransactionId = transactionId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return _transactionsClient.Dispatch(request, (c, r, co) => c.GetFlatTransactionById(r, co));
+            return _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetFlatTransactionById(r, co));
         }
 
-        public async Task<GetFlatTransactionResponse> GetFlatTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public async Task<GetFlatTransactionResponse> GetFlatTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByIdRequest { LedgerId = _ledgerId, TransactionId = transactionId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return await _transactionsClient.Dispatch(request, (c, r, co) => c.GetFlatTransactionByIdAsync(r, co));
+            return await _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetFlatTransactionByIdAsync(r, co));
         }
 
-        public LedgerOffset GetLedgerEnd(TraceContext traceContext = null)
+        public LedgerOffset GetLedgerEnd(string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetLedgerEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
-            var response = _transactionsClient.Dispatch(request, (c, r, co) => c.GetLedgerEnd(r, co));
+            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetLedgerEnd(r, co));
             return response.Offset;
         }
 
-        public async Task<LedgerOffset> GetLedgerEndAsync(TraceContext traceContext = null)
+        public async Task<LedgerOffset> GetLedgerEndAsync(string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetLedgerEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
-            var response = await _transactionsClient.Dispatch(request, (c, r, co) => c.GetLedgerEndAsync(r, co));
+            var response = await _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetLedgerEndAsync(r, co));
             return response.Offset;
         }
 
-        public GetTransactionResponse GetTransactionByEventId(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public GetTransactionResponse GetTransactionByEventId(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByEventIdRequest { LedgerId = _ledgerId, EventId = eventId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactionByEventId(r, co));
+            return _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionByEventId(r, co));
         }
 
-        public async Task<GetTransactionResponse> GetTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public async Task<GetTransactionResponse> GetTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByEventIdRequest { LedgerId = _ledgerId, EventId = eventId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return await _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactionByEventIdAsync(r, co));
+            return await _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionByEventIdAsync(r, co));
         }
 
-        public GetTransactionResponse GetTransactionById(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public GetTransactionResponse GetTransactionById(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByIdRequest { LedgerId = _ledgerId, TransactionId = transactionId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactionById(r, co));
+            return _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionById(r, co));
         }
 
-        public async Task<GetTransactionResponse> GetTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null)
+        public async Task<GetTransactionResponse> GetTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null)
         {
             var request = new GetTransactionByIdRequest { LedgerId = _ledgerId, TransactionId = transactionId, TraceContext = traceContext };
             request.RequestingParties.AddRange(requestingParties);
-            return await _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactionByIdAsync(r, co));
+            return await _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionByIdAsync(r, co));
         }
 
         public IAsyncEnumerator<GetTransactionsResponse> GetTransactions(
@@ -95,6 +95,7 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null)
         {
             var request = new GetTransactionsRequest
@@ -106,7 +107,7 @@ namespace Daml.Ledger.Client
                     Verbose = verbose,
                     TraceContext = traceContext
                 };
-            var response = _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactions(r, co));
+            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactions(r, co));
             return response.ResponseStream;
         }
 
@@ -115,9 +116,10 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = GetTransactions(transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {
@@ -131,6 +133,7 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null)
         {
             var request = new GetTransactionsRequest
@@ -142,7 +145,7 @@ namespace Daml.Ledger.Client
                     Verbose = verbose,
                     TraceContext = traceContext
                 };
-            var response = _transactionsClient.Dispatch(request, (c, r, co) => c.GetTransactionTrees(r, co));
+            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionTrees(r, co));
             return response.ResponseStream;
         }
 
@@ -151,9 +154,10 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {

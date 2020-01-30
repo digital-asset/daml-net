@@ -11,11 +11,13 @@ namespace Daml.Ledger.Client
         IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
             TransactionFilter transactionFilter,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null);
 
         IEnumerable<GetActiveContractsResponse> GetActiveContractsSync(
                 TransactionFilter transactionFilter,
                 bool verbose = true,
+                string accessToken = null,
                 TraceContext traceContext = null);
     }
 }

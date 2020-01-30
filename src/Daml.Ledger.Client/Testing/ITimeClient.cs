@@ -10,12 +10,12 @@ namespace Daml.Ledger.Client.Testing
 
     public interface ITimeClient
     {
-        IAsyncEnumerator<GetTimeResponse> GetTime();
+        IAsyncEnumerator<GetTimeResponse> GetTime(string accessToken = null);
 
-        IEnumerable<GetTimeResponse> GetTimeSync();
+        IEnumerable<GetTimeResponse> GetTimeSync(string accessToken = null);
 
-        void SetTime(DateTime currentTime, DateTime newTime);
+        void SetTime(DateTime currentTime, DateTime newTime, string accessToken = null);
 
-        Task SetTimeAsync(DateTime currentTime, DateTime newTime);
+        Task SetTimeAsync(DateTime currentTime, DateTime newTime, string accessToken = null);
     }
 }
