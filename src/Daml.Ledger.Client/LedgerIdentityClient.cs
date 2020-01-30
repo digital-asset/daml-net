@@ -9,24 +9,22 @@ namespace Daml.Ledger.Client
 
     public class LedgerIdentityClient : ILedgerIdentityClient
     {
-        private readonly LedgerIdentityService.LedgerIdentityServiceClient ledgerIdentityClient;
+        private readonly LedgerIdentityService.LedgerIdentityServiceClient _ledgerIdentityClient;
 
         public LedgerIdentityClient(Channel channel)
         {
-            this.ledgerIdentityClient = new LedgerIdentityService.LedgerIdentityServiceClient(channel);
+            _ledgerIdentityClient = new LedgerIdentityService.LedgerIdentityServiceClient(channel);
         }
 
         public string GetLedgerIdentity()
         {
-            var request = new GetLedgerIdentityRequest();
-            var response = this.ledgerIdentityClient.GetLedgerIdentity(request);
+            var response = _ledgerIdentityClient.GetLedgerIdentity(new GetLedgerIdentityRequest());
             return response.LedgerId;
         }
 
         public async Task<string> GetLedgerIdentityAsync()
         {
-            var request = new GetLedgerIdentityRequest();
-            var response = await this.ledgerIdentityClient.GetLedgerIdentityAsync(request);
+            var response = await _ledgerIdentityClient.GetLedgerIdentityAsync(new GetLedgerIdentityRequest());
             return response.LedgerId;
         }
     }

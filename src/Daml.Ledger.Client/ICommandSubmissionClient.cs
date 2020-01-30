@@ -11,7 +11,6 @@ namespace Daml.Ledger.Client
     public interface ICommandSubmissionClient
     {
         void Submit(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -21,7 +20,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         Task SubmitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,

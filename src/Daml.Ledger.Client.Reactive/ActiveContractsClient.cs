@@ -19,9 +19,9 @@ namespace Daml.Ledger.Client.Reactive
             _scheduler = scheduler;
         }
 
-        public IObservable<GetActiveContractsResponse> GetActiveContracts(string ledgerId, TransactionFilter transactionFilter, bool verbose = true, TraceContext traceContext = null)
+        public IObservable<GetActiveContractsResponse> GetActiveContracts(TransactionFilter transactionFilter, bool verbose = true, TraceContext traceContext = null)
         {
-            return _activeContractsClient.GetActiveContracts(ledgerId, transactionFilter, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _activeContractsClient.GetActiveContracts(transactionFilter, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

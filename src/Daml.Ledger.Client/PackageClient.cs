@@ -10,52 +10,52 @@ namespace Daml.Ledger.Client
 
     public class PackageClient : IPackageClient
     {
-        private readonly PackageService.PackageServiceClient packageClient;
+        private readonly string _ledgerId;
+        private readonly PackageService.PackageServiceClient _packageClient;
 
-        public PackageClient(Channel channel)
+        public PackageClient(string ledgerId, Channel channel)
         {
-            this.packageClient = new PackageService.PackageServiceClient(channel);
+            _ledgerId = ledgerId;
+            _packageClient = new PackageService.PackageServiceClient(channel);
         }
 
-        public GetPackageResponse GetPackage(string ledgerId, string packageId, TraceContext traceContext = null)
+        public GetPackageResponse GetPackage(string packageId, TraceContext traceContext = null)
         {
-            var request = new GetPackageRequest { LedgerId = ledgerId, PackageId = packageId, TraceContext = traceContext };
-            var response = this.packageClient.GetPackage(request);
-            return response;
+            var request = new GetPackageRequest { LedgerId = _ledgerId, PackageId = packageId, TraceContext = traceContext };
+            return _packageClient.GetPackage(request);
         }
 
-        public async Task<GetPackageResponse> GetPackageAsync(string ledgerId, string packageId, TraceContext traceContext = null)
+        public async Task<GetPackageResponse> GetPackageAsync(string packageId, TraceContext traceContext = null)
         {
-            var request = new GetPackageRequest { LedgerId = ledgerId, PackageId = packageId, TraceContext = traceContext };
-            var response = await this.packageClient.GetPackageAsync(request);
-            return response;
+            var request = new GetPackageRequest { LedgerId = _ledgerId, PackageId = packageId, TraceContext = traceContext };
+            return await _packageClient.GetPackageAsync(request);
         }
 
-        public PackageStatus GetPackageStatus(string ledgerId, string packageId, TraceContext traceContext = null)
+        public PackageStatus GetPackageStatus(string packageId, TraceContext traceContext = null)
         {
-            var request = new GetPackageStatusRequest { LedgerId = ledgerId, PackageId = packageId, TraceContext = traceContext };
-            var response = this.packageClient.GetPackageStatus(request);
+            var request = new GetPackageStatusRequest { LedgerId = _ledgerId, PackageId = packageId, TraceContext = traceContext };
+            var response = _packageClient.GetPackageStatus(request);
             return response.PackageStatus;
         }
 
-        public async Task<PackageStatus> GetPackageStatusAsync(string ledgerId, string packageId, TraceContext traceContext = null)
+        public async Task<PackageStatus> GetPackageStatusAsync(string packageId, TraceContext traceContext = null)
         {
-            var request = new GetPackageStatusRequest { LedgerId = ledgerId, PackageId = packageId, TraceContext = traceContext };
-            var response = await this.packageClient.GetPackageStatusAsync(request);
+            var request = new GetPackageStatusRequest { LedgerId = _ledgerId, PackageId = packageId, TraceContext = traceContext };
+            var response = await _packageClient.GetPackageStatusAsync(request);
             return response.PackageStatus;
         }
 
-        public IEnumerable<string> ListPackages(string ledgerId, TraceContext traceContext = null)
+        public IEnumerable<string> ListPackages(TraceContext traceContext = null)
         {
-            var request = new ListPackagesRequest { LedgerId = ledgerId, TraceContext = traceContext };
-            var response = this.packageClient.ListPackages(request);
+            var request = new ListPackagesRequest { LedgerId = _ledgerId, TraceContext = traceContext };
+            var response = _packageClient.ListPackages(request);
             return response.PackageIds;
         }
 
-        public async Task<IEnumerable<string>> ListPackagesAsync(string ledgerId, TraceContext traceContext = null)
+        public async Task<IEnumerable<string>> ListPackagesAsync(TraceContext traceContext = null)
         {
-            var request = new ListPackagesRequest { LedgerId = ledgerId, TraceContext = traceContext };
-            var response = await this.packageClient.ListPackagesAsync(request);
+            var request = new ListPackagesRequest { LedgerId = _ledgerId, TraceContext = traceContext };
+            var response = await _packageClient.ListPackagesAsync(request);
             return response.PackageIds;
         }
     }

@@ -12,15 +12,16 @@ namespace Daml.Ledger.Client
 
     public class CommandSubmissionClient : ICommandSubmissionClient
     {
-        private readonly CommandSubmissionService.CommandSubmissionServiceClient commandSubmissionClient;
+        private readonly string _ledgerId;
+        private readonly CommandSubmissionService.CommandSubmissionServiceClient _commandSubmissionClient;
 
-        public CommandSubmissionClient(Channel channel)
+        public CommandSubmissionClient(string ledgerId, Channel channel)
         {
-            this.commandSubmissionClient = new CommandSubmissionService.CommandSubmissionServiceClient(channel);
+            _ledgerId = ledgerId;
+            _commandSubmissionClient = new CommandSubmissionService.CommandSubmissionServiceClient(channel);
         }
 
         public void Submit(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -29,13 +30,10 @@ namespace Daml.Ledger.Client
             DateTime maximumRecordTime,
             IEnumerable<Command> commands)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitRequest { Commands = cmds };
-            this.commandSubmissionClient.Submit(request);
+            Submit(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
         }
 
         public async Task SubmitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -44,25 +42,20 @@ namespace Daml.Ledger.Client
             DateTime maximumRecordTime,
             IEnumerable<Command> commands)
         {
-            var cmds = this.BuildCommands(ledgerId, applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands);
-            var request = new SubmitRequest { Commands = cmds };
-            await this.commandSubmissionClient.SubmitAsync(request);
+            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
         }
 
         public void Submit(Commands commands)
         {
-            var request = new SubmitRequest { Commands = commands };
-            this.commandSubmissionClient.Submit(request);
+            _commandSubmissionClient.Submit(new SubmitRequest { Commands = commands });
         }
 
         public async Task SubmitAsync(Commands commands)
         {
-            var request = new SubmitRequest { Commands = commands };
-            await this.commandSubmissionClient.SubmitAsync(request);
+            await _commandSubmissionClient.SubmitAsync(new SubmitRequest { Commands = commands });
         }
 
         private Commands BuildCommands(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -73,7 +66,7 @@ namespace Daml.Ledger.Client
         {
             var cmds = new Commands
             {
-                LedgerId = ledgerId,
+                LedgerId = _ledgerId,
                 ApplicationId = applicationId,
                 WorkflowId = workflowId,
                 CommandId = commandId,

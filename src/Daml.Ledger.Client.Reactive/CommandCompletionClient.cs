@@ -20,9 +20,14 @@ namespace Daml.Ledger.Client.Reactive
             _scheduler = scheduler;
         }
 
-        public IObservable<CompletionStreamResponse> GetLedgerConfiguration(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties)
+        public IObservable<CompletionStreamResponse> GetLedgerConfiguration(string applicationId, LedgerOffset offset, IEnumerable<string> parties)
         {
-            return _commandCompletionClient.CompletionStream(ledgerId, applicationId, offset, parties).CreateAsyncObservable(_scheduler);
+            return _commandCompletionClient.CompletionStream(applicationId, offset, parties).CreateAsyncObservable(_scheduler);
         }
+        
+        public LedgerOffset CompletionEnd(TraceContext traceContext = null)
+        {
+            return _commandCompletionClient.CompletionEnd(traceContext);
+        } 
     }
 }

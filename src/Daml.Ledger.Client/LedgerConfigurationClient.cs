@@ -9,24 +9,25 @@ namespace Daml.Ledger.Client
 
     public class LedgerConfigurationClient : ILedgerConfigurationClient
     {
-        private readonly LedgerConfigurationService.LedgerConfigurationServiceClient ledgerConfigurationClient;
+        private readonly string _ledgerId;
+        private readonly LedgerConfigurationService.LedgerConfigurationServiceClient _ledgerConfigurationClient;
 
-        public LedgerConfigurationClient(Channel channel)
+        public LedgerConfigurationClient(string ledgerId, Channel channel)
         {
-            this.ledgerConfigurationClient = new LedgerConfigurationService.LedgerConfigurationServiceClient(channel);
+            _ledgerId = ledgerId;
+            _ledgerConfigurationClient = new LedgerConfigurationService.LedgerConfigurationServiceClient(channel);
         }
 
-        public IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(string ledgerId, TraceContext traceContext = null)
+        public IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(TraceContext traceContext = null)
         {
-            var request = new GetLedgerConfigurationRequest { LedgerId = ledgerId, TraceContext = traceContext };
-            var call = this.ledgerConfigurationClient.GetLedgerConfiguration(request);
-            return call.ResponseStream;
+            var request = new GetLedgerConfigurationRequest { LedgerId = _ledgerId, TraceContext = traceContext };
+            var response = _ledgerConfigurationClient.GetLedgerConfiguration(request);
+            return response.ResponseStream;
         }
 
-
-        public IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(string ledgerId, TraceContext traceContext = null)
+        public IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(TraceContext traceContext = null)
         {
-            var r = this.GetLedgerConfiguration(ledgerId, traceContext);
+            var r = GetLedgerConfiguration(traceContext);
             while (r.MoveNext().Result)
             {
                 yield return r.Current;
