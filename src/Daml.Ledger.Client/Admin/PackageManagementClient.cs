@@ -12,39 +12,42 @@ namespace Daml.Ledger.Client.Admin
 
     public class PackageManagementClient : IPackageManagementClient
     {
-        private readonly PackageManagementService.PackageManagementServiceClient packageManagementClient;
+        private readonly PackageManagementService.PackageManagementServiceClient _packageManagementClient;
 
         public PackageManagementClient(Channel channel)
         {
-            this.packageManagementClient = new PackageManagementService.PackageManagementServiceClient(channel);
+            _packageManagementClient = new PackageManagementService.PackageManagementServiceClient(channel);
         }
 
         public IEnumerable<PackageDetails> ListKnownPackages()
         {
-            var request = new ListKnownPackagesRequest();
-            var response = this.packageManagementClient.ListKnownPackages(request);
+            var response = _packageManagementClient.ListKnownPackages(new ListKnownPackagesRequest());
             return response.PackageDetails;
         }
 
         public async Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync()
         {
-            var request = new ListKnownPackagesRequest();
-            var response = await this.packageManagementClient.ListKnownPackagesAsync (request);
+            var response = await _packageManagementClient.ListKnownPackagesAsync(new ListKnownPackagesRequest());
             return response.PackageDetails;
         }
 
-        public void UploadDarFile(Stream stream)
+        public void UploadDarFile(Stream stream, string submissionId = null)
         {
-            var byteString = ByteString.FromStream(stream);
-            var request = new UploadDarFileRequest { DarFile = byteString };
-            this.packageManagementClient.UploadDarFile(request);
+            var request = new UploadDarFileRequest { DarFile = ByteString.FromStream(stream) };
+            if (!string.IsNullOrEmpty(submissionId))
+                request.SubmissionId = submissionId;
+            
+            _packageManagementClient.UploadDarFile(request);
         }
 
-        public async Task UploadDarFileAsync(Stream stream)
+        public async Task UploadDarFileAsync(Stream stream, string submissionId = null)
         {
             var byteString = await ByteString.FromStreamAsync(stream);
             var request = new UploadDarFileRequest { DarFile = byteString };
-            await this.packageManagementClient.UploadDarFileAsync(request);
+            if (!string.IsNullOrEmpty(submissionId))
+                request.SubmissionId = submissionId;
+                
+            await _packageManagementClient.UploadDarFileAsync(request);
         }
     }
 }

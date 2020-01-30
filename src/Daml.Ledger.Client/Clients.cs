@@ -3,57 +3,119 @@
 
 namespace Daml.Ledger.Client
 {
-    using Daml.Ledger.Client.Admin;
+    using System;
+    using Admin;
+    using Testing;
     using Grpc.Core;
 
     public class Clients
     {
-        public IActiveContractsClient       ActiveContractsClient       { get; private set; }
-        public ICommandClient               CommandClient               { get; private set; }
-        public ICommandCompletionClient     CommandCompletionClient     { get; private set; }
-        public ICommandSubmissionClient     CommandSubmissionClient     { get; private set; }
-        public ILedgerConfigurationClient   LedgerConfigurationClient   { get; private set; }
-        public ILedgerIdentityClient        LedgerIdentityClient        { get; private set; }
-        public IPackageClient               PackageClient               { get; private set; }
-        public ITransactionsClient          TransactionsClient          { get; private set; }
-        public AdminClients                 Admin                       { get; private set; }
-        public TestingClients               Testing                     { get; private set; }
+        public string LedgerId { get; }
 
-        public Clients(Channel channel)
+        public IActiveContractsClient       ActiveContractsClient       { get; }
+        public ICommandClient               CommandClient               { get; }
+        public ICommandCompletionClient     CommandCompletionClient     { get; }
+        public ICommandSubmissionClient     CommandSubmissionClient     { get; }
+        public ILedgerConfigurationClient   LedgerConfigurationClient   { get; }
+        public ILedgerIdentityClient        LedgerIdentityClient        { get; }
+        public IPackageClient               PackageClient               { get; }
+        public ITransactionsClient          TransactionsClient          { get; }
+        public AdminClients                 Admin                       { get; }
+        public TestingClients               Testing                     { get; }
+
+        public sealed class Builder
         {
-            this.ActiveContractsClient      = new ActiveContractsClient(channel);
-            this.CommandClient              = new CommandClient(channel);
-            this.CommandCompletionClient    = new CommandCompletionClient(channel);
-            this.CommandSubmissionClient    = new CommandSubmissionClient(channel);
-            this.LedgerConfigurationClient  = new LedgerConfigurationClient(channel);
-            this.LedgerIdentityClient       = new LedgerIdentityClient(channel);
-            this.PackageClient              = new PackageClient(channel);
-            this.TransactionsClient         = new TransactionsClient(channel);
-            this.Admin                      = new AdminClients(channel);
-            this.Testing                    = new TestingClients(channel);
+            private readonly string _host;
+            private readonly int _port;
+            private string _expectedLedgerId;
+            private ChannelCredentials _channelCredentials;
+      
+            public Builder(string host, int port)
+            {
+                _host = host;
+                _port = port;
+            }
+
+            public Builder WithExpectedLedgerId(string expectedLedgerId)
+            {
+                return new Builder(_host, _port, expectedLedgerId, _channelCredentials);
+            }
+
+            public Builder WithChannelCredentials(ChannelCredentials channelCredentials)
+            {
+                return new Builder(_host, _port, _expectedLedgerId, channelCredentials);
+            }
+
+            public Clients Build()
+            {
+                ChannelCredentials channelCredentials = _channelCredentials;
+                    
+                if (channelCredentials == null)
+                    channelCredentials = ChannelCredentials.Insecure;
+
+                return new Clients(new Channel($"{_host}:{_port}", channelCredentials), _expectedLedgerId);
+            }
+
+            private Builder(string host, int port, string expectedLedgerId, ChannelCredentials channelCredentials)
+            {
+                _host = host;
+                _port = port;
+                _expectedLedgerId = expectedLedgerId;
+                _channelCredentials = channelCredentials;
+            }
+        }
+
+        private Clients(Channel channel, string expectedLedgerId = null)
+        {
+            LedgerIdentityClient       = new LedgerIdentityClient(channel);
+
+            LedgerId = LedgerIdentityClient.GetLedgerIdentity();
+
+            if (!string.IsNullOrEmpty(expectedLedgerId) && LedgerId != expectedLedgerId)
+                throw new LedgerIdMismatchException(expectedLedgerId, LedgerId);
+            
+            ActiveContractsClient      = new ActiveContractsClient(LedgerId, channel);
+            CommandClient              = new CommandClient(LedgerId, channel);
+            CommandCompletionClient    = new CommandCompletionClient(LedgerId, channel);
+            CommandSubmissionClient    = new CommandSubmissionClient(LedgerId, channel);
+            LedgerConfigurationClient  = new LedgerConfigurationClient(LedgerId, channel);
+            PackageClient              = new PackageClient(LedgerId, channel);
+            TransactionsClient         = new TransactionsClient(LedgerId, channel);
+            Admin                      = new AdminClients(channel);
+            Testing                    = new TestingClients(LedgerId, channel);
         }
 
         public class AdminClients
         {
-            public IPackageManagementClient PackageManagementClient { get; private set; }
-            public IPartyManagementClient PartyManagementClient { get; private set; }
+            public IConfigManagementClient ConfigManagementClient { get; }
+            public IPackageManagementClient PackageManagementClient { get; }
+            public IPartyManagementClient PartyManagementClient { get; }
 
             public AdminClients(Channel channel)
             {
-                this.PackageManagementClient = new PackageManagementClient(channel);
-                this.PartyManagementClient = new PartyManagementClient(channel);
+                ConfigManagementClient = new ConfigManagementClient(channel);
+                PackageManagementClient = new PackageManagementClient(channel);
+                PartyManagementClient = new PartyManagementClient(channel);
             }
         }
 
         public class TestingClients
         {
-            public ITimeClient TimeClient { get; private set; }
-            public IResetClient ResetClient { get; private set; }
+            public ITimeClient TimeClient { get; }
+            public IResetClient ResetClient { get; }
 
-            public TestingClients(Channel channel)
+            public TestingClients(string ledgerId, Channel channel)
             {
-                this.TimeClient = new TimeClient(channel);
-                this.ResetClient = new ResetClient(channel);
+                TimeClient = new TimeClient(ledgerId, channel);
+                ResetClient = new ResetClient(ledgerId, channel);
+            }
+        }
+        
+        private class LedgerIdMismatchException : Exception
+        {
+            public LedgerIdMismatchException(string expectedLedgerId, string ledgerId)
+                : base($"Configured ledger id {expectedLedgerId} is not the same as reported by the ledger {ledgerId}")
+            {
             }
         }
     }

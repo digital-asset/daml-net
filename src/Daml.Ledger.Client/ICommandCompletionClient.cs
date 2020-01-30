@@ -9,12 +9,12 @@ namespace Daml.Ledger.Client
 
     public interface ICommandCompletionClient
     {
-        IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties);
+        IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string applicationId, LedgerOffset offset, IEnumerable<string> parties);
 
-        IEnumerable<CompletionStreamResponse> CompletionStreamSync(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties);
+        IEnumerable<CompletionStreamResponse> CompletionStreamSync(string applicationId, LedgerOffset offset, IEnumerable<string> parties);
 
-        LedgerOffset CompletionEnd(string ledgerId, TraceContext traceContext = null);
+        LedgerOffset CompletionEnd(TraceContext traceContext = null);
 
-        Task<LedgerOffset> CompletionEndAsync(string ledgerId, TraceContext traceContext = null);
+        Task<LedgerOffset> CompletionEndAsync(TraceContext traceContext = null);
     }
 }

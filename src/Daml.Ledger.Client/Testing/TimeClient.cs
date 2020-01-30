@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Daml.Ledger.Client
+namespace Daml.Ledger.Client.Testing
 {
     using System;
     using System.Collections.Generic;
@@ -12,23 +12,24 @@ namespace Daml.Ledger.Client
 
     public class TimeClient : ITimeClient
     {
-        private readonly TimeService.TimeServiceClient timeClient;
+        private readonly string _ledgerId;
+        private readonly TimeService.TimeServiceClient _timeClient;
 
-        public TimeClient(Channel channel)
+        public TimeClient(string ledgerId, Channel channel)
         {
-            this.timeClient = new TimeService.TimeServiceClient(channel);
+          _ledgerId = ledgerId;
+           _timeClient = new TimeService.TimeServiceClient(channel);
         }
 
-        public IAsyncEnumerator<GetTimeResponse> GetTime(string ledgerId)
+        public IAsyncEnumerator<GetTimeResponse> GetTime()
         {
-            var request = new GetTimeRequest { LedgerId = ledgerId };
-            var call = this.timeClient.GetTime(request);
-            return call.ResponseStream;
+            var response = _timeClient.GetTime(new GetTimeRequest { LedgerId = _ledgerId });
+            return response.ResponseStream;
         }
 
-        public IEnumerable<GetTimeResponse> GetTimeSync(string ledgerId)
+        public IEnumerable<GetTimeResponse> GetTimeSync()
         {
-            using (var stream = this.GetTime(ledgerId))
+            using (var stream = GetTime())
             {
                 while (stream.MoveNext().Result)
                 {
@@ -37,16 +38,27 @@ namespace Daml.Ledger.Client
             }
         }
 
-        public void SetTime(string ledgerId, DateTime currentTime, DateTime newTime)
+        public void SetTime(DateTime currentTime, DateTime newTime)
         {
-            var request = new SetTimeRequest { LedgerId = ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-            this.timeClient.SetTime(request);
+              if (currentTime >= newTime)
+                throw new SetTimeException(currentTime, newTime);
+
+            var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
+             _timeClient.SetTime(request);
         }
 
-        public async Task SetTimeAsync(string ledgerId, DateTime currentTime, DateTime newTime)
+        public async Task SetTimeAsync(DateTime currentTime, DateTime newTime)
         {
-            var request = new SetTimeRequest { LedgerId = ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
-            await this.timeClient.SetTimeAsync(request);
+            var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
+            await _timeClient.SetTimeAsync(request);
+        }
+        
+        private class SetTimeException : Exception
+        {
+            public SetTimeException(DateTimeOffset currentTime, DateTimeOffset newTime)
+                : base($"Cannot set a new time smaller or equal to the current one. That new time tried is {newTime.ToString()} but the current one is {currentTime.ToString()}")
+            {
+            }
         }
     }
 }

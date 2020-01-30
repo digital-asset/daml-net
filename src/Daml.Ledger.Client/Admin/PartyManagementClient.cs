@@ -10,52 +10,48 @@ namespace Daml.Ledger.Client.Admin
 
     public class PartyManagementClient : IPartyManagementClient
     {
-        private readonly PartyManagementService.PartyManagementServiceClient partyManagementClient;
+        private readonly PartyManagementService.PartyManagementServiceClient _partyManagementClient;
 
         public PartyManagementClient(Channel channel)
         {
-            this.partyManagementClient = new PartyManagementService.PartyManagementServiceClient(channel);
+            _partyManagementClient = new PartyManagementService.PartyManagementServiceClient(channel);
         }
 
         public PartyDetails AllocateParty(string displayName, string partyIdHint)
         {
             var request = new AllocatePartyRequest { DisplayName = displayName, PartyIdHint = partyIdHint };
-            var response = this.partyManagementClient.AllocateParty(request);
+            var response = _partyManagementClient.AllocateParty(request);
             return response.PartyDetails;
         }
 
         public async Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint)
         {
             var request = new AllocatePartyRequest { DisplayName = displayName, PartyIdHint = partyIdHint };
-            var response = await this.partyManagementClient.AllocatePartyAsync(request);
+            var response = await _partyManagementClient.AllocatePartyAsync(request);
             return response.PartyDetails;
         }
 
         public string GetParticipantId()
         {
-            var request = new GetParticipantIdRequest();
-            var response = this.partyManagementClient.GetParticipantId(request);
+            var response = _partyManagementClient.GetParticipantId(new GetParticipantIdRequest());
             return response.ParticipantId;
         }
 
         public async Task<string> GetParticipantIdAsync()
         {
-            var request = new GetParticipantIdRequest();
-            var response = await this.partyManagementClient.GetParticipantIdAsync(request);
+            var response = await _partyManagementClient.GetParticipantIdAsync(new GetParticipantIdRequest());
             return response.ParticipantId;
         }
 
         public IEnumerable<PartyDetails> ListKnownParties()
         {
-            var request = new ListKnownPartiesRequest();
-            var response = this.partyManagementClient.ListKnownParties(request);
+            var response = _partyManagementClient.ListKnownParties(new ListKnownPartiesRequest());
             return response.PartyDetails;
         }
 
         public async Task<IEnumerable<PartyDetails>> ListKnownPartiesAsync()
         {
-            var request = new ListKnownPartiesRequest();
-            var response = await this.partyManagementClient.ListKnownPartiesAsync (request);
+            var response = await _partyManagementClient.ListKnownPartiesAsync(new ListKnownPartiesRequest());
             return response.PartyDetails;
         }
     }

@@ -21,25 +21,23 @@ namespace Daml.Ledger.Client.Reactive
         }
 
         public IObservable<GetTransactionsResponse> GetTransactions(
-            string ledgerId,
             TransactionFilter transactionFilter,
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
             TraceContext traceContext = null)
         {
-            return _transactionsClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
 
         public IObservable<GetTransactionTreesResponse> GetTransactionTrees(
-            string ledgerId,
             TransactionFilter transactionFilter,
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
             TraceContext traceContext = null)
         {
-            return _transactionsClient.GetTransactionTrees(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _transactionsClient.GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

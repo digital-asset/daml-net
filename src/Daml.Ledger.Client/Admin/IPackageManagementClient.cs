@@ -14,8 +14,8 @@ namespace Daml.Ledger.Client.Admin
 
         Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync();
 
-        void UploadDarFile(Stream stream);
+        void UploadDarFile(Stream stream, string submissionId = null);
 
-        Task UploadDarFileAsync(Stream stream);
+        Task UploadDarFileAsync(Stream stream, string submissionId = null);
     }
 }

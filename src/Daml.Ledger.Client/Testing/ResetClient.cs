@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Daml.Ledger.Client
+namespace Daml.Ledger.Client.Testing
 {
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1.Testing;
@@ -9,23 +9,23 @@ namespace Daml.Ledger.Client
 
     public class ResetClient : IResetClient
     {
-        private readonly ResetService.ResetServiceClient resetClient;
+        private readonly string _ledgerId;
+        private readonly ResetService.ResetServiceClient _resetClient;
 
-        public ResetClient(Channel channel)
+        public ResetClient(string ledgerId, Channel channel)
         {
-            this.resetClient = new ResetService.ResetServiceClient(channel);
+            _ledgerId = ledgerId;
+            _resetClient = new ResetService.ResetServiceClient(channel);
         }
 
-        public void Reset(string ledgerId)
+        public void Reset()
         {
-            var request = new ResetRequest { LedgerId = ledgerId };
-            this.resetClient.Reset(request);
+            _resetClient.Reset(new ResetRequest { LedgerId = _ledgerId });
         }
 
-        public async Task ResetAsync(string ledgerId)
+        public async Task ResetAsync()
         {
-            var request = new ResetRequest { LedgerId = ledgerId };
-            await this.resetClient.ResetAsync(request);
+            await _resetClient.ResetAsync(new ResetRequest { LedgerId = _ledgerId });
         }
     }
 }

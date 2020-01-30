@@ -10,24 +10,28 @@ namespace Daml.Ledger.Client
 
     public class CommandCompletionClient : ICommandCompletionClient
     {
-        private readonly CommandCompletionService.CommandCompletionServiceClient commandCompletionClient;
+        private readonly string _ledgerId;
+        private readonly CommandCompletionService.CommandCompletionServiceClient _commandCompletionClient;
 
-        public CommandCompletionClient(Channel channel)
+        public CommandCompletionClient(string ledgerId, Channel channel)
         {
-            this.commandCompletionClient = new CommandCompletionService.CommandCompletionServiceClient(channel);
+            _ledgerId = ledgerId;
+            _commandCompletionClient = new CommandCompletionService.CommandCompletionServiceClient(channel);
         }
 
-        public IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties)
+        public IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string applicationId, LedgerOffset offset, IEnumerable<string> parties)
         {
-            var request = new CompletionStreamRequest { LedgerId = ledgerId, ApplicationId = applicationId, Offset = offset };
+            var request = new CompletionStreamRequest { LedgerId = _ledgerId, ApplicationId = applicationId };
+           if (offset != null)
+                request.Offset = offset;
             request.Parties.AddRange(parties);
-            var call = this.commandCompletionClient.CompletionStream(request);
-            return call.ResponseStream;
+            var response = _commandCompletionClient.CompletionStream(request);
+            return response.ResponseStream;
         }
 
-        public IEnumerable<CompletionStreamResponse> CompletionStreamSync(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties)
+        public IEnumerable<CompletionStreamResponse> CompletionStreamSync(string applicationId, LedgerOffset offset, IEnumerable<string> parties)
         {
-            using (var stream = this.CompletionStream(ledgerId, applicationId, offset, parties))
+            using (var stream = CompletionStream(applicationId, offset, parties))
             {
                 while (stream.MoveNext().Result)
                 {
@@ -36,19 +40,18 @@ namespace Daml.Ledger.Client
             }
         }
 
-        public LedgerOffset CompletionEnd(string ledgerId, TraceContext traceContext = null)
+        public LedgerOffset CompletionEnd(TraceContext traceContext = null)
         {
-            var request = new CompletionEndRequest { LedgerId = ledgerId, TraceContext = traceContext };
-            var response = this.commandCompletionClient.CompletionEnd(request);
+            var request = new CompletionEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
+            var response = _commandCompletionClient.CompletionEnd(request);
             return response.Offset;
         }
 
-        public async Task<LedgerOffset> CompletionEndAsync(string ledgerId, TraceContext traceContext = null)
+        public async Task<LedgerOffset> CompletionEndAsync(TraceContext traceContext = null)
         {
-            var request = new CompletionEndRequest { LedgerId = ledgerId, TraceContext = traceContext };
-            var response = await this.commandCompletionClient.CompletionEndAsync(request);
+            var request = new CompletionEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
+            var response = await _commandCompletionClient.CompletionEndAsync(request);
             return response.Offset;
         }
-
     }
 }
