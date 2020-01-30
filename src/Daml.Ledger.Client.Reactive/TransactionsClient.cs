@@ -4,18 +4,20 @@
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reactive.Linq;
+    using System.Reactive.Concurrency;
     using Com.DigitalAsset.Ledger.Api.V1;
-    using Daml.Ledger.Client;
+    using Client;
+    using Daml.Ledger.Client.Reactive.Util;
 
     public class TransactionsClient
     {
-        private readonly ITransactionsClient transactionsClient;
+        private readonly ITransactionsClient _transactionsClient;
+        private readonly IScheduler _scheduler;
 
-        public TransactionsClient(ITransactionsClient transactionsClient)
+        public TransactionsClient(ITransactionsClient transactionsClient, IScheduler scheduler)
         {
-            this.transactionsClient = transactionsClient;
+            _transactionsClient = transactionsClient;
+            _scheduler = scheduler;
         }
 
         public IObservable<GetTransactionsResponse> GetTransactions(
@@ -26,20 +28,7 @@ namespace Daml.Ledger.Client.Reactive
             bool verbose = true,
             TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetTransactionsResponse>(async observer =>
-            {
-                using (var stream = this.transactionsClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _transactionsClient.GetTransactions(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
 
         public IObservable<GetTransactionTreesResponse> GetTransactionTrees(
@@ -50,20 +39,7 @@ namespace Daml.Ledger.Client.Reactive
             bool verbose = true,
             TraceContext traceContext = null)
         {
-            var observable = Observable.Create<GetTransactionTreesResponse>(async observer =>
-            {
-                using (var stream = this.transactionsClient.GetTransactionTrees(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _transactionsClient.GetTransactionTrees(ledgerId, transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

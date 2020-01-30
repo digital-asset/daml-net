@@ -4,36 +4,25 @@
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
+    using System.Reactive.Concurrency;
     using System.Collections.Generic;
-    using System.Reactive.Linq;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Reactive.Util;
 
     public class CommandCompletionClient
     {
-        private readonly ICommandCompletionClient commandCompletionClient;
+        private readonly ICommandCompletionClient _commandCompletionClient;
+        private readonly IScheduler _scheduler;
 
-        public CommandCompletionClient(ICommandCompletionClient commandCompletionClient)
+        public CommandCompletionClient(ICommandCompletionClient commandCompletionClient, IScheduler scheduler = null)
         {
-            this.commandCompletionClient = commandCompletionClient;
+            _commandCompletionClient = commandCompletionClient;
+            _scheduler = scheduler;
         }
 
         public IObservable<CompletionStreamResponse> GetLedgerConfiguration(string ledgerId, string applicationId, LedgerOffset offset, IEnumerable<string> parties)
         {
-            var observable = Observable.Create<CompletionStreamResponse>(async observer =>
-            {
-                using (var stream = this.commandCompletionClient.CompletionStream(ledgerId, applicationId, offset, parties))
-                {
-                    var hasNext = await stream.MoveNext();
-                    while (hasNext)
-                    {
-                        observer.OnNext(stream.Current);
-                        hasNext = await stream.MoveNext();
-                    }
-                }
-            });
-
-            return observable;
+            return _commandCompletionClient.CompletionStream(ledgerId, applicationId, offset, parties).CreateAsyncObservable(_scheduler);
         }
-
     }
 }

@@ -34,6 +34,13 @@
     <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
   </Target>
 
+  <Target Name="ReactiveTest" DependsOnTargets="Reactive">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Client.Reactive.Test</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
   <Target Name="Automation" DependsOnTargets="Reactive">
     <PropertyGroup>
       <Project>Daml.Ledger.Automation</Project>
