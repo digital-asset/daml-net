@@ -5,17 +5,18 @@ namespace Daml.Ledger.Client
 {
     using System.Collections.Generic;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class ActiveContractsClient : IActiveContractsClient
     {
         private readonly string _ledgerId;
-        private readonly ActiveContractsService.ActiveContractsServiceClient _activeContractsClient;
+        private readonly ClientStub<ActiveContractsService.ActiveContractsServiceClient> _activeContractsClient;
 
         public ActiveContractsClient(string ledgerId, Channel channel)
         {
             _ledgerId = ledgerId;
-            _activeContractsClient = new ActiveContractsService.ActiveContractsServiceClient(channel);
+            _activeContractsClient = new ClientStub<ActiveContractsService.ActiveContractsServiceClient>(new ActiveContractsService.ActiveContractsServiceClient(channel));
         }
 
         public IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
@@ -24,7 +25,7 @@ namespace Daml.Ledger.Client
             TraceContext traceContext = null)
         {
             var request = new GetActiveContractsRequest { LedgerId = _ledgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
-            var response = _activeContractsClient.GetActiveContracts(request);
+            var response = _activeContractsClient.Dispatch(request, (c, r, co) => c.GetActiveContracts(r, co));
             return response.ResponseStream;
         }
 

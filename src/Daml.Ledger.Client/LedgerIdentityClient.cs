@@ -5,26 +5,27 @@ namespace Daml.Ledger.Client
 {
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class LedgerIdentityClient : ILedgerIdentityClient
     {
-        private readonly LedgerIdentityService.LedgerIdentityServiceClient _ledgerIdentityClient;
+        private readonly ClientStub<LedgerIdentityService.LedgerIdentityServiceClient> _ledgerIdentityClient;
 
         public LedgerIdentityClient(Channel channel)
         {
-            _ledgerIdentityClient = new LedgerIdentityService.LedgerIdentityServiceClient(channel);
+            _ledgerIdentityClient = new ClientStub<LedgerIdentityService.LedgerIdentityServiceClient>(new LedgerIdentityService.LedgerIdentityServiceClient(channel));
         }
 
         public string GetLedgerIdentity()
         {
-            var response = _ledgerIdentityClient.GetLedgerIdentity(new GetLedgerIdentityRequest());
+            var response = _ledgerIdentityClient.Dispatch(new GetLedgerIdentityRequest(), (c, r, co) => c.GetLedgerIdentity(r, co));
             return response.LedgerId;
         }
 
         public async Task<string> GetLedgerIdentityAsync()
         {
-            var response = await _ledgerIdentityClient.GetLedgerIdentityAsync(new GetLedgerIdentityRequest());
+            var response = await _ledgerIdentityClient.Dispatch(new GetLedgerIdentityRequest(), (c, r, co) => c.GetLedgerIdentityAsync(r, co));
             return response.LedgerId;
         }
     }

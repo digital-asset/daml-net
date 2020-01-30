@@ -5,27 +5,28 @@ namespace Daml.Ledger.Client.Testing
 {
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1.Testing;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class ResetClient : IResetClient
     {
         private readonly string _ledgerId;
-        private readonly ResetService.ResetServiceClient _resetClient;
+        private readonly ClientStub<ResetService.ResetServiceClient> _resetClient;
 
         public ResetClient(string ledgerId, Channel channel)
         {
             _ledgerId = ledgerId;
-            _resetClient = new ResetService.ResetServiceClient(channel);
+            _resetClient = new ClientStub<ResetService.ResetServiceClient>(new ResetService.ResetServiceClient(channel));
         }
 
         public void Reset()
         {
-            _resetClient.Reset(new ResetRequest { LedgerId = _ledgerId });
+            _resetClient.Dispatch(new ResetRequest { LedgerId = _ledgerId }, (c, r, co) => c.Reset(r, co));
         }
 
         public async Task ResetAsync()
         {
-            await _resetClient.ResetAsync(new ResetRequest { LedgerId = _ledgerId });
+            await _resetClient.Dispatch(new ResetRequest { LedgerId = _ledgerId }, (c, r, co) => c.ResetAsync(r, co));
         }
     }
 }

@@ -3,7 +3,7 @@
   <Target Name="Build" DependsOnTargets="AutoBuild">
   </Target>
 
-  <Target Name="AutoBuild" DependsOnTargets="Reactive;Automation;BindingsExample;TestExample">
+  <Target Name="AutoBuild" DependsOnTargets="ClientTest;ReactiveTest;Automation;BindingsExample;TestExample">
   </Target>
 
   <Target Name="Api">
@@ -23,6 +23,13 @@
   <Target Name="Client" DependsOnTargets="Api;Fragment">
     <PropertyGroup>
       <Project>Daml.Ledger.Client</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="ClientTest" DependsOnTargets="Client">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Client.Test</Project>
     </PropertyGroup>
     <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
   </Target>

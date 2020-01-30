@@ -39,9 +39,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Examples.Bindin
 		{68C093F1-5FA2-4DA9-8A84-50782FAAF022} = {68C093F1-5FA2-4DA9-8A84-50782FAAF022}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daml.Ledger.Client.Reactive.Test", "src\Daml.Ledger.Client.Reactive.Test\Daml.Ledger.Client.Reactive.Test.csproj", "{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Client.Reactive.Test", "src\Daml.Ledger.Client.Reactive.Test\Daml.Ledger.Client.Reactive.Test.csproj", "{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C28365C5-6F64-4468-8FFC-93121553C2EA} = {C28365C5-6F64-4468-8FFC-93121553C2EA}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Client.Test", "src\Daml.Ledger.Client.Test\Daml.Ledger.Client.Test.csproj", "{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{658CEB77-4F21-40B9-9963-896C41E64B67} = {658CEB77-4F21-40B9-9963-896C41E64B67}
 	EndProjectSection
 EndProject
 Global
@@ -146,10 +151,22 @@ Global
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.Release|x86.Build.0 = Release|Any CPU
-		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|Any CPU.ActiveCfg = ReleaseNuget|Any CPU
-		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|Any CPU.Build.0 = ReleaseNuget|Any CPU
-		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.ActiveCfg = ReleaseNuget|Any CPU
-		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.Build.0 = ReleaseNuget|Any CPU
+		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|Any CPU.Build.0 = Release|Any CPU
+		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.ActiveCfg = Release|Any CPU
+		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.Build.0 = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Release|x86.Build.0 = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.ReleaseNuget|Any CPU.ActiveCfg = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.ReleaseNuget|Any CPU.Build.0 = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.ReleaseNuget|x86.ActiveCfg = Release|Any CPU
+		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.ReleaseNuget|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,17 +6,18 @@ namespace Daml.Ledger.Client
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Client.Auth.Client;
     using Grpc.Core;
 
     public class CommandCompletionClient : ICommandCompletionClient
     {
         private readonly string _ledgerId;
-        private readonly CommandCompletionService.CommandCompletionServiceClient _commandCompletionClient;
+        private readonly ClientStub<CommandCompletionService.CommandCompletionServiceClient> _commandCompletionClient;
 
         public CommandCompletionClient(string ledgerId, Channel channel)
         {
             _ledgerId = ledgerId;
-            _commandCompletionClient = new CommandCompletionService.CommandCompletionServiceClient(channel);
+            _commandCompletionClient = new ClientStub<CommandCompletionService.CommandCompletionServiceClient>(new CommandCompletionService.CommandCompletionServiceClient(channel));
         }
 
         public IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string applicationId, LedgerOffset offset, IEnumerable<string> parties)
@@ -25,7 +26,7 @@ namespace Daml.Ledger.Client
            if (offset != null)
                 request.Offset = offset;
             request.Parties.AddRange(parties);
-            var response = _commandCompletionClient.CompletionStream(request);
+            var response = _commandCompletionClient.Dispatch(request, (c, r, co) => c.CompletionStream(r, co));
             return response.ResponseStream;
         }
 
@@ -43,14 +44,14 @@ namespace Daml.Ledger.Client
         public LedgerOffset CompletionEnd(TraceContext traceContext = null)
         {
             var request = new CompletionEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
-            var response = _commandCompletionClient.CompletionEnd(request);
+            var response = _commandCompletionClient.Dispatch(request, (c, r, co) => c.CompletionEnd(r, co));
             return response.Offset;
         }
 
         public async Task<LedgerOffset> CompletionEndAsync(TraceContext traceContext = null)
         {
             var request = new CompletionEndRequest { LedgerId = _ledgerId, TraceContext = traceContext };
-            var response = await _commandCompletionClient.CompletionEndAsync(request);
+            var response = await _commandCompletionClient.Dispatch(request, (c, r, co) => c.CompletionEndAsync(r, co));
             return response.Offset;
         }
     }
