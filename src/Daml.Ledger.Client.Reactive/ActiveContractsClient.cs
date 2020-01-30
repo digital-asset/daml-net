@@ -7,7 +7,8 @@ namespace Daml.Ledger.Client.Reactive
     using System.Reactive.Concurrency;
     using Com.DigitalAsset.Ledger.Api.V1;
     using Daml.Ledger.Client.Reactive.Util;
-
+    using Daml.Ledger.Api.Data.Util;
+ 
     public class ActiveContractsClient
     {
         private readonly IActiveContractsClient _activeContractsClient;
@@ -19,9 +20,9 @@ namespace Daml.Ledger.Client.Reactive
             _scheduler = scheduler;
         }
 
-        public IObservable<GetActiveContractsResponse> GetActiveContracts(TransactionFilter transactionFilter, bool verbose = true, TraceContext traceContext = null)
+        public IObservable<GetActiveContractsResponse> GetActiveContracts(TransactionFilter transactionFilter, bool verbose = true, Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            return _activeContractsClient.GetActiveContracts(transactionFilter, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _activeContractsClient.GetActiveContracts(transactionFilter, verbose, accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

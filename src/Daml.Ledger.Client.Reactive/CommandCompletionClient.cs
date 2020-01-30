@@ -6,8 +6,12 @@ namespace Daml.Ledger.Client.Reactive
     using System;
     using System.Reactive.Concurrency;
     using System.Collections.Generic;
-    using Com.DigitalAsset.Ledger.Api.V1;
     using Daml.Ledger.Client.Reactive.Util;
+    using Daml.Ledger.Api.Data.Util;
+
+    using CompletionStreamResponse = Com.DigitalAsset.Ledger.Api.V1.CompletionStreamResponse;
+    using LedgerOffset = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
 
     public class CommandCompletionClient
     {
@@ -19,15 +23,15 @@ namespace Daml.Ledger.Client.Reactive
             _commandCompletionClient = commandCompletionClient;
             _scheduler = scheduler;
         }
-
-        public IObservable<CompletionStreamResponse> GetLedgerConfiguration(string applicationId, LedgerOffset offset, IEnumerable<string> parties)
+        
+        public IObservable<CompletionStreamResponse> CompletionStream(string applicationId, Optional<LedgerOffset> offset, IEnumerable<string> parties, Optional<string> accessToken = null)
         {
-            return _commandCompletionClient.CompletionStream(applicationId, offset, parties).CreateAsyncObservable(_scheduler);
+            return _commandCompletionClient.CompletionStream(applicationId, offset.Reduce((LedgerOffset) null), parties, accessToken?.Reduce((string) null)).CreateAsyncObservable(_scheduler);
         }
         
-        public LedgerOffset CompletionEnd(TraceContext traceContext = null)
+        public LedgerOffset CompletionEnd(Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            return _commandCompletionClient.CompletionEnd(traceContext);
+            return _commandCompletionClient.CompletionEnd(accessToken?.Reduce((string) null), traceContext);
         } 
     }
 }

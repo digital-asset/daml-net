@@ -16,10 +16,10 @@ namespace Daml.Ledger.Client
         private readonly string _ledgerId;
         private readonly ClientStub<CommandService.CommandServiceClient> _commandClient;
 
-        public CommandClient(string ledgerId, Channel channel)
+        public CommandClient(string ledgerId, Channel channel, string accessToken)
         {
             _ledgerId = ledgerId;
-            _commandClient = new ClientStub<CommandService.CommandServiceClient>(new CommandService.CommandServiceClient(channel));
+            _commandClient = new ClientStub<CommandService.CommandServiceClient>(new CommandService.CommandServiceClient(channel), accessToken);
         }
 
         public void SubmitAndWait(
@@ -29,9 +29,10 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
+            SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
         public async Task SubmitAndWaitAsync(
@@ -41,19 +42,20 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
-            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands));
+            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
         }
 
-        public void SubmitAndWait(Commands commands)
+        public void SubmitAndWait(Commands commands, string accessToken = null)
         {
-            _commandClient.Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWait(r, co));
+            _commandClient.WithAccess(accessToken).Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWait(r, co));
         }
 
-        public async Task SubmitAndWaitAsync(Commands commands)
+        public async Task SubmitAndWaitAsync(Commands commands, string accessToken = null)
         {
-            await _commandClient.Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWaitAsync(r, co));
+            await _commandClient.WithAccess(accessToken).Dispatch(new SubmitAndWaitRequest { Commands = commands }, (c, r, co) => c.SubmitAndWaitAsync(r, co));
         }
 
         public Transaction SubmitAndWaitForTransaction(
@@ -63,10 +65,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co));
+            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co));
             return response.Transaction;
         }
 
@@ -77,10 +80,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands, 
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co));
+            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co));
             return response.TransactionId;
         }
 
@@ -91,10 +95,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co));
+            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co));
             return response.Transaction;
         }
 
@@ -105,10 +110,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co));
+            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co));
             return response.Transaction;
         }
 
@@ -119,10 +125,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co));
+            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co));
             return response.TransactionId;
         }
 
@@ -133,10 +140,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands)
+            IEnumerable<Command> commands,
+            string accessToken = null)
         {
             var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co));
+            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co));
             return response.Transaction;
         }
 

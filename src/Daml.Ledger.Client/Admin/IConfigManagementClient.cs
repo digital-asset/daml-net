@@ -9,12 +9,12 @@ namespace Daml.Ledger.Client.Admin
 
     public interface IConfigManagementClient
     {
-        (TimeModel, long) GetTimeModel();
+        (TimeModel, long) GetTimeModel(string accessToken = null);
 
-        Task<(TimeModel, long)> GetTimeModelAsync();
+        Task<(TimeModel, long)> GetTimeModelAsync(string accessToken = null);
 
-        long SetTimeModel(string submissionId, long configurationGeneration, DateTime maximumRecordTime, TimeModel newTimeModel);
+        long SetTimeModel(string submissionId, long configurationGeneration, DateTime maximumRecordTime, TimeModel newTimeModel, string accessToken = null);
 
-        Task<long> SetTimeModelAsync(string submissionId, long configurationGeneration, DateTime maximumRecordTime, TimeModel newTimeModel);
+        Task<long> SetTimeModelAsync(string submissionId, long configurationGeneration, DateTime maximumRecordTime, TimeModel newTimeModel, string accessToken = null);
     }
 }

@@ -5,23 +5,26 @@ namespace Daml.Ledger.Client.Reactive
 {
     using System;
     using System.Reactive.Concurrency;
-    using Com.DigitalAsset.Ledger.Api.V1;
     using Daml.Ledger.Client.Reactive.Util;
+    using Daml.Ledger.Api.Data.Util;
+
+    using GetLedgerConfigurationResponse = Com.DigitalAsset.Ledger.Api.V1.GetLedgerConfigurationResponse;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
 
     public class LedgerConfigurationClient
     {
         private readonly ILedgerConfigurationClient _ledgerConfigurationClient;
         private readonly IScheduler _scheduler;
 
-        public LedgerConfigurationClient(ILedgerConfigurationClient ledgerConfigurationClient, IScheduler scheduler)
+        public LedgerConfigurationClient(ILedgerConfigurationClient ledgerConfigurationClient, IScheduler scheduler = null)
         {
             _ledgerConfigurationClient = ledgerConfigurationClient;
             _scheduler = scheduler;
         }
 
-        public IObservable<GetLedgerConfigurationResponse> GetLedgerConfiguration(TraceContext traceContext = null)
+        public IObservable<GetLedgerConfigurationResponse> GetLedgerConfiguration(Optional<string> accessToken = null, TraceContext traceContext = null)
         {
-            return _ledgerConfigurationClient.GetLedgerConfiguration(traceContext).CreateAsyncObservable(_scheduler);
+            return _ledgerConfigurationClient.GetLedgerConfiguration(accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

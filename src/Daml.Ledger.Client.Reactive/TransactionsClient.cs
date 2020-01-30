@@ -5,16 +5,22 @@ namespace Daml.Ledger.Client.Reactive
 {
     using System;
     using System.Reactive.Concurrency;
-    using Com.DigitalAsset.Ledger.Api.V1;
     using Client;
     using Daml.Ledger.Client.Reactive.Util;
+    using Daml.Ledger.Api.Data.Util;
+    
+    using GetTransactionsResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse;
+    using GetTransactionTreesResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse;
+    using TransactionFilter = Com.DigitalAsset.Ledger.Api.V1.TransactionFilter;
+    using LedgerOffset = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
 
     public class TransactionsClient
     {
         private readonly ITransactionsClient _transactionsClient;
         private readonly IScheduler _scheduler;
 
-        public TransactionsClient(ITransactionsClient transactionsClient, IScheduler scheduler)
+        public TransactionsClient(ITransactionsClient transactionsClient, IScheduler scheduler = null)
         {
             _transactionsClient = transactionsClient;
             _scheduler = scheduler;
@@ -25,9 +31,10 @@ namespace Daml.Ledger.Client.Reactive
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            Optional<string> accessToken = null, 
             TraceContext traceContext = null)
         {
-            return _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler);
         }
 
         public IObservable<GetTransactionTreesResponse> GetTransactionTrees(
@@ -35,9 +42,10 @@ namespace Daml.Ledger.Client.Reactive
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            Optional<string> accessToken = null, 
             TraceContext traceContext = null)
         {
-            return _transactionsClient.GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, traceContext).CreateAsyncObservable(_scheduler);
+            return _transactionsClient.GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, accessToken?.Reduce((string) null), traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

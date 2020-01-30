@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>Daml.Ledger.Client.Test</RootNamespace>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Daml.Ledger.Api.Data.Test</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -18,13 +18,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Admin\" />
+    <Folder Include="Auth\" />
+    <Folder Include="Testing\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
+    <ProjectReference Include="..\Daml.Ledger.Api.Data\Daml.Ledger.Api.Data.csproj" />
   </ItemGroup>
 
 </Project>
