@@ -19,9 +19,9 @@ namespace Daml.Ledger.Client.Reactive
             _scheduler = scheduler;
         }
 
-        public IObservable<GetLedgerConfigurationResponse> GetLedgerConfiguration(string ledgerId, TraceContext traceContext = null)
+        public IObservable<GetLedgerConfigurationResponse> GetLedgerConfiguration(TraceContext traceContext = null)
         {
-            return _ledgerConfigurationClient.GetLedgerConfiguration(ledgerId, traceContext).CreateAsyncObservable(_scheduler);
+            return _ledgerConfigurationClient.GetLedgerConfiguration(traceContext).CreateAsyncObservable(_scheduler);
         }
     }
 }

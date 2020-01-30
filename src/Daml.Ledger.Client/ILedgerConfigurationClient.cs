@@ -8,8 +8,8 @@ namespace Daml.Ledger.Client
 
     public interface ILedgerConfigurationClient
     {
-        IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(string ledgerId, TraceContext traceContext = null);
+        IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(TraceContext traceContext = null);
 
-        IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(string ledgerId, TraceContext traceContext = null);
+        IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(TraceContext traceContext = null);
     }
 }

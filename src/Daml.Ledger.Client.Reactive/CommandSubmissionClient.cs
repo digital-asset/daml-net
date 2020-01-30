@@ -8,16 +8,16 @@ namespace Daml.Ledger.Client.Reactive
 
     public class CommandSubmissionClient
     {
-        private readonly ICommandSubmissionClient commandSubmissionClient;
+        private readonly ICommandSubmissionClient _commandSubmissionClient;
 
         public CommandSubmissionClient(ICommandSubmissionClient commandSubmissionClient)
         {
-            this.commandSubmissionClient = commandSubmissionClient;
+            _commandSubmissionClient = commandSubmissionClient;
         }
 
         public IDisposable Submit(IObservable<Commands> commands)
         {
-            return commands.Subscribe(this.commandSubmissionClient.Submit);
+            return commands.Subscribe(_commandSubmissionClient.Submit);
         }
     }
 }

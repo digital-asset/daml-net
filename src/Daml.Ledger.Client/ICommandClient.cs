@@ -11,7 +11,6 @@ namespace Daml.Ledger.Client
     public interface ICommandClient
     {
         void SubmitAndWait(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -21,7 +20,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         Task SubmitAndWaitAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -35,7 +33,6 @@ namespace Daml.Ledger.Client
         Task SubmitAndWaitAsync(Commands commands);
 
         Transaction SubmitAndWaitForTransaction(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -45,7 +42,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         string SubmitAndWaitForTransactionId(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -55,7 +51,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         TransactionTree SubmitAndWaitForTransactionTree(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -65,7 +60,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         Task<Transaction> SubmitAndWaitForTransactionAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -75,7 +69,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         Task<string> SubmitAndWaitForTransactionIdAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,
@@ -85,7 +78,6 @@ namespace Daml.Ledger.Client
             IEnumerable<Command> commands);
 
         Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
-            string ledgerId,
             string applicationId,
             string workflowId,
             string commandId,

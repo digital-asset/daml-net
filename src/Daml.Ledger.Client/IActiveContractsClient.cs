@@ -9,13 +9,11 @@ namespace Daml.Ledger.Client
     public interface IActiveContractsClient
     {
         IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
-            string ledgerId,
             TransactionFilter transactionFilter,
             bool verbose = true,
             TraceContext traceContext = null);
 
         IEnumerable<GetActiveContractsResponse> GetActiveContractsSync(
-                string ledgerId,
                 TransactionFilter transactionFilter,
                 bool verbose = true,
                 TraceContext traceContext = null);
