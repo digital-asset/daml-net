@@ -7,26 +7,27 @@ namespace Daml.Ledger.Client.Admin
     using System.Threading.Tasks;
     using Grpc.Core;
     using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Daml.Ledger.Client.Auth.Client;
     using Google.Protobuf.WellKnownTypes;
 
     public class ConfigManagementClient : IConfigManagementClient
     {
-        private readonly ConfigManagementService.ConfigManagementServiceClient _configManagementClient;
+        private readonly ClientStub<ConfigManagementService.ConfigManagementServiceClient> _configManagementClient;
 
         public ConfigManagementClient(Channel channel)
         {
-            _configManagementClient = new ConfigManagementService.ConfigManagementServiceClient(channel);
+            _configManagementClient = new ClientStub<ConfigManagementService.ConfigManagementServiceClient>(new Com.DigitalAsset.Ledger.Api.V1.Admin.ConfigManagementService.ConfigManagementServiceClient(channel));
         }
 
         public (TimeModel, long) GetTimeModel()
         {
-            var response = _configManagementClient.GetTimeModel(new GetTimeModelRequest());
+            var response = _configManagementClient.Dispatch(new GetTimeModelRequest(), (c, r, co) => c.GetTimeModel(r, co));
             return (response.TimeModel, response.ConfigurationGeneration);
         }
 
         public async Task<(TimeModel, long)> GetTimeModelAsync()
         {
-            var response = await _configManagementClient.GetTimeModelAsync(new GetTimeModelRequest());
+            var response = await _configManagementClient.Dispatch(new GetTimeModelRequest(), (c, r, co) => c.GetTimeModelAsync(r, co));
             return (response.TimeModel, response.ConfigurationGeneration);
         }
 
@@ -34,14 +35,14 @@ namespace Daml.Ledger.Client.Admin
         {
             var request = new SetTimeModelRequest { SubmissionId = submissionId, ConfigurationGeneration = configurationGeneration, MaximumRecordTime = Timestamp.FromDateTime(maximumRecordTime), NewTimeModel = newTimeModel };
 
-            return _configManagementClient.SetTimeModel(request).ConfigurationGeneration;
+            return _configManagementClient.Dispatch(request, (c, r, co) => c.SetTimeModel(r, co).ConfigurationGeneration);
         }
 
         public async Task<long> SetTimeModelAsync(string submissionId, long configurationGeneration, DateTime maximumRecordTime, TimeModel newTimeModel)
         {
             var request = new SetTimeModelRequest { SubmissionId = submissionId, ConfigurationGeneration = configurationGeneration, MaximumRecordTime = Timestamp.FromDateTime(maximumRecordTime), NewTimeModel = newTimeModel };
 
-            var response = await _configManagementClient.SetTimeModelAsync(request);
+            var response = await _configManagementClient.Dispatch(request, (c, r, co) => c.SetTimeModelAsync(r, co));
                 
             return response.ConfigurationGeneration;
         }
