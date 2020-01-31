@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Com.DigitalAsset.Daml_Lf_1_7.DamlLf1

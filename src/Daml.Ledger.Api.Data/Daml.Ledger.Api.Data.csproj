@@ -31,12 +31,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\" />
-    <Folder Include="Auth\" />
-    <Folder Include="Testing\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
 

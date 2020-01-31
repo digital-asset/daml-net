@@ -1,15 +1,16 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+
 namespace Daml.Ledger.Client.Testing
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Com.DigitalAsset.Ledger.Api.V1.Testing;
-    using Google.Protobuf.WellKnownTypes;
     using Daml.Ledger.Client.Auth.Client;
-    using Grpc.Core;
 
     public class TimeClient : ITimeClient
     {
