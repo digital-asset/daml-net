@@ -9,16 +9,16 @@ namespace Daml.Ledger.Client.Admin
 
     public interface IPartyManagementClient
     {
-        PartyDetails AllocateParty(string displayName, string partyIdHint);
+        PartyDetails AllocateParty(string displayName, string partyIdHint, string accessToken = null);
 
-        Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint);
+        Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint, string accessToken = null);
 
-        string GetParticipantId();
+        string GetParticipantId(string accessToken = null);
 
-        Task<string> GetParticipantIdAsync();
+        Task<string> GetParticipantIdAsync(string accessToken = null);
 
-        IEnumerable<PartyDetails> ListKnownParties();
+        IEnumerable<PartyDetails> ListKnownParties(string accessToken = null);
 
-        Task<IEnumerable<PartyDetails>> ListKnownPartiesAsync();
+        Task<IEnumerable<PartyDetails>> ListKnownPartiesAsync(string accessToken = null);
     }
 }

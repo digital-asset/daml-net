@@ -31,9 +31,9 @@ namespace Daml.Ledger.Automation
             _handler = handler;
         }
 
-        public async Task Run(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, TraceContext traceContext = null)
+        public async Task Run(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, string accessToken = null, TraceContext traceContext = null)
         {
-            using (var stream = _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, traceContext))
+            using (var stream = _transactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
                 while (stream.MoveNext().Result)
                 {

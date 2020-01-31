@@ -1,9 +1,16 @@
-﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="AutoBuild">
-  
+﻿<Project ToolsVersion="4.0" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="AutoBuild">
+
   <Target Name="Build" DependsOnTargets="AutoBuild">
   </Target>
 
-  <Target Name="AutoBuild" DependsOnTargets="ClientTest;ReactiveTest;Automation;BindingsExample;TestExample">
+  <Target Name="AutoBuild" DependsOnTargets="Reactive;Automation;Tests;Examples">
+  </Target>
+
+  <Target Name="Tests" DependsOnTargets="ClientTest;ApiDataTest;ReactiveTest">
+  </Target>
+
+  <Target Name="Examples" DependsOnTargets="BindingsExample;TestExample">
   </Target>
 
   <Target Name="Api">
@@ -34,7 +41,21 @@
     <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
   </Target>
 
-  <Target Name="Reactive" DependsOnTargets="Client">
+  <Target Name="ApiData" DependsOnTargets="Api">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Api.Data</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="ApiDataTest" DependsOnTargets="ApiData">
+    <PropertyGroup>
+      <Project>Daml.Ledger.Api.Data.Test</Project>
+    </PropertyGroup>
+    <Exec Command="dotnet build -c $(Configuration) ./src/$(Project)/$(Project).csproj" />
+  </Target>
+
+  <Target Name="Reactive" DependsOnTargets="Client;ApiData">
     <PropertyGroup>
       <Project>Daml.Ledger.Client.Reactive</Project>
     </PropertyGroup>

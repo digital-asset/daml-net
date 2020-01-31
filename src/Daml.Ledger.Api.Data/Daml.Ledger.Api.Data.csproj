@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Daml.Ledger.Client.Reactive</RootNamespace>
+    <RootNamespace>Daml.Ledger.Api.Data</RootNamespace>
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
-    <PackageId>Daml.Ledger.Client.Reactive</PackageId>
-    <PackageTags>.net C# daml ledger Rx.Net api</PackageTags>
-    <Product>net reactive bindings</Product>
+    <PackageId>Daml.Ledger.Api.Data</PackageId>
+    <PackageTags>.NET C# DAML Ledger Api Data</PackageTags>
+    <Product>DAML .NET Ledger Api Data</Product>
     <Authors>Georg Schneider</Authors>
     <Company>Digital Asset</Company>
     <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -29,30 +29,34 @@
     <NoWarn></NoWarn>
     <NoStdLib>false</NoStdLib>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Admin\" />
+    <Folder Include="Auth\" />
+    <Folder Include="Testing\" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.1.5" />
-    <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
 
   <Choose>
     <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
-        <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
-        <PackageReference Include="Daml.Ledger.Api.Data" Version="$(Version)" />
-        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
-        <ProjectReference Include="..\Daml.Ledger.Api.Data\Daml.Ledger.Api.Data.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+        <PackageReference Include="Daml.Ledger.Api" Version="$(Version)" />
+        <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
-        <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
-        <ProjectReference Include="..\Daml.Ledger.Api.Data\Daml.Ledger.Api.Data.csproj" />
+        <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" />
       </ItemGroup>
     </Otherwise>
   </Choose>
 
-  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack"> 
+  <Target Name="InstallPackage" Condition="'$(Configuration)' == 'ReleaseNuget'" AfterTargets="Pack">
     <Exec Command="nuget install $(PackageId) -Version $(Version) -OutputDirectory $(PackageOutputPath)" />
   </Target>
 
 </Project>
+

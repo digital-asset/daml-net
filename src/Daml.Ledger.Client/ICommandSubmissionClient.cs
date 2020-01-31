@@ -17,7 +17,8 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
         Task SubmitAsync(
             string applicationId,
@@ -26,10 +27,11 @@ namespace Daml.Ledger.Client
             string party,
             DateTime ledgerEffectiveTime,
             DateTime maximumRecordTime,
-            IEnumerable<Command> commands);
+            IEnumerable<Command> commands,
+            string accessToken = null);
 
-        void Submit(Commands commands);
+        void Submit(Commands commands, string accessToken = null);
 
-        Task SubmitAsync(Commands commands);
+        Task SubmitAsync(Commands commands, string accessToken = null);
     }
 }

@@ -9,16 +9,16 @@ namespace Daml.Ledger.Client
 
     public interface IPackageClient
     {
-        GetPackageResponse GetPackage(string packageId, TraceContext traceContext = null);
+        GetPackageResponse GetPackage(string packageId, string accessToken = null, TraceContext traceContext = null);
 
-        Task<GetPackageResponse> GetPackageAsync(string packageId, TraceContext traceContext = null);
+        Task<GetPackageResponse> GetPackageAsync(string packageId, string accessToken = null, TraceContext traceContext = null);
 
-        PackageStatus GetPackageStatus(string packageId, TraceContext traceContext = null);
+        PackageStatus GetPackageStatus(string packageId, string accessToken = null, TraceContext traceContext = null);
 
-        Task<PackageStatus> GetPackageStatusAsync(string packageId, TraceContext traceContext = null);
+        Task<PackageStatus> GetPackageStatusAsync(string packageId, string accessToken = null, TraceContext traceContext = null);
 
-        IEnumerable<string> ListPackages(TraceContext traceContext = null);
+        IEnumerable<string> ListPackages(string accessToken = null, TraceContext traceContext = null);
 
-        Task<IEnumerable<string>> ListPackagesAsync(TraceContext traceContext = null);
+        Task<IEnumerable<string>> ListPackagesAsync(string accessToken = null, TraceContext traceContext = null);
     }
 }

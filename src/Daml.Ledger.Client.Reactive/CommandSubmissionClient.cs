@@ -4,7 +4,9 @@
 namespace Daml.Ledger.Client.Reactive
 {
     using System;
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Daml.Ledger.Api.Data.Util;
+
+    using Commands = Com.DigitalAsset.Ledger.Api.V1.Commands;
 
     public class CommandSubmissionClient
     {
@@ -15,9 +17,9 @@ namespace Daml.Ledger.Client.Reactive
             _commandSubmissionClient = commandSubmissionClient;
         }
 
-        public IDisposable Submit(IObservable<Commands> commands)
+        public IDisposable Submit(IObservable<Commands> commands, Optional<string> accessToken = null)
         {
-            return commands.Subscribe(_commandSubmissionClient.Submit);
+            return commands.Subscribe(c => _commandSubmissionClient.Submit(c, accessToken?.Reduce((string) null)));
         }
     }
 }

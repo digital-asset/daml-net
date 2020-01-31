@@ -10,12 +10,12 @@ namespace Daml.Ledger.Client.Admin
 
     public interface IPackageManagementClient
     {
-        IEnumerable<PackageDetails> ListKnownPackages();
+        IEnumerable<PackageDetails> ListKnownPackages(string accessToken = null);
 
-        Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync();
+        Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync(string accessToken = null);
 
-        void UploadDarFile(Stream stream, string submissionId = null);
+        void UploadDarFile(Stream stream, string submissionId = null, string accessToken = null);
 
-        Task UploadDarFileAsync(Stream stream, string submissionId = null);
+        Task UploadDarFileAsync(Stream stream, string submissionId = null, string accessToken = null);
     }
 }

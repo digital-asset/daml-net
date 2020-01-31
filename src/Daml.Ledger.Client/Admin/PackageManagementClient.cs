@@ -15,40 +15,41 @@ namespace Daml.Ledger.Client.Admin
     {
         private readonly ClientStub<PackageManagementService.PackageManagementServiceClient> _packageManagementClient;
 
-        public PackageManagementClient(Channel channel)
+        public PackageManagementClient(Channel channel, string accessToken)
         {
-            _packageManagementClient = new ClientStub<PackageManagementService.PackageManagementServiceClient>(new PackageManagementService.PackageManagementServiceClient(channel));
+            _packageManagementClient = new ClientStub<PackageManagementService.PackageManagementServiceClient>(new PackageManagementService.PackageManagementServiceClient(channel), accessToken);
         }
 
-        public IEnumerable<PackageDetails> ListKnownPackages()
+        public IEnumerable<PackageDetails> ListKnownPackages(string accessToken = null)
         {
-            var response = _packageManagementClient.Dispatch(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackages(r, co));
+            var response = _packageManagementClient.WithAccess(accessToken).Dispatch(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackages(r, co));
             return response.PackageDetails;
         }
 
-        public async Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync()
+        public async Task<IEnumerable<PackageDetails>> ListKnownPackagesAsync(string accessToken = null)
         {
-            var response = await _packageManagementClient.Dispatch(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackagesAsync(r, co));
+            var response = await _packageManagementClient.WithAccess(accessToken).Dispatch(new ListKnownPackagesRequest(), (c, r, co) => c.ListKnownPackagesAsync(r, co));
+
             return response.PackageDetails;
         }
 
-        public void UploadDarFile(Stream stream, string submissionId = null)
+        public void UploadDarFile(Stream stream, string submissionId = null, string accessToken = null)
         {
             var request = new UploadDarFileRequest { DarFile = ByteString.FromStream(stream) };
             if (!string.IsNullOrEmpty(submissionId))
                 request.SubmissionId = submissionId;
             
-            _packageManagementClient.Dispatch(request, (c, r, co) => c.UploadDarFile(r, co));
+            _packageManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.UploadDarFile(r, co));
         }
 
-        public async Task UploadDarFileAsync(Stream stream, string submissionId = null)
+        public async Task UploadDarFileAsync(Stream stream, string submissionId = null, string accessToken = null)
         {
             var byteString = await ByteString.FromStreamAsync(stream);
             var request = new UploadDarFileRequest { DarFile = byteString };
             if (!string.IsNullOrEmpty(submissionId))
                 request.SubmissionId = submissionId;
-                
-            await _packageManagementClient.Dispatch(request, (c, r, co) => c.UploadDarFileAsync(r, co));
+
+            await _packageManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.UploadDarFileAsync(r, co));
         }
     }
 }

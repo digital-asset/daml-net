@@ -9,31 +9,32 @@ namespace Daml.Ledger.Client
 
     public interface ITransactionsClient
     {
-        GetFlatTransactionResponse GetFlatTransactionByEventId(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        GetFlatTransactionResponse GetFlatTransactionByEventId(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        Task<GetFlatTransactionResponse> GetFlatTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        Task<GetFlatTransactionResponse> GetFlatTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        GetFlatTransactionResponse GetFlatTransactionById(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        GetFlatTransactionResponse GetFlatTransactionById(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        Task<GetFlatTransactionResponse> GetFlatTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        Task<GetFlatTransactionResponse> GetFlatTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        LedgerOffset GetLedgerEnd(TraceContext traceContext = null);
+        LedgerOffset GetLedgerEnd(string accessToken = null, TraceContext traceContext = null);
 
-        Task<LedgerOffset> GetLedgerEndAsync(TraceContext traceContext = null);
+        Task<LedgerOffset> GetLedgerEndAsync(string accessToken = null, TraceContext traceContext = null);
 
-        GetTransactionResponse GetTransactionByEventId(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        GetTransactionResponse GetTransactionByEventId(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        Task<GetTransactionResponse> GetTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        Task<GetTransactionResponse> GetTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        GetTransactionResponse GetTransactionById(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        GetTransactionResponse GetTransactionById(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
-        Task<GetTransactionResponse> GetTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, TraceContext traceContext = null);
+        Task<GetTransactionResponse> GetTransactionByIdAsync(string transactionId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
         IAsyncEnumerator<GetTransactionsResponse> GetTransactions(
             TransactionFilter transactionFilter,
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null);
 
         IEnumerable<GetTransactionsResponse> GetTransactionsSync(
@@ -41,6 +42,7 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null);
 
         IAsyncEnumerator<GetTransactionTreesResponse> GetTransactionTrees(
@@ -48,6 +50,7 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null);
 
         IEnumerable<GetTransactionTreesResponse> GetTransactionTreesSync(
@@ -55,6 +58,7 @@ namespace Daml.Ledger.Client
             LedgerOffset beginOffset,
             LedgerOffset endOffset = null,
             bool verbose = true,
+            string accessToken = null,
             TraceContext traceContext = null);
     }
 }
