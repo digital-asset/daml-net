@@ -30,18 +30,25 @@
     <NoStdLib>false</NoStdLib>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
+
   <Choose>
     <When Condition="'$(Configuration)' == 'ReleaseNuget'">
       <ItemGroup>
         <PackageReference Include="Daml.Ledger.Client" Version="$(Version)" />
         <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
         <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+        <ProjectReference Include="..\Daml.Ledger.Api.Data\Daml.Ledger.Api.Data.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
         <ProjectReference Include="..\Daml.Ledger.Api\Daml.Ledger.Api.csproj" />
         <ProjectReference Include="..\Daml.Ledger.Client\Daml.Ledger.Client.csproj" />
+        <ProjectReference Include="..\Daml.Ledger.Api.Data\Daml.Ledger.Api.Data.csproj" />
       </ItemGroup>
     </Otherwise>
   </Choose>
