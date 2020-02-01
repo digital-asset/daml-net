@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Daml.Ledger.Automation.Components.Helpers
+namespace Daml.Ledger.Api.Data.Util
 {
     public static class EnumerableExtensions
     {

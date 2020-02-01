@@ -13,7 +13,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.DigitalAsset.Ledger.Api.V1.GetPackageStatusResponse protoValue = new Com.DigitalAsset.Ledger.Api.V1.GetPackageStatusResponse() { PackageStatus = Com.DigitalAsset.Ledger.Api.V1.PackageStatus.Registered };
 
-            GetPackageStatusResponse response = GetPackageStatusResponse.FromProto(protoValue);
+            GetPackageStatusResponse response = GetPackageStatusResponse.FromProto(protoValue.PackageStatus);
 
             Assert.AreEqual(GetPackageStatusResponse.PackageStatus.ValueOf(1), response.PackageStatusValue);
         }

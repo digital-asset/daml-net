@@ -3,7 +3,7 @@
 
 using System.Collections.Immutable;
 
-namespace Daml.Ledger.Automation.Components.Helpers
+namespace Daml.Ledger.Api.Data.Util
 {
     using Daml.Ledger.Api.Data;
     

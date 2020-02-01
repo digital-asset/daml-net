@@ -37,6 +37,6 @@ namespace Daml.Ledger.Api.Data
         
         public PackageStatus PackageStatusValue { get; }
 
-        public static GetPackageStatusResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.GetPackageStatusResponse p) => new GetPackageStatusResponse(PackageStatus.ValueOf((int) p.PackageStatus));
+        public static GetPackageStatusResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.PackageStatus packageStatus) => new GetPackageStatusResponse(PackageStatus.ValueOf((int) packageStatus));
     }
 } 
