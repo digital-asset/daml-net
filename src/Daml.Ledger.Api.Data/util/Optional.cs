@@ -28,7 +28,7 @@ namespace Daml.Ledger.Api.Data.Util
         // Renamed to match the Java version
         public abstract Optional<TResult> Map<TResult>(Func<T, Optional<TResult>> map);
 
-        // Map the wrapped value to an Optional of another type using the specified mapping function which returns the value as a new type, or if the Optional is None
+        // Return the contained value, or the result of the whenNone function if None
         public abstract TResult MapOrElse<TResult>(Func<T, TResult> map, Func<TResult> whenNone);
 
         // Return the existing Optional if the predicate returns true, otherwise None. If the value is None then None is returned
@@ -39,6 +39,9 @@ namespace Daml.Ledger.Api.Data.Util
 
         // Extract the contained value, or the specified function return value if None - allow a lazy-evaluation lambda to be specified to get the value
         public abstract T Reduce(Func<T> whenNone);
+
+        // Return the contained value, or throw the exception provided by the exception providing function
+        public abstract T ReduceOrThrow(Func<Exception> exceptionSupplier);
 
         // Convert the wrapped value to the new type if possible, if not or the types are convertable then the returned value will be None
         public Optional<TNew> OfType<TNew>() where TNew : class => this is Some<T> some && typeof(TNew).IsAssignableFrom(typeof(T))
