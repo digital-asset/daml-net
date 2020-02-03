@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Daml.Ledger.Api.Data.Util;
 using NUnit.Framework;
 
 namespace Daml.Ledger.Api.Data.Util.Test

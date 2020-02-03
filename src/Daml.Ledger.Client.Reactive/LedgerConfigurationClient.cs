@@ -1,10 +1,11 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
+using System.Reactive.Concurrency;
+
 namespace Daml.Ledger.Client.Reactive
 {
-    using System;
-    using System.Reactive.Concurrency;
     using Daml.Ledger.Client.Reactive.Util;
     using Daml.Ledger.Api.Data.Util;
 

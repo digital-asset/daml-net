@@ -1,12 +1,12 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
+using System.Collections.Generic;
+using Grpc.Core;
+
 namespace Daml.Ledger.Client.Auth.Client
 {
-    using System;
-    using System.Collections.Generic;
-    using Grpc.Core;
-
     /// <summary>
     /// A stub around a gRPC client class, to ease management of access tokens. So named to mimic the Java use case somewhat.
     /// </summary>

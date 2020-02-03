@@ -6,26 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using Com.DigitalAsset.Ledger.Api.V1;
 using Grpc.Core;
-
-using TransactionService = Com.DigitalAsset.Ledger.Api.V1.TransactionService;
-using CommandSubmissionService = Com.DigitalAsset.Ledger.Api.V1.CommandSubmissionService;
-using Identifier = Com.DigitalAsset.Ledger.Api.V1.Identifier;
-using TransactionFilter = Com.DigitalAsset.Ledger.Api.V1.TransactionFilter;
-using Filters = Com.DigitalAsset.Ledger.Api.V1.Filters;
-using GetTransactionsRequest = Com.DigitalAsset.Ledger.Api.V1.GetTransactionsRequest;
-using LedgerOffset = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset;
-using GetTransactionsResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse;
-using Transaction = Com.DigitalAsset.Ledger.Api.V1.Transaction;
-using SubmitRequest = Com.DigitalAsset.Ledger.Api.V1.SubmitRequest;
-using Commands = Com.DigitalAsset.Ledger.Api.V1.Commands;
-using Command = Com.DigitalAsset.Ledger.Api.V1.Command;
-using CreatedEvent = Com.DigitalAsset.Ledger.Api.V1.CreatedEvent;
-using Event = Com.DigitalAsset.Ledger.Api.V1.Event;
 
 namespace Daml.Ledger.Examples.Bindings.Grpc
 {
+    using Com.DigitalAsset.Ledger.Api.V1;
+
     /// This class subscribes to the stream of transactions for a given party and reacts to Ping or Pong contracts.
     public class PingPongProcessor 
     {

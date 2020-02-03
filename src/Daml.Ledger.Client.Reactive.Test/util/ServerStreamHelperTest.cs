@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
-using Daml.Ledger.Client.Reactive.Util;
 using NUnit.Framework;
 
 namespace Daml.Ledger.Client.Reactive.Test.Util
 {
+    using Daml.Ledger.Client.Reactive.Util;
+
     [TestFixture, Explicit]  // Tests take 10 seconds or so each...
     public class ServerStreamHelperTest
     {

@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using NUnit.Framework;
-using Daml.Ledger.Client.Auth.Client;
 
 namespace Daml.Ledger.Client.Test.Auth.Client
 {
+    using Daml.Ledger.Client.Auth.Client;
+
     [TestFixture]
     public class LedgerCallCredentialsTest
     {

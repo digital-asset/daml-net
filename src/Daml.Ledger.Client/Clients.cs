@@ -1,12 +1,13 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
+using Grpc.Core;
+
 namespace Daml.Ledger.Client
 {
-    using System;
     using Admin;
     using Testing;
-    using Grpc.Core;
 
     public class Clients
     {

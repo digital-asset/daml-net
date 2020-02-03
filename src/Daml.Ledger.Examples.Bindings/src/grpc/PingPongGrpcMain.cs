@@ -2,34 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using Com.DigitalAsset.Daml_Lf_1_7.DamlLf1;
 using Grpc.Core;
-
-using ArchivePayload = Com.DigitalAsset.Daml_Lf_1_7.DamlLf.ArchivePayload;
-using Package = Com.DigitalAsset.Daml_Lf_1_7.DamlLf1.Package;
-
-using Identifier = Com.DigitalAsset.Ledger.Api.V1.Identifier;
-using CommandSubmissionService = Com.DigitalAsset.Ledger.Api.V1.CommandSubmissionService;
-using Record = Com.DigitalAsset.Ledger.Api.V1.Record;
-using RecordField = Com.DigitalAsset.Ledger.Api.V1.RecordField;
-using Command = Com.DigitalAsset.Ledger.Api.V1.Command;
-using Value = Com.DigitalAsset.Ledger.Api.V1.Value;
-using CreateCommand = Com.DigitalAsset.Ledger.Api.V1.CreateCommand;
-using SubmitRequest = Com.DigitalAsset.Ledger.Api.V1.SubmitRequest;
-using Commands = Com.DigitalAsset.Ledger.Api.V1.Commands;
-using LedgerIdentityService = Com.DigitalAsset.Ledger.Api.V1.LedgerIdentityService;
-using GetLedgerIdentityRequest = Com.DigitalAsset.Ledger.Api.V1.GetLedgerIdentityRequest;
-using PackageService = Com.DigitalAsset.Ledger.Api.V1.PackageService;
-using ListPackagesResponse = Com.DigitalAsset.Ledger.Api.V1.ListPackagesResponse;
-using ListPackagesRequest = Com.DigitalAsset.Ledger.Api.V1.ListPackagesRequest;
-using GetPackageRequest = Com.DigitalAsset.Ledger.Api.V1.GetPackageRequest;
 
 namespace Daml.Ledger.Examples.Bindings.Grpc
 {
+    using Com.DigitalAsset.Daml_Lf_1_7.DamlLf1;
+    using Com.DigitalAsset.Ledger.Api.V1;
+
     public class PingPongGrpcMain
     {
         // application id used for sending commands
@@ -149,7 +130,7 @@ namespace Daml.Ledger.Examples.Bindings.Grpc
                 submissionService.SubmitAsync(submitRequest);
             }
         }
-
+    
         /// <summary>
         /// Fetches the ledger id via the Ledger Identity Service.
         /// </summary>
@@ -187,7 +168,7 @@ namespace Daml.Ledger.Examples.Bindings.Grpc
                 try
                 {
                     // parse the archive payload
-                    ArchivePayload payload = ArchivePayload.Parser.ParseFrom(packageResponse.ArchivePayload);
+                    var payload = Com.DigitalAsset.Daml_Lf_1_7.DamlLf.ArchivePayload.Parser.ParseFrom(packageResponse.ArchivePayload);
 
                     // get the DAML LF package
                     Package lfPackage = payload.DamlLf1;
