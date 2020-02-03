@@ -1,13 +1,13 @@
 // Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using Daml.Ledger.Client.Auth.Client;
-using Google.Api;
 using Grpc.Core;
 using NUnit.Framework;
 
 namespace Daml.Ledger.Client.Test.Auth.Client
 {
+    using Daml.Ledger.Client.Auth.Client;
+
     public class ServiceClient
     {
         public MeaningOfLifeResponse WhatIsTheMeaningOfLife(MeaningOfLifeRequest request, CallOptions callOptions) => new MeaningOfLifeResponse();

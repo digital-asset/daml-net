@@ -1,19 +1,15 @@
 ﻿// Copyright(c) 2019 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System;
+using System.Reactive.Concurrency;
+
 namespace Daml.Ledger.Client.Reactive
 {
-    using System;
-    using System.Reactive.Concurrency;
     using Client;
     using Daml.Ledger.Client.Reactive.Util;
     using Daml.Ledger.Api.Data.Util;
-    
-    using GetTransactionsResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse;
-    using GetTransactionTreesResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse;
-    using TransactionFilter = Com.DigitalAsset.Ledger.Api.V1.TransactionFilter;
-    using LedgerOffset = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset;
-    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
+    using Com.DigitalAsset.Ledger.Api.V1;
 
     public class TransactionsClient
     {
