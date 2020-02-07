@@ -11,6 +11,34 @@ namespace Daml.Ledger.Client
 
     public class Clients
     {
+        private readonly Channel _channel;
+
+        public class AdminClients
+        {
+            public IConfigManagementClient ConfigManagementClient { get; }
+            public IPackageManagementClient PackageManagementClient { get; }
+            public IPartyManagementClient PartyManagementClient { get; }
+
+            public AdminClients(Channel channel, string accessToken)
+            {
+                ConfigManagementClient = new ConfigManagementClient(channel, accessToken);
+                PackageManagementClient = new PackageManagementClient(channel, accessToken);
+                PartyManagementClient = new PartyManagementClient(channel, accessToken);
+            }
+        }
+
+        public class TestingClients
+        {
+            public ITimeClient TimeClient { get; }
+            public IResetClient ResetClient { get; }
+
+            public TestingClients(string ledgerId, Channel channel, string accessToken)
+            {
+                TimeClient = new TimeClient(ledgerId, channel, accessToken);
+                ResetClient = new ResetClient(ledgerId, channel, accessToken);
+            }
+        }
+
         public string LedgerId { get; }
 
         public IActiveContractsClient       ActiveContractsClient       { get; }
@@ -73,8 +101,18 @@ namespace Daml.Ledger.Client
             }
         }
 
+        /// <summary>
+        /// Shutdown the connection
+        /// </summary>
+        public void Close()
+        {
+            _channel.ShutdownAsync().Wait();
+        }
+
         private Clients(Channel channel, string expectedLedgerId, string accessToken)
         {
+            _channel = channel;
+
             LedgerIdentityClient = new LedgerIdentityClient(channel, accessToken);
 
             LedgerId = LedgerIdentityClient.GetLedgerIdentity(accessToken);
@@ -93,32 +131,6 @@ namespace Daml.Ledger.Client
             Testing                    = new TestingClients(LedgerId, channel, accessToken);
         }
 
-        public class AdminClients
-        {
-            public IConfigManagementClient ConfigManagementClient { get; }
-            public IPackageManagementClient PackageManagementClient { get; }
-            public IPartyManagementClient PartyManagementClient { get; }
-
-            public AdminClients(Channel channel, string accessToken)
-            {
-                ConfigManagementClient = new ConfigManagementClient(channel, accessToken);
-                PackageManagementClient = new PackageManagementClient(channel, accessToken);
-                PartyManagementClient = new PartyManagementClient(channel, accessToken);
-            }
-        }
-
-        public class TestingClients
-        {
-            public ITimeClient TimeClient { get; }
-            public IResetClient ResetClient { get; }
-
-            public TestingClients(string ledgerId, Channel channel, string accessToken)
-            {
-                TimeClient = new TimeClient(ledgerId, channel, accessToken);
-                ResetClient = new ResetClient(ledgerId, channel, accessToken);
-            }
-        }
-        
         private class LedgerIdMismatchException : Exception
         {
             public LedgerIdMismatchException(string expectedLedgerId, string ledgerId)

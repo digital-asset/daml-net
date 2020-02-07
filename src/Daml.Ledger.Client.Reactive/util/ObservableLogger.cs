@@ -8,6 +8,8 @@ namespace Daml.Ledger.Client.Reactive.Util
 {
     public class ObservableLogger
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ObservableLogger));
+
         public static IObservable<T> Log<T>(IObservable<T> observable, string name) => _logger.IsDebugEnabled ? new LoggingObservable<T>(observable, name) : observable;
 
         private class LoggingObservable<T> : IObservable<T>
@@ -66,7 +68,5 @@ namespace Daml.Ledger.Client.Reactive.Util
             private readonly string _observableName;
             private readonly IDisposable _subscription;
         }
-
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ObservableLogger));
     }
 }

@@ -10,6 +10,8 @@ namespace Daml.Ledger.Client
 
     public interface ICommandCompletionClient
     {
+        string LedgerId { get; }
+
         IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string applicationId, LedgerOffset offset, IEnumerable<string> parties, string accessToken = null);
 
         IEnumerable<CompletionStreamResponse> CompletionStreamSync(string applicationId, LedgerOffset offset, IEnumerable<string> parties, string accessToken = null);

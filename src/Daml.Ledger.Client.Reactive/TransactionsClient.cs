@@ -9,7 +9,12 @@ namespace Daml.Ledger.Client.Reactive
     using Client;
     using Daml.Ledger.Client.Reactive.Util;
     using Daml.Ledger.Api.Data.Util;
-    using Com.DigitalAsset.Ledger.Api.V1;
+
+    using GetTransactionsResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse;
+    using TransactionFilter = Com.DigitalAsset.Ledger.Api.V1.TransactionFilter;
+    using LedgerOffset = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
+    using GetTransactionTreesResponse = Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse;
 
     public class TransactionsClient
     {

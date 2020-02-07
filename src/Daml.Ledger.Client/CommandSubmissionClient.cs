@@ -14,14 +14,15 @@ namespace Daml.Ledger.Client
 
     public class CommandSubmissionClient : ICommandSubmissionClient
     {
-        private readonly string _ledgerId;
         private readonly ClientStub<CommandSubmissionService.CommandSubmissionServiceClient> _commandSubmissionClient;
 
         public CommandSubmissionClient(string ledgerId, Channel channel, string accessToken)
         {
-            _ledgerId = ledgerId;
+            LedgerId = ledgerId;
             _commandSubmissionClient = new ClientStub<CommandSubmissionService.CommandSubmissionServiceClient>(new CommandSubmissionService.CommandSubmissionServiceClient(channel), accessToken);
         }
+
+        public string LedgerId { get; }
 
         public void Submit(
             string applicationId,
@@ -70,7 +71,7 @@ namespace Daml.Ledger.Client
         {
             var cmds = new Commands
             {
-                LedgerId = _ledgerId,
+                LedgerId = LedgerId,
                 ApplicationId = applicationId,
                 WorkflowId = workflowId,
                 CommandId = commandId,

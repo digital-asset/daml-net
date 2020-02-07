@@ -9,6 +9,8 @@ namespace Daml.Ledger.Client
 
     public interface ILedgerConfigurationClient
     {
+        string LedgerId { get; }
+
         IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(string accessToken = null, TraceContext traceContext = null);
 
         IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(string accessToken = null, TraceContext traceContext = null);

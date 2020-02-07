@@ -10,6 +10,8 @@ namespace Daml.Ledger.Client
 
     public interface ITransactionsClient
     {
+        string LedgerId { get; }
+
         GetFlatTransactionResponse GetFlatTransactionByEventId(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
 
         Task<GetFlatTransactionResponse> GetFlatTransactionByEventIdAsync(string eventId, IEnumerable<string> requestingParties, string accessToken = null, TraceContext traceContext = null);
