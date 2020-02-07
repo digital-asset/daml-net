@@ -28,6 +28,8 @@ namespace Daml.Ledger.Api.Data.Util
         // No value so call function to get default value
         public override T Reduce(Func<T> whenNone) => whenNone();
 
+        public override T ReduceOrThrow(Func<Exception> exceptionSupplier) => throw exceptionSupplier();
+
         public override bool Equals(object obj) => !(obj is null) && (obj is None<T> || obj is None);
 
         public override int GetHashCode() => 0;

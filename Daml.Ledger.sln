@@ -54,6 +54,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Client.Reactive
 		{C28365C5-6F64-4468-8FFC-93121553C2EA} = {C28365C5-6F64-4468-8FFC-93121553C2EA}
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Automation.Test", "src\Daml.Ledger.Automation.Test\Daml.Ledger.Automation.Test.csproj", "{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50C8736B-B297-49C1-8F15-ADBEC7C960C3} = {50C8736B-B297-49C1-8F15-ADBEC7C960C3}
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daml.Ledger.Client.Test", "src\Daml.Ledger.Client.Test\Daml.Ledger.Client.Test.csproj", "{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{658CEB77-4F21-40B9-9963-896C41E64B67} = {658CEB77-4F21-40B9-9963-896C41E64B67}
@@ -189,6 +194,18 @@ Global
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|Any CPU.Build.0 = Release|Any CPU
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.ActiveCfg = Release|Any CPU
 		{FA9DEA91-F0A7-4A68-B4A3-730F6CC5BDF6}.ReleaseNuget|x86.Build.0 = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Debug|x86.Build.0 = Debug|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Release|x86.ActiveCfg = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.Release|x86.Build.0 = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.ReleaseNuget|Any CPU.ActiveCfg = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.ReleaseNuget|Any CPU.Build.0 = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.ReleaseNuget|x86.ActiveCfg = Release|Any CPU
+		{90F49A04-BA51-40A9-92C4-80F5F7BD5AA9}.ReleaseNuget|x86.Build.0 = Release|Any CPU
 		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F8ADAE-571A-4AF5-8830-F8C9EBE091DE}.Debug|x86.ActiveCfg = Debug|Any CPU
