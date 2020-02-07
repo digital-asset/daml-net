@@ -28,7 +28,7 @@ namespace Daml.Ledger.Api.Data.Util
         public override Optional<TResult> Map<TResult>(Func<T, Optional<TResult>> map) => map(Content);
 
         public override TResult MapOrElse<TResult>(Func<T, TResult> map, Func<TResult> whenNone) => map(Content);
-        
+
         // Return the existing Optional if the predicate returns true, otherwise None
         public override Optional<T> Filter(Func<T, bool> predicate)
         {
@@ -41,6 +41,8 @@ namespace Daml.Ledger.Api.Data.Util
 
         // No need to call the whenNone function as there is a value
         public override T Reduce(Func<T> whenNone) => Content;
+
+        public override T ReduceOrThrow(Func<Exception> exceptionSupplier) => Content;
 
         public bool Equals(Some<T> other)
         {
