@@ -6,10 +6,13 @@ using System.Reactive.Concurrency;
 
 namespace Daml.Ledger.Client.Reactive
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
     using Daml.Ledger.Client.Reactive.Util;
     using Daml.Ledger.Api.Data.Util;
- 
+
+    using GetActiveContractsResponse = Com.DigitalAsset.Ledger.Api.V1.GetActiveContractsResponse;
+    using TransactionFilter = Com.DigitalAsset.Ledger.Api.V1.TransactionFilter;
+    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
+
     public class ActiveContractsClient
     {
         private readonly IActiveContractsClient _activeContractsClient;

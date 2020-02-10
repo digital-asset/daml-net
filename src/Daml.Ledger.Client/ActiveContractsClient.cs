@@ -11,14 +11,15 @@ namespace Daml.Ledger.Client
 
     public class ActiveContractsClient : IActiveContractsClient
     {
-        private readonly string _ledgerId;
         private readonly ClientStub<ActiveContractsService.ActiveContractsServiceClient> _activeContractsClient;
 
         public ActiveContractsClient(string ledgerId, Channel channel, string accessToken)
         {
-            _ledgerId = ledgerId;
+            LedgerId = ledgerId;
             _activeContractsClient = new ClientStub<ActiveContractsService.ActiveContractsServiceClient>(new ActiveContractsService.ActiveContractsServiceClient(channel), accessToken);
         }
+
+        public string LedgerId { get; }
 
         public IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
             TransactionFilter transactionFilter,
@@ -26,7 +27,7 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            var request = new GetActiveContractsRequest { LedgerId = _ledgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
+            var request = new GetActiveContractsRequest { LedgerId = LedgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
             var response = _activeContractsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetActiveContracts(r, co));
 
             return response.ResponseStream;

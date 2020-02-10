@@ -11,6 +11,8 @@ namespace Daml.Ledger.Client
 
     public interface ICommandClient
     {
+        string LedgerId { get; }
+
         void SubmitAndWait(
             string applicationId,
             string workflowId,

@@ -9,6 +9,8 @@ namespace Daml.Ledger.Client
 
     public interface IActiveContractsClient
     {
+        string LedgerId { get; }
+
         IAsyncEnumerator<GetActiveContractsResponse> GetActiveContracts(
             TransactionFilter transactionFilter,
             bool verbose = true,

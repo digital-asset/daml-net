@@ -10,6 +10,8 @@ namespace Daml.Ledger.Client
 
     public interface IPackageClient
     {
+        string LedgerId { get; }
+
         GetPackageResponse GetPackage(string packageId, string accessToken = null, TraceContext traceContext = null);
 
         Task<GetPackageResponse> GetPackageAsync(string packageId, string accessToken = null, TraceContext traceContext = null);
