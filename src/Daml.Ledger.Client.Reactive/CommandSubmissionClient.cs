@@ -7,7 +7,7 @@ namespace Daml.Ledger.Client.Reactive
 {
     using Daml.Ledger.Api.Data.Util;
 
-    using Commands = Com.DigitalAsset.Ledger.Api.V1.Commands;
+    using Commands = Com.Daml.Ledger.Api.V1.Commands;
 
     public class CommandSubmissionClient
     {

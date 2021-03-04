@@ -62,14 +62,14 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(ArchivedEvent source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.ArchivedEvent protoValue = source.ToProto();
             ArchivedEvent target = ArchivedEvent.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }
 
         private void ConvertThroughProtoUsingEventHelper(ArchivedEvent source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Event protoValue = EventHelper.ToProtoEvent(source);
+            Com.Daml.Ledger.Api.V1.Event protoValue = EventHelper.ToProtoEvent(source);
             var target = EventHelper.FromProtoEvent(protoValue);
             Assert.IsTrue(target is ArchivedEvent);
             Assert.IsTrue(source == (ArchivedEvent) target);

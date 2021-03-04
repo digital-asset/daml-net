@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
 
     public interface ICommandSubmissionClient
     {
@@ -18,8 +18,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        void Submit(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -28,8 +41,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        Task SubmitAsync(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 

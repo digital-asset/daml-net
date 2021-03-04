@@ -14,7 +14,7 @@ namespace Daml.Ledger.Api.Data
 
         public long Value { get; }
     
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value {Int64 = Value};
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value {Int64 = Value};
 
         public override string ToString() => $"Int64{{value={Value}}}";
 

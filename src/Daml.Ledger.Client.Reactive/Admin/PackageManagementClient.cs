@@ -10,7 +10,7 @@ namespace Daml.Ledger.Client.Reactive.Admin
     using Daml.Ledger.Client.Admin;
     using Daml.Ledger.Api.Data.Util;
 
-    using PackageDetails = Com.DigitalAsset.Ledger.Api.V1.Admin.PackageDetails;
+    using PackageDetails = Com.Daml.Ledger.Api.V1.Admin.PackageDetails;
 
     public class PackageManagementClient
     {

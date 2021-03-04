@@ -15,7 +15,7 @@ namespace Daml.Ledger.Api.Data
         public static Bool True = new Bool(true);
         public static Bool False = new Bool(false);
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Bool = Value };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Bool = Value };
 
         public bool Value { get; }
 

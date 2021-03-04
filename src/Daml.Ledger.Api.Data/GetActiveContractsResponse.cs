@@ -22,14 +22,14 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().Add(Offset).AddRange(CreatedEvents).Add(WorkflowId).ToHashCode();
         }
 
-        public static GetActiveContractsResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.GetActiveContractsResponse response)
+        public static GetActiveContractsResponse FromProto(Com.Daml.Ledger.Api.V1.GetActiveContractsResponse response)
         {
             return new GetActiveContractsResponse(response.Offset, (from c in response.ActiveContracts select CreatedEvent.FromProto(c)).ToList(), response.WorkflowId);
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.GetActiveContractsResponse ToProto()
+        public Com.Daml.Ledger.Api.V1.GetActiveContractsResponse ToProto()
         {
-            var response = new Com.DigitalAsset.Ledger.Api.V1.GetActiveContractsResponse { WorkflowId = WorkflowId };
+            var response = new Com.Daml.Ledger.Api.V1.GetActiveContractsResponse { WorkflowId = WorkflowId };
             Offset.IfPresent(offset => response.Offset = offset );
             response.ActiveContracts.AddRange(from c in CreatedEvents select c.ToProto());
             return response;

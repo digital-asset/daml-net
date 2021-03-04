@@ -62,7 +62,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Date source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Value protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsDate();
             Assert.AreEqual(typeof(Some<Date>), maybe.GetType());
             Assert.IsTrue(source == (Some<Date>)maybe);

@@ -15,23 +15,23 @@ namespace Daml.Ledger.Api.Data
         public abstract Identifier TemplateId { get; }
         public abstract string ContractId { get; }
 
-        public Com.DigitalAsset.Ledger.Api.V1.TreeEvent ToProtoTreeEvent()
+        public Com.Daml.Ledger.Api.V1.TreeEvent ToProtoTreeEvent()
         {
             if (this is CreatedEvent)
-                return new Com.DigitalAsset.Ledger.Api.V1.TreeEvent { Created = ((CreatedEvent) this).ToProto()};
+                return new Com.Daml.Ledger.Api.V1.TreeEvent { Created = ((CreatedEvent) this).ToProto()};
 
             if (this is ExercisedEvent) 
-                return new Com.DigitalAsset.Ledger.Api.V1.TreeEvent { Exercised = ((ExercisedEvent) this).ToProto() };
+                return new Com.Daml.Ledger.Api.V1.TreeEvent { Exercised = ((ExercisedEvent) this).ToProto() };
 
             throw new ApplicationException($"this should be CreatedEvent or ExercisedEvent, found {ToString()}");
         }
 
-        public static TreeEvent FromProtoTreeEvent(Com.DigitalAsset.Ledger.Api.V1.TreeEvent treeEvent)
+        public static TreeEvent FromProtoTreeEvent(Com.Daml.Ledger.Api.V1.TreeEvent treeEvent)
         {
-            if (treeEvent.KindCase == Com.DigitalAsset.Ledger.Api.V1.TreeEvent.KindOneofCase.Created)
+            if (treeEvent.KindCase == Com.Daml.Ledger.Api.V1.TreeEvent.KindOneofCase.Created)
                 return CreatedEvent.FromProto(treeEvent.Created);
             
-            if (treeEvent.KindCase == Com.DigitalAsset.Ledger.Api.V1.TreeEvent.KindOneofCase.Exercised)
+            if (treeEvent.KindCase == Com.Daml.Ledger.Api.V1.TreeEvent.KindOneofCase.Exercised)
                 return ExercisedEvent.FromProto(treeEvent.Exercised);
             
             throw new UnsupportedEventTypeException($"Event is neither created not exercised: {treeEvent}");

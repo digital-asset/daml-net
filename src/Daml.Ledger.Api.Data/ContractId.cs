@@ -14,7 +14,7 @@ namespace Daml.Ledger.Api.Data
 
         public string Value { get; }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { ContractId = Value };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { ContractId = Value };
 
         public override string ToString() => $"ContractId{{value='{Value}'}}";
 

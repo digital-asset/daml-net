@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Com.DigitalAsset.Ledger.Api.V1</RootNamespace>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Com.Daml.Ledger.Api.V1</RootNamespace>
     <Configuration>Release</Configuration>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
@@ -29,17 +30,12 @@
     <NoWarn></NoWarn>
     <NoStdLib>false</NoStdLib>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Folder Include="V1\Admin\" />
-    <Folder Include="V1\Testing\" />
-  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.0" />
-    <PackageReference Include="Grpc" Version="1.22.0" />
-    <PackageReference Include="Grpc.Core" Version="1.22.0" />
-    <PackageReference Include="Google.Api.CommonProtos" Version="1.6.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.14.0" />
+    <PackageReference Include="Grpc" Version="2.35.0" />
+    <PackageReference Include="Grpc.Core" Version="2.35.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.2.0" />
   </ItemGroup>
 
   <Choose>
@@ -48,12 +44,12 @@
 
       <!-- Define the base include paths for the gRPC files so imports get resolved. -->
       <PropertyGroup>
-        <Protobuf_StandardImportsPath>$(Protobuf_StandardImportsPath);../../protobuf/ledger-api/grpc-definitions</Protobuf_StandardImportsPath>
+        <Protobuf_StandardImportsPath>$(Protobuf_StandardImportsPath);../../protobuf/ledger-api</Protobuf_StandardImportsPath>
         <Protobuf_NoWarnMissingExpected>true</Protobuf_NoWarnMissingExpected>
       </PropertyGroup>
 
       <ItemGroup>
-        <PackageReference Include="Grpc.Tools" Version="1.22.0">
+        <PackageReference Include="Grpc.Tools" Version="2.35.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
@@ -61,18 +57,18 @@
 
       <!-- Add the gRPC files to the Protobuf target so they get compiled to C# if missing or on rebuild. Suppress them being shown as an unstructured collection in the Visual Studio Solution Explorer window -->
       <ItemGroup>
-        <Protobuf Include="../../protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/*.proto" OutputDir="V1" Visible="false" CompileOutputs="false" />
-        <Protobuf Include="../../protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/admin/*.proto" OutputDir="V1/Admin" Visible="false" CompileOutputs="false" />
-        <Protobuf Include="../../protobuf/ledger-api/grpc-definitions/com/digitalasset/ledger/api/v1/testing/*.proto" OutputDir="V1/Testing" Visible="false" CompileOutputs="false" />
+        <Protobuf Include="../../protobuf/ledger-api/com/daml/ledger/api/v1/*.proto" OutputDir="V1" Visible="false" CompileOutputs="false" />
+        <Protobuf Include="../../protobuf/ledger-api/com/daml/ledger/api/v1/admin/*.proto" OutputDir="V1/Admin" Visible="false" CompileOutputs="false" />
+        <Protobuf Include="../../protobuf/ledger-api/com/daml/ledger/api/v1/testing/*.proto" OutputDir="V1/Testing" Visible="false" CompileOutputs="false" />
       </ItemGroup>
 
       <!-- Show the gRPC files in the Visual Studio Solution Explorer window with the original folder structure so they can be easily browsed -->
       <ItemGroup>
-        <None Include="../../protobuf/ledger-api/**/*.proto">
-          <Link>%(RecursiveDir)\%(Filename)%(Extension)</Link>
+        <None Include="../../protobuf/ledger-api/com/daml/**/*.proto">
+          <Link>grpc-definitions\%(RecursiveDir)\%(Filename)%(Extension)</Link>
         </None>
       </ItemGroup>
-
+      
     </When>
   </Choose>
 

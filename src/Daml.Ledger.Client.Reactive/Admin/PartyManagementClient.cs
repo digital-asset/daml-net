@@ -9,8 +9,9 @@ namespace Daml.Ledger.Client.Reactive.Admin
     using Daml.Ledger.Client.Admin;
     using Daml.Ledger.Api.Data.Util;
 
-    using PartyDetails = Com.DigitalAsset.Ledger.Api.V1.Admin.PartyDetails;
-    
+    using PartyDetails = Com.Daml.Ledger.Api.V1.Admin.PartyDetails;
+    using System.Collections.Generic;
+
     public class PartyManagementClient
     {
        private readonly IPartyManagementClient _partyManagementClient;
@@ -25,13 +26,17 @@ namespace Daml.Ledger.Client.Reactive.Admin
             return _partyManagementClient.AllocateParty(displayName, partyIdHint, accessToken?.Reduce((string) null));
         }
 
-        string GetParticipantId(Optional<string> accessToken = null)
+        public string GetParticipantId(Optional<string> accessToken = null)
         {
             return _partyManagementClient.GetParticipantId(accessToken?.Reduce((string) null));
-
         }
 
-        IObservable<PartyDetails> ListKnownParties(Optional<string> accessToken = null)
+        public IObservable<PartyDetails> GetParties(IList<string> parties, Optional<string> accessToken = null)
+        {
+            return _partyManagementClient.GetParties(parties, accessToken?.Reduce((string)null)).ToObservable();
+        }
+
+        public IObservable<PartyDetails> ListKnownParties(Optional<string> accessToken = null)
         {
             return _partyManagementClient.ListKnownParties(accessToken?.Reduce((string) null)).ToObservable();
         }

@@ -15,9 +15,9 @@ namespace Daml.Ledger.Api.Data
             Offset = offset;
         }
 
-        public static Checkpoint FromProto(Com.DigitalAsset.Ledger.Api.V1.Checkpoint checkpoint) => new Checkpoint(checkpoint.RecordTime.ToDateTimeOffset(), LedgerOffset.FromProto(checkpoint.Offset));
+        public static Checkpoint FromProto(Com.Daml.Ledger.Api.V1.Checkpoint checkpoint) => new Checkpoint(checkpoint.RecordTime.ToDateTimeOffset(), LedgerOffset.FromProto(checkpoint.Offset));
 
-        public Com.DigitalAsset.Ledger.Api.V1.Checkpoint ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Checkpoint { RecordTime = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(RecordTime), Offset = Offset.ToProto() };
+        public Com.Daml.Ledger.Api.V1.Checkpoint ToProto() => new Com.Daml.Ledger.Api.V1.Checkpoint { RecordTime = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(RecordTime), Offset = Offset.ToProto() };
 
         public DateTimeOffset RecordTime { get; }
 

@@ -8,7 +8,7 @@ namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    using Completion = Com.DigitalAsset.Ledger.Api.V1.Completion;
+    using Completion = Com.Daml.Ledger.Api.V1.Completion;
 
     [TestFixture]
     public class CompletionStreamResponseTest
@@ -60,7 +60,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(CompletionStreamResponse source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.CompletionStreamResponse protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.CompletionStreamResponse protoValue = source.ToProto();
             CompletionStreamResponse target = CompletionStreamResponse.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

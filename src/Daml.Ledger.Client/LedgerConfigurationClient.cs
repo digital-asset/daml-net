@@ -3,10 +3,11 @@
 
 using System.Collections.Generic;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class LedgerConfigurationClient : ILedgerConfigurationClient
@@ -23,18 +24,19 @@ namespace Daml.Ledger.Client
 
         public IAsyncEnumerator<GetLedgerConfigurationResponse> GetLedgerConfiguration(string accessToken = null, TraceContext traceContext = null)
         {
-            var request = new GetLedgerConfigurationRequest { LedgerId = LedgerId, TraceContext = traceContext };
-            var response = _ledgerConfigurationClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetLedgerConfiguration(r, co));
-            return response.ResponseStream;
+            return GetLedgerConfigurationImpl(accessToken, traceContext).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<GetLedgerConfigurationResponse> GetLedgerConfigurationSync(string accessToken = null, TraceContext traceContext = null)
         {
-            var r = GetLedgerConfiguration(accessToken, traceContext);
-            while (r.MoveNext().Result)
-            {
-                yield return r.Current;
+            return GetLedgerConfigurationImpl(accessToken, traceContext).ToListAsync().Result;
             }
+
+        private IAsyncStreamReader<GetLedgerConfigurationResponse> GetLedgerConfigurationImpl(string accessToken, TraceContext traceContext)
+        {
+            var request = new GetLedgerConfigurationRequest { LedgerId = LedgerId, TraceContext = traceContext };
+            var response = _ledgerConfigurationClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetLedgerConfiguration(r, co));
+            return response.ResponseStream;
         }
     }
 }

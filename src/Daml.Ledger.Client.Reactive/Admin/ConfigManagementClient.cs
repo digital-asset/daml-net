@@ -8,7 +8,7 @@ namespace Daml.Ledger.Client.Reactive.Admin
     using Daml.Ledger.Client.Admin;
     using Daml.Ledger.Api.Data.Util;
 
-    using TimeModel = Com.DigitalAsset.Ledger.Api.V1.Admin.TimeModel;
+    using TimeModel = Com.Daml.Ledger.Api.V1.Admin.TimeModel;
 
     public class ConfigManagementClient
     {

@@ -25,15 +25,15 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().Add(TransactionId).Add(CommandId).Add(WorkflowId).Add(EffectiveAt).AddRange(Events).Add(Offset).ToHashCode();
         }
 
-        public static Transaction FromProto(Com.DigitalAsset.Ledger.Api.V1.Transaction transaction)
+        public static Transaction FromProto(Com.Daml.Ledger.Api.V1.Transaction transaction)
         {
             var events = (from e in transaction.Events select EventHelper.FromProtoEvent(e)).ToList();
             return new Transaction(transaction.TransactionId, transaction.CommandId, transaction.WorkflowId, transaction.EffectiveAt.ToDateTimeOffset(), events, transaction.Offset);
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.Transaction ToProto()
+        public Com.Daml.Ledger.Api.V1.Transaction ToProto()
         {
-            var transaction = new Com.DigitalAsset.Ledger.Api.V1.Transaction { TransactionId = TransactionId, CommandId = CommandId, WorkflowId = WorkflowId,
+            var transaction = new Com.Daml.Ledger.Api.V1.Transaction { TransactionId = TransactionId, CommandId = CommandId, WorkflowId = WorkflowId,
                                                                            EffectiveAt = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(EffectiveAt), Offset = Offset };
             transaction.Events.AddRange(from e in Events select EventHelper.ToProtoEvent(e));
             return transaction;

@@ -49,7 +49,7 @@ namespace Daml.Ledger.Api.Data.Test
         
         private void ConvertThroughProto(Int64 source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Value protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsInt64();
             Assert.AreEqual(typeof(Some<Int64>), maybe.GetType());
             Assert.IsTrue(source == (Some<Int64>)maybe);

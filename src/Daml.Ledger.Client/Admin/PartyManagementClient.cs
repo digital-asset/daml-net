@@ -7,7 +7,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Client.Admin
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Com.Daml.Ledger.Api.V1.Admin;
     using Daml.Ledger.Client.Auth.Client;
 
     public class PartyManagementClient : IPartyManagementClient
@@ -43,6 +43,24 @@ namespace Daml.Ledger.Client.Admin
         {
             var response = await _partyManagementClient.WithAccess(accessToken).Dispatch(new GetParticipantIdRequest(), (c, r, co) => c.GetParticipantIdAsync(r, co));
             return response.ParticipantId;
+        }
+
+        public IEnumerable<PartyDetails> GetParties(IList<string> parties, string accessToken = null)
+        {
+            GetPartiesRequest request = new GetPartiesRequest();
+            request.Parties.Add(parties);
+
+            var response = _partyManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetParties(r, co));
+            return response.PartyDetails;
+        }
+
+        public async Task<IEnumerable<PartyDetails>> GetPartiesAsync(IList<string> parties, string accessToken = null)
+        {
+            GetPartiesRequest request = new GetPartiesRequest();
+            request.Parties.Add(parties);
+
+            var response = await _partyManagementClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetPartiesAsync(r, co));
+            return response.PartyDetails;
         }
 
         public IEnumerable<PartyDetails> ListKnownParties(string accessToken = null)

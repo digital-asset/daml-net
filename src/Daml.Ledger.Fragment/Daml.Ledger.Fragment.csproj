@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Com.DigitalAsset.Daml_Lf_1_7.DamlLf</RootNamespace>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Com.DigitalAsset.Daml_Lf_1_8.DamlLf</RootNamespace>
     <Configuration>Release</Configuration>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
@@ -30,9 +31,9 @@
     <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.0" />
-    <PackageReference Include="Grpc" Version="1.22.0" />
-    <PackageReference Include="Google.Api.CommonProtos" Version="1.6.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.14.0" />
+    <PackageReference Include="Grpc" Version="2.35.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.2.0" />
   </ItemGroup>
 
   <Choose>
@@ -46,7 +47,7 @@
       </PropertyGroup>
 
       <ItemGroup>
-        <PackageReference Include="Grpc.Tools" Version="1.22.0">
+        <PackageReference Include="Grpc.Tools" Version="2.35.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
@@ -59,7 +60,10 @@
 
       <!-- Show the gRPC files in the Visual Studio Solution Explorer window with the original folder structure so they can be easily browsed -->
       <ItemGroup>
-        <None Include="../../protobuf/daml-lf/**/*.proto">
+        <None Include="../../protobuf/daml-lf/com/digitalasset/**/*.proto">
+          <Link>grpc-definitions\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+        </None>
+        <None Include="../../protobuf/daml-lf/com/daml/**/*.proto">
           <Link>grpc-definitions\%(RecursiveDir)\%(Filename)%(Extension)</Link>
         </None>
       </ItemGroup>

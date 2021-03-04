@@ -6,8 +6,8 @@ using System.IO;
 
 namespace Daml.Ledger.Fragment
 {
-    using Com.DigitalAsset.Daml_Lf_1_7.DamlLf;
-    using Com.DigitalAsset.Daml_Lf_1_7.DamlLf1;
+    using Com.DigitalAsset.Daml_Lf_1_8.DamlLf;
+    using Com.DigitalAsset.Daml_Lf_1_8.DamlLf1;
 
     public static class Loader
     {

@@ -76,9 +76,9 @@ namespace Daml.Ledger.Api.Data
 
         public override string ToString() => $"ExercisedEvent{{witnessParties={WitnessParties}, eventId='{EventId}', templateId={TemplateId}, contractId='{ContractId}', choice='{Choice}', choiceArgument={ChoiceArgument}, actingParties={ActingParties}, consuming={Consuming}, childEventIds={ChildEventIds}, exerciseResult={ExerciseResult}}}";
 
-        public Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent ToProto()
+        public Com.Daml.Ledger.Api.V1.ExercisedEvent ToProto()
         {
-            var exercisedEvent = new Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent { EventId = EventId, Choice = Choice, ChoiceArgument = ChoiceArgument.ToProto(), Consuming = Consuming,
+            var exercisedEvent = new Com.Daml.Ledger.Api.V1.ExercisedEvent { EventId = EventId, Choice = Choice, ChoiceArgument = ChoiceArgument.ToProto(), Consuming = Consuming,
                                                                                  ContractId = ContractId, TemplateId = TemplateId.ToProto(), ExerciseResult = ExerciseResult.ToProto() };
             exercisedEvent.ActingParties.AddRange(ActingParties);
             exercisedEvent.WitnessParties.AddRange(WitnessParties);
@@ -87,7 +87,7 @@ namespace Daml.Ledger.Api.Data
             return exercisedEvent;
         }
 
-        public static ExercisedEvent FromProto(Com.DigitalAsset.Ledger.Api.V1.ExercisedEvent exercisedEvent)
+        public static ExercisedEvent FromProto(Com.Daml.Ledger.Api.V1.ExercisedEvent exercisedEvent)
         {
             return new ExercisedEvent(exercisedEvent.WitnessParties.ToList(), 
                                      exercisedEvent.EventId, 

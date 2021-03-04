@@ -21,7 +21,7 @@ namespace Daml.Ledger.Api.Data
             Value = value;
         }
 
-        public static Variant FromProto(Com.DigitalAsset.Ledger.Api.V1.Variant variant)
+        public static Variant FromProto(Com.Daml.Ledger.Api.V1.Variant variant)
         {
             Value value = Value.FromProto(variant.Value);
 
@@ -34,11 +34,11 @@ namespace Daml.Ledger.Api.Data
 
         public Value Value { get; }
 
-       public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Variant = ToProtoVariant() };
+       public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Variant = ToProtoVariant() };
 
-        public Com.DigitalAsset.Ledger.Api.V1.Variant ToProtoVariant()
+        public Com.Daml.Ledger.Api.V1.Variant ToProtoVariant()
         {
-            var variant = new Com.DigitalAsset.Ledger.Api.V1.Variant { Constructor = Constructor, Value = Value.ToProto() };
+            var variant = new Com.Daml.Ledger.Api.V1.Variant { Constructor = Constructor, Value = Value.ToProto() };
             VariantId.IfPresent(identifier => variant.VariantId = identifier.ToProto());
             return variant;
         }

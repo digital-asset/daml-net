@@ -10,7 +10,7 @@ namespace Daml.Ledger.Api.Data
 {
     using Util;
 
-    using RecordField = Com.DigitalAsset.Ledger.Api.V1.RecordField;
+    using RecordField = Com.Daml.Ledger.Api.V1.RecordField;
 
     public sealed class Record : Value
     {
@@ -64,7 +64,7 @@ namespace Daml.Ledger.Api.Data
             return label;
         }
 
-        public static Record FromProto(Com.DigitalAsset.Ledger.Api.V1.Record record)
+        public static Record FromProto(Com.Daml.Ledger.Api.V1.Record record)
         {
             var fields = record.Fields.Select(Field.FromProto);
 
@@ -76,11 +76,11 @@ namespace Daml.Ledger.Api.Data
             return new Record(None.Value, fields, fieldsMap);
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Record = ToProtoRecord() };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Record = ToProtoRecord() };
 
-        public Com.DigitalAsset.Ledger.Api.V1.Record ToProtoRecord()
+        public Com.Daml.Ledger.Api.V1.Record ToProtoRecord()
         {
-            Com.DigitalAsset.Ledger.Api.V1.Record record = new Com.DigitalAsset.Ledger.Api.V1.Record();
+            Com.Daml.Ledger.Api.V1.Record record = new Com.Daml.Ledger.Api.V1.Record();
 
             RecordId.IfPresent(recordId => record.RecordId = recordId.ToProto());
             record.Fields.Add(from f in Fields select f.ToProto());

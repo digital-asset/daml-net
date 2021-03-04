@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace Daml.Ledger.Client.Testing
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Testing;
+    using Com.Daml.Ledger.Api.V1.Testing;
     using Daml.Ledger.Client.Auth.Client;
 
     public class TimeClient : ITimeClient
@@ -25,19 +26,12 @@ namespace Daml.Ledger.Client.Testing
 
         public IAsyncEnumerator<GetTimeResponse> GetTime(string accessToken = null)
         {
-            var response = _timeClient.WithAccess(accessToken).Dispatch(new GetTimeRequest { LedgerId = _ledgerId }, (c, r, co) => c.GetTime(r, co));
-            return response.ResponseStream;
+            return GetTimeImpl(accessToken).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<GetTimeResponse> GetTimeSync(string accessToken = null)
         {
-            using (var stream = GetTime(accessToken))
-            {
-                while (stream.MoveNext().Result)
-                {
-                    yield return stream.Current;
-                }
-            }
+            return GetTimeImpl(accessToken).ToListAsync().Result;
         }
 
         public void SetTime(DateTime currentTime, DateTime newTime, string accessToken = null)
@@ -53,6 +47,12 @@ namespace Daml.Ledger.Client.Testing
         {
             var request = new SetTimeRequest { LedgerId = _ledgerId, CurrentTime = Timestamp.FromDateTime(currentTime), NewTime = Timestamp.FromDateTime(newTime) };
             await _timeClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SetTimeAsync(r, co));
+        }
+
+        private IAsyncStreamReader<GetTimeResponse> GetTimeImpl(string accessToken)
+        {
+            var response = _timeClient.WithAccess(accessToken).Dispatch(new GetTimeRequest { LedgerId = _ledgerId }, (c, r, co) => c.GetTime(r, co));
+            return response.ResponseStream;
         }
 
         private class SetTimeException : Exception

@@ -62,7 +62,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(CreateAndExerciseCommand source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.CreateAndExerciseCommand protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.CreateAndExerciseCommand protoValue = source.ToProto();
             CreateAndExerciseCommand target = CreateAndExerciseCommand.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

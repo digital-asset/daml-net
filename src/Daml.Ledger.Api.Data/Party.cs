@@ -12,7 +12,7 @@ namespace Daml.Ledger.Api.Data
             Value = value;
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Party = Value };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Party = Value };
 
         public string Value {  get; }
 

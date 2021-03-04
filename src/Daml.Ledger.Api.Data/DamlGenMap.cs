@@ -58,16 +58,16 @@ namespace Daml.Ledger.Api.Data
             return sb.ToString();
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto()
+        public override Com.Daml.Ledger.Api.V1.Value ToProto()
         {
-            var mb = new Com.DigitalAsset.Ledger.Api.V1.GenMap();
+            var mb = new Com.Daml.Ledger.Api.V1.GenMap();
             foreach (var pair in Map)
-                mb.Entries.Add(new Com.DigitalAsset.Ledger.Api.V1.GenMap.Types.Entry { Key = pair.Key.ToProto(), Value = pair.Value.ToProto() });
+                mb.Entries.Add(new Com.Daml.Ledger.Api.V1.GenMap.Types.Entry { Key = pair.Key.ToProto(), Value = pair.Value.ToProto() });
 
-            return new Com.DigitalAsset.Ledger.Api.V1.Value { GenMap = mb };
+            return new Com.Daml.Ledger.Api.V1.Value { GenMap = mb };
         }
 
-        public static DamlGenMap FromProto(Com.DigitalAsset.Ledger.Api.V1.GenMap map)
+        public static DamlGenMap FromProto(Com.Daml.Ledger.Api.V1.GenMap map)
         {
             var genMap = map.Entries.Aggregate(new Dictionary<Value, Value>(), (s, p) =>
             {

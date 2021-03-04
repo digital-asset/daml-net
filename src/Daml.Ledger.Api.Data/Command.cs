@@ -11,27 +11,27 @@ namespace Daml.Ledger.Api.Data
     {
         public abstract Identifier TemplateId { get; }
 
-        public static Command FromProtoCommand(Com.DigitalAsset.Ledger.Api.V1.Command command)
+        public static Command FromProtoCommand(Com.Daml.Ledger.Api.V1.Command command)
         {
             switch (command.CommandCase)
             {
-                case Com.DigitalAsset.Ledger.Api.V1.Command.CommandOneofCase.Create:
+                case Com.Daml.Ledger.Api.V1.Command.CommandOneofCase.Create:
                     return CreateCommand.FromProto(command.Create);
-                case Com.DigitalAsset.Ledger.Api.V1.Command.CommandOneofCase.Exercise:
+                case Com.Daml.Ledger.Api.V1.Command.CommandOneofCase.Exercise:
                     return ExerciseCommand.FromProto(command.Exercise);
-                case Com.DigitalAsset.Ledger.Api.V1.Command.CommandOneofCase.CreateAndExercise:
+                case Com.Daml.Ledger.Api.V1.Command.CommandOneofCase.CreateAndExercise:
                     return CreateAndExerciseCommand.FromProto(command.CreateAndExercise);
-                case Com.DigitalAsset.Ledger.Api.V1.Command.CommandOneofCase.ExerciseByKey:
+                case Com.Daml.Ledger.Api.V1.Command.CommandOneofCase.ExerciseByKey:
                     return ExerciseByKeyCommand.FromProto(command.ExerciseByKey);
-                case Com.DigitalAsset.Ledger.Api.V1.Command.CommandOneofCase.None:
+                case Com.Daml.Ledger.Api.V1.Command.CommandOneofCase.None:
                 default:
                     throw new ProtoCommandUnknown(command);
             }
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.Command ToProtoCommand()
+        public Com.Daml.Ledger.Api.V1.Command ToProtoCommand()
         {
-            Com.DigitalAsset.Ledger.Api.V1.Command command = new Com.DigitalAsset.Ledger.Api.V1.Command();
+            Com.Daml.Ledger.Api.V1.Command command = new Com.Daml.Ledger.Api.V1.Command();
 
             if (this is CreateCommand) 
                 command.Create = ((CreateCommand)this).ToProto();
@@ -72,7 +72,7 @@ namespace Daml.Ledger.Api.Data
 
     class ProtoCommandUnknown : Exception
     {
-        public ProtoCommandUnknown(Com.DigitalAsset.Ledger.Api.V1.Command command)
+        public ProtoCommandUnknown(Com.Daml.Ledger.Api.V1.Command command)
          : base($"Command unknown {command}")
         { }
     }

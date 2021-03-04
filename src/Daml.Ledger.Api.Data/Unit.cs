@@ -11,7 +11,7 @@ namespace Daml.Ledger.Api.Data
 
         public static Unit Instance { get; } = new Unit();
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Unit = new Google.Protobuf.WellKnownTypes.Empty() };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Unit = new Google.Protobuf.WellKnownTypes.Empty() };
 
         public override bool Equals(object obj) => Equals((Value)obj);
         public override bool Equals(Value obj) => this.Compare(obj, rhs => true);
