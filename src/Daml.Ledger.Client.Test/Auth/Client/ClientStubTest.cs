@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Grpc.Core;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Client.Test.Auth.Client
 {
@@ -22,46 +23,45 @@ namespace Daml.Ledger.Client.Test.Auth.Client
         public int MeaningOfLife = 42;
     }
 
-    [TestFixture]
     public class ClientStubTest
     {
-        [Test]
+        [Fact]
         public void SimpleCallExample()
         {
             var stub = new ClientStub<ServiceClient>(new ServiceClient());
 
             var response = stub.Dispatch(new MeaningOfLifeRequest(), (c, r, o) => c.WhatIsTheMeaningOfLife(r, o));
-            Assert.AreEqual(42, response.MeaningOfLife);
+            response.MeaningOfLife.Should().Be(42);
         }
 
-        [Test]
+        [Fact]
         public void WithNonEmptyAccessTokenGeneratesNewStub()
         {
             var stub = new ClientStub<ServiceClient>(new ServiceClient());
 
             var stub2 = stub.WithAccess("accessToken");
 
-            Assert.AreNotEqual(stub, stub2);
+            stub.Should().NotBe(stub2);
         }
 
-        [Test]
+        [Fact]
         public void WithEmptyAccessTokenReturnsSameStub()
         {
             var stub = new ClientStub<ServiceClient>(new ServiceClient());
 
             var stub2 = stub.WithAccess(null);
 
-            Assert.AreEqual(stub, stub2);
+            stub.Should().Be(stub2);
         }
 
-        [Test]
+        [Fact]
         public void WithDuplicateAccessTokenReturnsSameStub()
         {
             var stub = new ClientStub<ServiceClient>(new ServiceClient(), "accessToken");
 
             var stub2 = stub.WithAccess("accessToken");
 
-            Assert.AreEqual(stub, stub2);
+            stub.Should().Be(stub2);
         }
     }
 }

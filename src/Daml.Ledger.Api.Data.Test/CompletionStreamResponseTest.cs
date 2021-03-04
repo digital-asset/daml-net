@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
@@ -10,7 +10,6 @@ namespace Daml.Ledger.Api.Data.Test
 
     using Completion = Com.Daml.Ledger.Api.V1.Completion;
 
-    [TestFixture]
     public class CompletionStreamResponseTest
     {
         private static readonly Completion[] _completions1 = 
@@ -30,28 +29,28 @@ namespace Daml.Ledger.Api.Data.Test
         private static readonly CompletionStreamResponse _request3 = new CompletionStreamResponse(Optional.Of(new Checkpoint(DateTimeOffset.UnixEpoch, LedgerOffset.LedgerBegin.Instance)), _completions1);
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_request1.Equals(_request1));
-            Assert.IsTrue(_request1 == _request1);
+            Assert.True(_request1.Equals(_request1));
+            Assert.True(_request1 == _request1);
 
-            Assert.IsTrue(_request1.Equals(_request3));
-            Assert.IsTrue(_request1 == _request3);
+            Assert.True(_request1.Equals(_request3));
+            Assert.True(_request1 == _request3);
 
-            Assert.IsFalse(_request1.Equals(_request2));
-            Assert.IsTrue(_request1 != _request2);
+            Assert.False(_request1.Equals(_request2));
+            Assert.True(_request1 != _request2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_request1.GetHashCode() == _request3.GetHashCode());
-            Assert.IsTrue(_request1.GetHashCode() != _request2.GetHashCode());
+            Assert.True(_request1.GetHashCode() == _request3.GetHashCode());
+            Assert.True(_request1.GetHashCode() != _request2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_request1);
@@ -62,7 +61,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.CompletionStreamResponse protoValue = source.ToProto();
             CompletionStreamResponse target = CompletionStreamResponse.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }

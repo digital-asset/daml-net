@@ -21,7 +21,7 @@
  **/
 
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Util.Test
 {
@@ -53,7 +53,6 @@ namespace Daml.Ledger.Api.Data.Util.Test
     /// ------------------------------------------------------------------------
     /// </code>
     /// </remarks>
-    [TestFixture]
     public class BigDecimalTest
     {
         #region test parsing support
@@ -91,64 +90,64 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region String parsing
 
-        [Test]
+        [Fact]
         public void ParsingEmptyStringFails()
         {
             BigDecimal bd;
-            Assert.IsFalse(BigDecimal.TryParse("", out bd));
+            Assert.False(BigDecimal.TryParse("", out bd));
         }
 
-        [Test]
+        [Fact]
         public void ParsingOnlySignFails()
         {
             BigDecimal bd;
-            Assert.IsFalse(BigDecimal.TryParse("+", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("-", out bd));
+            Assert.False(BigDecimal.TryParse("+", out bd));
+            Assert.False(BigDecimal.TryParse("-", out bd));
         }
 
-        [Test]
+        [Fact]
         public void ParsingWithMissingExponentAfterEFails()
         {
             BigDecimal bd;
-            Assert.IsFalse(BigDecimal.TryParse("0E", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("0e", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("0E+", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("0E-", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("0e+", out bd));
-            Assert.IsFalse(BigDecimal.TryParse("0e-", out bd));
+            Assert.False(BigDecimal.TryParse("0E", out bd));
+            Assert.False(BigDecimal.TryParse("0e", out bd));
+            Assert.False(BigDecimal.TryParse("0E+", out bd));
+            Assert.False(BigDecimal.TryParse("0E-", out bd));
+            Assert.False(BigDecimal.TryParse("0e+", out bd));
+            Assert.False(BigDecimal.TryParse("0e-", out bd));
         }
 
-        [Test]
+        [Fact]
         public void ParsingZeroWorks()
         {
             BigDecimal bd;
-            Assert.IsTrue(BigDecimal.TryParse("0", out bd));
-            Assert.IsTrue(bd.Coefficient.IsZero);
-            Assert.AreEqual(0, bd.Exponent);
-            Assert.AreEqual(1, bd.GetPrecision());
+            Assert.True(BigDecimal.TryParse("0", out bd));
+            Assert.True(bd.Coefficient.IsZero);
+            Assert.Equal(0, bd.Exponent);
+            Assert.Equal(1U, bd.GetPrecision());
         }
 
-        [Test]
+        [Fact]
         public void ParsingMultipleZeroWorks()
         {
             BigDecimal bd;
-            Assert.IsTrue(BigDecimal.TryParse("0000", out bd));
-            Assert.IsTrue(bd.Coefficient.IsZero);
-            Assert.AreEqual(0, bd.Exponent);
-            Assert.AreEqual(1, bd.GetPrecision());
+            Assert.True(BigDecimal.TryParse("0000", out bd));
+            Assert.True(bd.Coefficient.IsZero);
+            Assert.Equal(0, bd.Exponent);
+            Assert.Equal(1U, bd.GetPrecision());
         }
 
-        [Test]
+        [Fact]
         public void ParsingZeroWithDecimalPointWorks()
         {
             BigDecimal bd;
-            Assert.IsTrue(BigDecimal.TryParse("00.00", out bd));
-            Assert.IsTrue(bd.Coefficient.IsZero);
-            Assert.AreEqual(-2, bd.Exponent);
-            Assert.AreEqual(1, bd.GetPrecision());
+            Assert.True(BigDecimal.TryParse("00.00", out bd));
+            Assert.True(bd.Coefficient.IsZero);
+            Assert.Equal(-2, bd.Exponent);
+            Assert.Equal(1U, bd.GetPrecision());
         }
 
-        [Test]
+        [Fact]
         public void ParsingSimpleIntegersWorks()
         {
             SimpleIntTest("1", "1", 0, 1);
@@ -166,7 +165,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             SimpleIntTest(".123456789123456789", "123456789123456789", -18, 18);
         }
 
-        [Test]
+        [Fact]
         public void ParsingSimpleNegativeIntegersWorks()
         {
             SimpleIntTest("-1", "-1", 0, 1);
@@ -184,7 +183,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             SimpleIntTest("-.123456789123456789", "-123456789123456789", -18, 18);
         }
 
-        public void ParsingWithPositiveExponentWorks()
+        void ParsingWithPositiveExponentWorks()
         {
             SimpleIntTest("1E0", "1", 0, 1);
             SimpleIntTest("1E1", "1", 1, 1);
@@ -208,7 +207,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             SimpleIntTest("1.000E20", "1000", 17, 4);
         }
 
-        [Test]
+        [Fact]
         public void ParsingWithNegativeExponentWorks()
         {
             SimpleIntTest("1E-0", "1", 0, 1);
@@ -233,16 +232,16 @@ namespace Daml.Ledger.Api.Data.Util.Test
             SimpleIntTest("1.000E-20", "1000", -23, 4);
         }
 
-        void SimpleIntTest(string decString, string intString, int exponent, int precision)
+        void SimpleIntTest(string decString, string intString, int exponent, uint precision)
         {
             BigDecimal bd;
-            Assert.IsTrue(BigDecimal.TryParse(decString, out bd));
-            Assert.AreEqual(BigInteger.Parse(intString), bd.Coefficient);
-            Assert.AreEqual(exponent, bd.Exponent);
-            Assert.AreEqual(precision, bd.GetPrecision());
+            Assert.True(BigDecimal.TryParse(decString, out bd));
+            Assert.Equal(BigInteger.Parse(intString), bd.Coefficient);
+            Assert.Equal(exponent, bd.Exponent);
+            Assert.Equal(precision, bd.GetPrecision());
         }
 
-        [Test]
+        [Fact]
         public void JavaDocParsingTests()
         {
             SimpleIntTest("0", "0", 0, 1);
@@ -261,7 +260,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             SimpleIntTest("-0", "0", 0, 1);
         }
 
-        [Test]
+        [Fact]
         public void SpecParsingExamples()
         {
             SimpleIntTest("0", "0", 0, 1);
@@ -286,7 +285,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Conversion to string
 
-        [Test]
+        [Fact]
         public void ToScientficStringFromSpec()
         {
             TestScientificString("123", 0, "123");
@@ -305,7 +304,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestScientificString("5", -7, "5E-7");
         }
 
-        [Test]
+        [Fact]
         public void NegativeNonExponentialPointPlacement()
         {
             TestScientificString("123456789", -2, "1234567.89");
@@ -317,10 +316,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger bi = BigInteger.Parse(biStr);
             BigDecimal bd = new BigDecimal(bi, exp);
             string result = bd.ToScientificString();
-            Assert.AreEqual(outStr, result);
+            Assert.Equal(outStr, result);
         }
 
-        [Test]
+        [Fact]
         public void CanConvertToPlainString()
         {
             TestPlainString("0",         "0");
@@ -381,14 +380,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             BigDecimal bd = BigDecimal.Parse(bdStr);
             string result = bd.ToPlainString();
-            Assert.AreEqual(outStr, result);
+            Assert.Equal(outStr, result);
         }
 
         #endregion
 
         #region Create from X tests
 
-        [Test]
+        [Fact]
         public void CanCreateFromDouble()
         {
             BigDecimal.Context c9hu = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfUp);
@@ -534,18 +533,18 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             BigDecimal d = BigDecimal.Create(v, c);
             string gotStr = d.ToScientificString();
-            Assert.AreEqual(expectStr, gotStr);
+            Assert.Equal(expectStr, gotStr);
 
             if (v != 0.0)
             {
                 d = BigDecimal.Create(-v, c);
                 gotStr = d.ToScientificString();
-                Assert.AreEqual("-" + expectStr, gotStr);
+                Assert.Equal("-" + expectStr, gotStr);
             }
         }
 
 
-        [Test]
+        [Fact]
         public void CanCreateFromDecimal()
         {
             BigDecimal.Context c9hu = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfUp);
@@ -663,13 +662,13 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             BigDecimal d = BigDecimal.Create(v, c);
             string gotStr = d.ToScientificString();
-            Assert.AreEqual(expectStr, gotStr);
+            Assert.Equal(expectStr, gotStr);
 
             if (v != 0M)
             {
                 d = BigDecimal.Create(-v, c);
                 gotStr = d.ToScientificString();
-                Assert.AreEqual("-" + expectStr, gotStr);
+                Assert.Equal("-" + expectStr, gotStr);
             }
         }
 
@@ -677,7 +676,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Precision tests
 
-        [Test]
+        [Fact]
         public void PrecisionIsComputedProperly()
         {
             TestPrecision("0", 0, 1);
@@ -690,38 +689,38 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestPrecision("123456789123456789", 40, 18);
         }
 
-        void TestPrecision(string s, int exponent, int precision)
+        void TestPrecision(string s, int exponent, uint precision)
         {
 
             BigDecimal bd = new BigDecimal(BigInteger.Parse(s), exponent);
-            Assert.AreEqual(precision, bd.GetPrecision());
+            Assert.Equal(precision, bd.GetPrecision());
         }
 
         #endregion
 
         #region Constants tests
 
-        [Test]
+        [Fact]
         public void NamedConstantsHaveCorrectValues()
         {
-            Assert.AreEqual(BigInteger.Zero, BigDecimal.Zero.Coefficient);
-            Assert.AreEqual(0, BigDecimal.Zero.Exponent);
-            Assert.AreEqual(1, BigDecimal.Zero.GetPrecision());
+            Assert.Equal(BigInteger.Zero, BigDecimal.Zero.Coefficient);
+            Assert.Equal(0, BigDecimal.Zero.Exponent);
+            Assert.Equal(1U, BigDecimal.Zero.GetPrecision());
 
-            Assert.AreEqual(BigInteger.One, BigDecimal.One.Coefficient);
-            Assert.AreEqual(0, BigDecimal.One.Exponent);
-            Assert.AreEqual(1, BigDecimal.One.GetPrecision());
+            Assert.Equal(BigInteger.One, BigDecimal.One.Coefficient);
+            Assert.Equal(0, BigDecimal.One.Exponent);
+            Assert.Equal(1U, BigDecimal.One.GetPrecision());
 
-            Assert.AreEqual(BigInteger.Ten, BigDecimal.Ten.Coefficient);
-            Assert.AreEqual(0, BigDecimal.Ten.Exponent);
-            Assert.AreEqual(2, BigDecimal.Ten.GetPrecision());
+            Assert.Equal(BigInteger.Ten, BigDecimal.Ten.Coefficient);
+            Assert.Equal(0, BigDecimal.Ten.Exponent);
+            Assert.Equal(2U, BigDecimal.Ten.GetPrecision());
         }
 
         #endregion
 
         #region Rounding tests
 
-        //[Test]
+        //[Fact]
         //public void ZeroPrecisionDoesNoRounding()
         //{
         //    BigDecimal.Context mc = new BigDecimal.Context(0,BigDecimal.RoundingMode.Up);
@@ -732,8 +731,8 @@ namespace Daml.Ledger.Api.Data.Util.Test
         //    Expect(bd, BigDecimal.Round(bd,mc)));
         //}
 
-        [Test]
-        public void TestBasicRounding()
+        [Fact]
+        public void TestBasicRoundingTheory()
         {
             TestBasicRounding("123.456", 0, BigDecimal.RoundingMode.HalfUp, "0", 3);
             TestBasicRounding("123.456", 1, BigDecimal.RoundingMode.HalfUp, "1", 2);
@@ -750,11 +749,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal.Context mc = new BigDecimal.Context(precision, mode);
             BigDecimal bd = BigDecimal.Parse(bdStr);
             BigDecimal br = BigDecimal.Round(bd, mc);
-            Assert.AreEqual(BigInteger.Parse(biStr), br.Coefficient);
-            Assert.AreEqual(exponent, br.Exponent);
+            Assert.Equal(BigInteger.Parse(biStr), br.Coefficient);
+            Assert.Equal(exponent, br.Exponent);
         }
 
-        [Test]
+        [Fact]
         public void TestJavaDocRoundingTests()
         {
             TestBasicRounding("5.5", 1, BigDecimal.RoundingMode.Up, "6", 0);
@@ -850,7 +849,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         // The following tests are taken from the spec test cases.
 
-        [Test]
+        [Fact]
         public void QuantizeSpecSanityChecks()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -869,7 +868,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestQuantize("0.9", "1e-3", m, "0.900");
         }
 
-        [Test]
+        [Fact]
         public void QuantizeExamplesFromSpec()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -889,7 +888,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestQuantize("-35236450.6", "1e-2", m, "-35236450.60");
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecNegatives()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -922,7 +921,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax047 quantize -0.9   1e-3   -> -0.900", m);
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecGeneral()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -980,7 +979,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax155 quantize   1.0600  1e0 ->  1 Inexact Rounded", m);
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecBaseTestsWithNonOneCoeffs()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -1015,7 +1014,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax194 quantize -0.9 999e-2   -> -0.90", m);
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecTestPosExponents()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -1104,7 +1103,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax295 quantize   0E-10 1e+3  ->  0E+3", m);
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecRoundUpFromBelow()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -1184,7 +1183,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax378 quantize  -7.8 1e+3 -> 0E+3 Inexact Rounded", m);  // mod: neg zero
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecSomeIndividuals()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -1199,7 +1198,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax387 quantize  -352364506  1e-2 -> -352364506.00 Invalid_operation", m); // Mod: NaN
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecExamplesFromEmail()
         {
             BigDecimal.RoundingMode m = BigDecimal.RoundingMode.HalfUp;
@@ -1212,7 +1211,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TQ("quax396 quantize  1234567.  1e-3 -> 1234567.000 Invalid_operation", m); // Mod: NaN
         }
 
-        [Test]
+        [Fact]
         public void QuantizeSpecSome9999Examples()
         {
             // Some operations here were invalid in the original due to overal precision limits that we do not capture.
@@ -1384,14 +1383,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal rhs = BigDecimal.Parse(rhsStr);
             BigDecimal result = BigDecimal.Quantize(lhs, rhs, m);
             string resultStr = result.ToScientificString();
-            Assert.AreEqual(shouldStr, resultStr);
+            Assert.Equal(shouldStr, resultStr);
         }
 
         #endregion
 
         #region Abs tests
 
-        [Test]
+        [Fact]
         public void SpecAbsTests()
         {
             BigDecimal.Context c9 = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfUp);
@@ -1476,7 +1475,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg = BigDecimal.Parse(argStr);
             BigDecimal result = BigDecimal.Abs(arg, c);
             string resultStr = result.ToScientificString();
-            Assert.AreEqual(shouldStr, resultStr);
+            Assert.Equal(shouldStr, resultStr);
         }
 
 
@@ -1484,7 +1483,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Addition tests
 
-        //[Test]
+        //[Fact]
         //public void TestAddition()
         //{
         //    TestAddition("12345", "678e00", "13023", 0);
@@ -1506,7 +1505,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
         //    Expect(z.Exponent, exponent));
         //}
 
-        [Test]
+        [Fact]
         public void SpecAdd()
         {
             BigDecimal.Context c6hu = new BigDecimal.Context(6, BigDecimal.RoundingMode.HalfUp);
@@ -2015,14 +2014,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg2 = BigDecimal.Parse(arg2Str);
             BigDecimal val = arg1.Add(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
 
         #endregion
 
         #region Subtract tests
 
-        [Test]
+        [Fact]
         public void SpecTestSub()
         {
             BigDecimal.Context c9hu = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfUp);
@@ -2919,14 +2918,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg2 = BigDecimal.Parse(arg2Str);
             BigDecimal val = arg1.Subtract(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
 
         #endregion
 
         #region Multiply
 
-        [Test]
+        [Fact]
         public void SpecTestMultiply()
         {
 
@@ -3322,14 +3321,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg2 = BigDecimal.Parse(arg2Str);
             BigDecimal val = arg1.Multiply(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
 
         #endregion
 
         #region Divide tests
 
-        [Test]
+        [Fact]
         public void TestSpecDivide()
         {
 
@@ -3930,7 +3929,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TDiv("divx1051  divide 5 11 -> 0.4545455 Inexact Rounded", c7he);
         }
 
-        [Test]
+        [Fact]
         public void TestBadDivides()
         {
             BigDecimal.Context c16hu = new BigDecimal.Context(16, BigDecimal.RoundingMode.HalfUp);
@@ -3998,7 +3997,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TDivEx("divx948 divide  -1E+1000 -0   ->  Infinity Division_by_zero", c16hu);
         }
 
-        [Test]
+        [Fact]
         public void DivideTestNoContext()
         {
             BigDecimal.Context c0u = new BigDecimal.Context(0, BigDecimal.RoundingMode.Unnecessary);
@@ -4027,11 +4026,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 string resultStr;
                 GetThreeArgs(test, out arg1Str, out arg2Str, out resultStr);
                 TestDivide(arg1Str, arg2Str, c, "1");  // result irrelevant
-                Assert.IsFalse(false);
+                Assert.False(false);
             }
             catch (ArithmeticException)
             {
-                Assert.IsTrue(true);
+                Assert.True(true);
             }
         }
 
@@ -4051,7 +4050,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg2 = BigDecimal.Parse(arg2Str);
             BigDecimal val = arg1.Divide(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
 
 
@@ -4059,7 +4058,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region DivideInteger tests
 
-        [Test]
+        [Fact]
         public void SpecTestDivInt()
         {
             BigDecimal.Context c9hu = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfUp);
@@ -4416,7 +4415,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal arg2 = BigDecimal.Parse(arg2Str);
             BigDecimal val = arg1.DivideInteger(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
 
         void TDivIEx(string test, BigDecimal.Context c)
@@ -4430,11 +4429,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 BigDecimal arg1 = BigDecimal.Parse(arg1Str);
                 BigDecimal arg2 = BigDecimal.Parse(arg2Str);
                 arg1.DivideInteger(arg2, c);
-                Assert.IsFalse(false);
+                Assert.False(false);
             }
             catch (ArithmeticException)
             {
-                Assert.IsTrue(true);
+                Assert.True(true);
             }
         }
 
@@ -4443,7 +4442,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Power tests
 
-        [Test]
+        [Fact]
         public void PowerTestsFromSpec()
         {
             BigDecimal.Context c9he = new BigDecimal.Context(9, BigDecimal.RoundingMode.HalfEven);
@@ -4601,13 +4600,13 @@ namespace Daml.Ledger.Api.Data.Util.Test
             int arg2 = Int32.Parse(arg2Str);
             BigDecimal val = arg1.Power(arg2, c);
             string valStr = val.ToScientificString();
-            Assert.AreEqual(resultStr, valStr);
+            Assert.Equal(resultStr, valStr);
         }
         #endregion
 
         #region MovePoint tests
 
-        [Test]
+        [Fact]
         public void TestMovePoint()
         {
             TestMoveLeft("123456789000", 0, "123456789000");
@@ -4679,7 +4678,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal d = BigDecimal.Parse(strVal);
             BigDecimal m = d.MovePointLeft(n);
             string resultStr = m.ToScientificString();
-            Assert.AreEqual(expectedString, resultStr);
+            Assert.Equal(expectedString, resultStr);
         }
 
 
@@ -4688,7 +4687,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigDecimal d = BigDecimal.Parse(strVal);
             BigDecimal m = d.MovePointRight(n);
             string resultStr = m.ToScientificString();
-            Assert.AreEqual(expectedString, resultStr);
+            Assert.Equal(expectedString, resultStr);
         }
 
         #endregion

@@ -4,14 +4,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Util.Test
 {
     /// <summary>
     /// These 'tests' just demonstrate the examples at http://codinghelmet.com/articles/custom-implementation-of-the-option-maybe-type-in-cs
     /// </summary>
-    [TestFixture]
     public class OptionalExtensionsTest
     {
         private class Person
@@ -36,77 +36,77 @@ namespace Daml.Ledger.Api.Data.Util.Test
             public string Name { get; }
         }
 
-        [Test]
+        [Fact]
         public void WillSetSomeIfNotNull()
         {
             Car car = new Car("honda", Color.Aqua);
 
             Optional<Car> maybeCar = car.NoneIfNull();
 
-            Assert.AreEqual(typeof(Some<Car>), maybeCar.GetType());
+            maybeCar.Should().BeOfType<Some<Car>>();
         }
 
-        [Test]
+        [Fact]
         public void WillSetNoneIfNull()
         {
             Car car = null;
 
             Optional<Car> maybeCar = car.NoneIfNull();
 
-            Assert.AreEqual(typeof(None<Car>), maybeCar.GetType());
+            maybeCar.Should().BeOfType<None<Car>>();
         }
 
-        [Test]
+        [Fact]
         public void WhenSetsSomeWhenContentMatched()
         {
             var color = Color.Cyan;
             Optional<Color> maybeColor1 = color.When(color == Color.Cyan);
-            Assert.AreEqual(typeof(Some<Color>), maybeColor1.GetType());
+            maybeColor1.Should().BeOfType<Some<Color>>();
 
             Optional<Color> maybeColor2 = color.When(c => c == Color.Cyan);
-            Assert.AreEqual(typeof(Some<Color>), maybeColor2.GetType());
+            maybeColor2.Should().BeOfType<Some<Color>>();
         }
 
-        [Test]
+        [Fact]
         public void WhenSetsNoneIfContentNotMatched()
         {
             var color = Color.Cyan;
             Optional<Color> maybeColor1 = color.When(color == Color.Red);
-            Assert.AreEqual(typeof(None<Color>), maybeColor1.GetType());
+            maybeColor1.Should().BeOfType<None<Color>>();
 
             Optional<Color> maybeColor2 = color.When(c => c == Color.Red);
-            Assert.AreEqual(typeof(None<Color>), maybeColor2.GetType());
+            maybeColor2.Should().BeOfType<None<Color>>();
         }
 
-        [Test]
+        [Fact]
         public void FirstOrNoneGetsNoneForEmptySequence()
         {
             IEnumerable<Color> colors = new Color[0];
 
             Optional<Color> maybeColor = colors.FirstOrNone();
-            Assert.AreEqual(typeof(None<Color>), maybeColor.GetType());
+            maybeColor.Should().BeOfType<None<Color>>();
         }
 
-        [Test]
+        [Fact]
         public void FirstOrNoneGetSomeForSequence()
         {
-            IEnumerable<Color> colors = new[] { Color.Red, Color.Blue};
+            IEnumerable<Color> colors = new[] { Color.Red, Color.Blue };
 
             Optional<Color> maybeColor = colors.FirstOrNone();
-            Assert.AreEqual(typeof(Some<Color>), maybeColor.GetType());
-            Assert.AreEqual(Color.Red, maybeColor.Reduce(Color.AliceBlue));
+            maybeColor.Should().BeOfType<Some<Color>>();
+            maybeColor.Reduce(Color.AliceBlue).Should().Be(Color.Red);
         }
 
-        [Test]
+        [Fact]
         public void FirstOrNoneGetNoneForSequenceIfPredicateNotMatched()
         {
             IEnumerable<Color> colors = new[] { Color.Red, Color.Blue };
 
             Optional<Color> maybeColor = colors.FirstOrNone(c => c == Color.Green);
-            Assert.AreEqual(typeof(None<Color>), maybeColor.GetType());
+            maybeColor.Should().BeOfType<None<Color>>();
         }
 
-        [Test]
+        [Fact]
         public void CanGetFilteredOptionalSequence()
         {
             IEnumerable<Person> people = new[]
@@ -117,14 +117,14 @@ namespace Daml.Ledger.Api.Data.Util.Test
             };
 
             IEnumerable<Color> colors = people.SelectOptional(p => p.TryGetCar()).Select(c => c.Color);
-            Assert.AreEqual(2, colors.Count());
+            Assert.Equal(2, colors.Count());
 
             var temp = colors.ToArray();
-            Assert.AreEqual(Color.Red, temp[0]);
-            Assert.AreEqual(Color.Blue, temp[1]);
+            temp[0].Should().Be(Color.Red);
+            temp[1].Should().Be(Color.Blue);
         }
 
-        [Test]
+        [Fact]
         public void CanGetOptionalFromDictionary()
         {
             IEnumerable<Person> people = new[]
@@ -137,11 +137,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             Dictionary<string, Car> dict = people.SelectOptional(p => p.TryGetCar().Map(car => (name: p.Name, car: car))).ToDictionary(tuple => tuple.name, tuple => tuple.car);
 
             Optional<Car> jillsCar = dict.TryGetValue("Jill");
-            Assert.AreEqual(typeof(Some<Car>), jillsCar.GetType());
-            Assert.AreEqual(Color.Red, jillsCar.Map(c => c.Color).Reduce(Color.Black));
+            jillsCar.Should().BeOfType<Some<Car>>();
+            jillsCar.Map(c => c.Color).Reduce(Color.Black).Should().Be(Color.Red);
 
             Optional<Car> tomsCar = dict.TryGetValue("Tom");
-            Assert.AreEqual(typeof(None<Car>), tomsCar.GetType());
+            tomsCar.Should().BeOfType<None<Car>>();
         }
     }
 }

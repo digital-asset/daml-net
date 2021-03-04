@@ -1,46 +1,46 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class TextTest
     {
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             var text1 = new Text("text1");
             var text2 = new Text("text2");
             var text3 = new Text("text1");
 
-            Assert.IsTrue(text1.Equals(text1));
-            Assert.IsTrue(text1 == text1);
+            Assert.True(text1.Equals(text1));
+            Assert.True(text1 == text1);
 
-            Assert.IsTrue(text1.Equals(text3));
-            Assert.IsTrue(text1 == text3);
+            Assert.True(text1.Equals(text3));
+            Assert.True(text1 == text3);
 
-            Assert.IsFalse(text1.Equals(text2));
-            Assert.IsTrue(text1 != text2);
+            Assert.False(text1.Equals(text2));
+            Assert.True(text1 != text2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             var text1 = new Text("text1");
             var text2 = new Text("text2");
             var text3 = new Text("text1");
 
-            Assert.IsTrue(text1.GetHashCode() == text3.GetHashCode());
-            Assert.IsTrue(text1.GetHashCode() != text2.GetHashCode());
+            Assert.True(text1.GetHashCode() == text3.GetHashCode());
+            Assert.True(text1.GetHashCode() != text2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(new Text("text"));
@@ -50,8 +50,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsText();
-            Assert.AreEqual(typeof(Some<Text>), maybe.GetType());
-            Assert.IsTrue(source == (Some<Text>)maybe);
+            maybe.Should().BeOfType<Some<Text>>();
+            Assert.True(source == (Some<Text>)maybe);
         }
     }
 }

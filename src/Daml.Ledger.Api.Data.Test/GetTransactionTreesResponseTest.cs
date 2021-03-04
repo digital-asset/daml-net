@@ -1,13 +1,12 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
 
-    [TestFixture]
     public class GetTransactionTreesResponseTest
     {
         private readonly GetTransactionTreesResponse _response1 = new GetTransactionTreesResponse(new[] { TransactionTreeFactory.TransactionTree1, TransactionTreeFactory.TransactionTree2 });
@@ -15,28 +14,28 @@ namespace Daml.Ledger.Api.Data.Test
         private readonly GetTransactionTreesResponse _response3 = new GetTransactionTreesResponse(new[] { TransactionTreeFactory.TransactionTree1, TransactionTreeFactory.TransactionTree2 });
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_response1.Equals(_response1));
-            Assert.IsTrue(_response1 == _response1);
+            Assert.True(_response1.Equals(_response1));
+            Assert.True(_response1 == _response1);
 
-            Assert.IsTrue(_response1.Equals(_response3));
-            Assert.IsTrue(_response1 == _response3);
+            Assert.True(_response1.Equals(_response3));
+            Assert.True(_response1 == _response3);
 
-            Assert.IsFalse(_response1.Equals(_response2));
-            Assert.IsTrue(_response1 != _response2);
+            Assert.False(_response1.Equals(_response2));
+            Assert.True(_response1 != _response2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_response1.GetHashCode() == _response3.GetHashCode());
-            Assert.IsTrue(_response1.GetHashCode() != _response2.GetHashCode());
+            Assert.True(_response1.GetHashCode() == _response3.GetHashCode());
+            Assert.True(_response1.GetHashCode() != _response2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_response1);
@@ -46,7 +45,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.GetTransactionTreesResponse protoValue = source.ToProto();
             GetTransactionTreesResponse target = GetTransactionTreesResponse.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }

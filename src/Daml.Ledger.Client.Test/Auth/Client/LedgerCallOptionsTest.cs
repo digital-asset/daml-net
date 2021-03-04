@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Client.Test.Auth.Client
 {
     using Daml.Ledger.Client.Auth.Client;
 
-    [TestFixture]
     public class LedgerCallCredentialsTest
     {
-        [Test]
+        [Fact]
         public void CanCreateAuthInterceptorForAccessToken()
         {
             AsyncAuthInterceptor asyncAuthInterceptor = LedgerCallCredentials.MakeAsyncAuthInterceptor("myAccessToken");
@@ -23,14 +23,14 @@ namespace Daml.Ledger.Client.Test.Auth.Client
 
             Task task = asyncAuthInterceptor(new AuthInterceptorContext("url", "method"), metaData);
 
-            Assert.IsTrue(task.IsCompleted);
-            Assert.AreEqual(1, metaData.Count);
+            task.IsCompleted.Should().BeTrue();
+            metaData.Should().ContainSingle();
             var entry = metaData.First();
-            Assert.AreEqual("authorization", entry.Key);
-            Assert.AreEqual("myAccessToken", entry.Value);
+            entry.Key.Should().Be("authorization");
+            entry.Value.Should().Be("myAccessToken");
         }
 
-        [Test]
+        [Fact]
         public void InterceptorDoesNothingForEmptyAccessToken()
         {
             AsyncAuthInterceptor asyncAuthInterceptor = LedgerCallCredentials.MakeAsyncAuthInterceptor((string) null);
@@ -39,11 +39,11 @@ namespace Daml.Ledger.Client.Test.Auth.Client
 
             Task task = asyncAuthInterceptor(new AuthInterceptorContext("url", "method"), metaData);
 
-            Assert.IsTrue(task.IsCompleted);
-            Assert.AreEqual(0, metaData.Count);
+            task.IsCompleted.Should().BeTrue();
+            metaData.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void CanCreateAuthInterceptorForAccessTokens()
         {
             AsyncAuthInterceptor asyncAuthInterceptor = LedgerCallCredentials.MakeAsyncAuthInterceptor(new [] { "accessToken1", "accessToken2", "accessToken3" });
@@ -52,17 +52,17 @@ namespace Daml.Ledger.Client.Test.Auth.Client
 
             Task task = asyncAuthInterceptor(new AuthInterceptorContext("url", "method"), metaData);
 
-            Assert.IsTrue(task.IsCompleted);
-            Assert.AreEqual(3, metaData.Count);
+            task.IsCompleted.Should().BeTrue();
+            metaData.Should().HaveCount(3);
             int i = 1;
             foreach (var entry in metaData)
             {
-                Assert.AreEqual("authorization", entry.Key);
-                Assert.AreEqual($"accessToken{i++}", entry.Value);
+                entry.Key.Should().Be("authorization");
+                entry.Value.Should().Be($"accessToken{i++}");
             }
         }
 
-        [Test]
+        [Fact]
         public void InterceptorDoesNothingForEmptyAccessTokens()
         {
             AsyncAuthInterceptor asyncAuthInterceptor = LedgerCallCredentials.MakeAsyncAuthInterceptor(new List<string>());
@@ -71,11 +71,11 @@ namespace Daml.Ledger.Client.Test.Auth.Client
 
             Task task = asyncAuthInterceptor(new AuthInterceptorContext("url", "method"), metaData);
 
-            Assert.IsTrue(task.IsCompleted);
-            Assert.AreEqual(0, metaData.Count);
+            task.IsCompleted.Should().BeTrue();
+            metaData.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void InterceptorCopesWithSparseAccessTokens()
         {
             AsyncAuthInterceptor asyncAuthInterceptor = LedgerCallCredentials.MakeAsyncAuthInterceptor(new[] { "accessToken1", null, "accessToken2", string.Empty, "accessToken3" });
@@ -84,12 +84,12 @@ namespace Daml.Ledger.Client.Test.Auth.Client
 
             Task task = asyncAuthInterceptor(new AuthInterceptorContext("url", "method"), metaData);
 
-            Assert.IsTrue(task.IsCompleted);
+            task.IsCompleted.Should().BeTrue();
             int i = 1;
             foreach (var entry in metaData)
             {
-                Assert.AreEqual("authorization", entry.Key);
-                Assert.AreEqual($"accessToken{i++}", entry.Value);
+                entry.Key.Should().Be("authorization");
+                entry.Value.Should().Be($"accessToken{i++}");
             }
         }
     }

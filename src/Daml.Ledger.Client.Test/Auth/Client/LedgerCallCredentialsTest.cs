@@ -2,27 +2,27 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Grpc.Core;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Client.Test.Auth.Client
 {
     using Daml.Ledger.Client.Auth.Client;
 
-    [TestFixture]
     public class LedgerCallOptionsTest
     {
-        [Test]
+        [Fact]
         public void NullCallOptionReturnedForEmptyAccessToken()
         {
             CallOptions? callOptions = LedgerCallOptions.MakeCallOptions((string) null);
-            Assert.IsNull(callOptions);
+            callOptions.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void NullCallOptionReturnedForEmptyAccessTokens()
         {
             CallOptions? callOptions = LedgerCallOptions.MakeCallOptions(new string[] { null, string.Empty, null });
-            Assert.IsNull(callOptions);
+            callOptions.Should().BeNull();
         }
     }
 }

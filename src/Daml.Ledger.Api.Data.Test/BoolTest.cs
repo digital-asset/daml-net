@@ -1,13 +1,13 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class BoolTest
     {
         private static readonly Bool _falseBool = new Bool(false);
@@ -15,28 +15,28 @@ namespace Daml.Ledger.Api.Data.Test
         private static readonly Bool _false2Bool = new Bool(false);
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_falseBool.Equals(_falseBool));
-            Assert.IsTrue(_falseBool == _falseBool);
+            Assert.True(_falseBool.Equals(_falseBool));
+            Assert.True(_falseBool == _falseBool);
 
-            Assert.IsTrue(_falseBool.Equals(_false2Bool));
-            Assert.IsTrue(_falseBool == _false2Bool);
+            Assert.True(_falseBool.Equals(_false2Bool));
+            Assert.True(_falseBool == _false2Bool);
 
-            Assert.IsFalse(_falseBool.Equals(_trueBool));
-            Assert.IsTrue(_falseBool != _trueBool);
+            Assert.False(_falseBool.Equals(_trueBool));
+            Assert.True(_falseBool != _trueBool);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_falseBool.GetHashCode() == _false2Bool.GetHashCode());
-            Assert.IsTrue(_falseBool.GetHashCode() != _trueBool.GetHashCode());
+            Assert.True(_falseBool.GetHashCode() == _false2Bool.GetHashCode());
+            Assert.True(_falseBool.GetHashCode() != _trueBool.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_falseBool);
@@ -47,8 +47,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsBool();
-            Assert.AreEqual(typeof(Some<Bool>), maybe.GetType());
-            Assert.IsTrue(source == (Some<Bool>) maybe);
+            maybe.Should().BeOfType<Some<Bool>>();
+            Assert.True(source == (Some<Bool>) maybe);
         }
     }
 }

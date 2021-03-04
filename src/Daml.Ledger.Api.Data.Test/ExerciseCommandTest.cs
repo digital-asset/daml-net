@@ -1,14 +1,14 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
     using Util;
 
-    [TestFixture]
     public class ExerciseCommandTest
     {
         private readonly ExerciseCommand _command1 = new ExerciseCommand(IdentifierFactory.Id1, "contract1", "doStuff", new Text("arg1"));
@@ -17,55 +17,55 @@ namespace Daml.Ledger.Api.Data.Test
 
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_command1.Equals(_command1));
-            Assert.IsTrue(_command1 == _command1);
+            Assert.True(_command1.Equals(_command1));
+            Assert.True(_command1 == _command1);
 
-            Assert.IsTrue(_command1.Equals(_command3));
-            Assert.IsTrue(_command1 == _command3);
+            Assert.True(_command1.Equals(_command3));
+            Assert.True(_command1 == _command3);
 
-            Assert.IsFalse(_command1.Equals(_command2));
-            Assert.IsTrue(_command1 != _command2);
+            Assert.False(_command1.Equals(_command2));
+            Assert.True(_command1 != _command2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_command1.GetHashCode() == _command3.GetHashCode());
-            Assert.IsTrue(_command1.GetHashCode() != _command2.GetHashCode());
+            Assert.True(_command1.GetHashCode() == _command3.GetHashCode());
+            Assert.True(_command1.GetHashCode() != _command2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_command1);
         }
 
-        [Test]
+        [Fact]
         public void CanRetrieveExerciseCommandFromBase()
         {
             Command baseCommand = _command1;
             var maybeExerciseCommand = baseCommand.AsExerciseCommand();
-            Assert.AreEqual(typeof(Some<ExerciseCommand>), maybeExerciseCommand.GetType());
-            Assert.IsTrue(maybeExerciseCommand.Reduce(_command2) == _command1);
+            maybeExerciseCommand.Should().BeOfType<Some<ExerciseCommand>>();
+            Assert.True(maybeExerciseCommand.Reduce(_command2) == _command1);
         }
 
-        [Test]
+        [Fact]
         public void CannotRetrieveCreateCommandFromBase()
         {
             Command baseCommand = _command1;
             var maybeCreateCommand = baseCommand.AsCreateCommand();
-            Assert.AreEqual(typeof(None<CreateCommand>), maybeCreateCommand.GetType());
+            maybeCreateCommand.Should().BeOfType<None<CreateCommand>>();
         }
 
         private void ConvertThroughProto(ExerciseCommand source)
         {
             Com.Daml.Ledger.Api.V1.ExerciseCommand protoValue = source.ToProto();
             var target = ExerciseCommand.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }

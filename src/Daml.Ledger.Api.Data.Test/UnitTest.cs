@@ -1,16 +1,16 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class UnitTest
     {
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(Unit.Instance);
@@ -20,8 +20,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsUnit();
-            Assert.AreEqual(typeof(Some<Unit>), maybe.GetType());
-            Assert.IsTrue(source == ((Some<Unit>)maybe).Content);
+            maybe.Should().BeOfType<Some<Unit>>();
+            Assert.True(source == ((Some<Unit>)maybe).Content);
         }
     }
 }

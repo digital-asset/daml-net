@@ -1,13 +1,12 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
 
-    [TestFixture]
     public class ExercisedEventTest
     {
         private static readonly string[] _eventIds1 = { "event1", "event2", "event3" };
@@ -18,29 +17,29 @@ namespace Daml.Ledger.Api.Data.Test
         private static readonly ExercisedEvent _event3 = new ExercisedEvent(PartiesFactory.Witnesses1, "event1", IdentifierFactory.Id1, "contract1", "doStuff", new Text("arg1"), PartiesFactory.ActingParties1, true, _eventIds1, Bool.True);
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_event1.Equals(_event1));
-            Assert.IsTrue(_event1 == _event1);
+            Assert.True(_event1.Equals(_event1));
+            Assert.True(_event1 == _event1);
 
-            Assert.IsTrue(_event1.Equals(_event3));
-            Assert.IsTrue(_event1 == _event3);
+            Assert.True(_event1.Equals(_event3));
+            Assert.True(_event1 == _event3);
 
-            Assert.IsFalse(_event1.Equals(_event2));
-            Assert.IsTrue(_event1 != _event2);
+            Assert.False(_event1.Equals(_event2));
+            Assert.True(_event1 != _event2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
 
-            Assert.IsTrue(_event1.GetHashCode() == _event3.GetHashCode());
-            Assert.IsTrue(_event1.GetHashCode() != _event2.GetHashCode());
+            Assert.True(_event1.GetHashCode() == _event3.GetHashCode());
+            Assert.True(_event1.GetHashCode() != _event2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_event1);
@@ -50,7 +49,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.ExercisedEvent protoValue = source.ToProto();
             var target = ExercisedEvent.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }

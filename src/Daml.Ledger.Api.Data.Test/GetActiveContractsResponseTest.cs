@@ -1,13 +1,12 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
 
-    [TestFixture]
     public class GetActiveContractsResponseTest
     {
         private readonly GetActiveContractsResponse _request1 = new GetActiveContractsResponse("offset1", new[] { CreatedEventFactory.Event1, CreatedEventFactory.Event2 }, "workflow1");
@@ -20,41 +19,41 @@ namespace Daml.Ledger.Api.Data.Test
 
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_request1.Equals(_request1));
-            Assert.IsTrue(_request1 == _request1);
+            Assert.True(_request1.Equals(_request1));
+            Assert.True(_request1 == _request1);
 
-            Assert.IsTrue(_request1.Equals(_request3));
-            Assert.IsTrue(_request1 == _request3);
+            Assert.True(_request1.Equals(_request3));
+            Assert.True(_request1 == _request3);
 
-            Assert.IsFalse(_request1.Equals(_request2));
-            Assert.IsTrue(_request1 != _request2);
+            Assert.False(_request1.Equals(_request2));
+            Assert.True(_request1 != _request2);
 
 
-            Assert.IsTrue(_request4.Equals(_request4));
-            Assert.IsTrue(_request4 == _request4);
+            Assert.True(_request4.Equals(_request4));
+            Assert.True(_request4 == _request4);
 
-            Assert.IsTrue(_request4.Equals(_request6));
-            Assert.IsTrue(_request4 == _request6);
+            Assert.True(_request4.Equals(_request6));
+            Assert.True(_request4 == _request6);
 
-            Assert.IsFalse(_request4.Equals(_request5));
-            Assert.IsTrue(_request4 != _request5);
+            Assert.False(_request4.Equals(_request5));
+            Assert.True(_request4 != _request5);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_request1.GetHashCode() == _request3.GetHashCode());
-            Assert.IsTrue(_request1.GetHashCode() != _request2.GetHashCode());
+            Assert.True(_request1.GetHashCode() == _request3.GetHashCode());
+            Assert.True(_request1.GetHashCode() != _request2.GetHashCode());
 
-            Assert.IsTrue(_request4.GetHashCode() == _request6.GetHashCode());
-            Assert.IsTrue(_request4.GetHashCode() != _request5.GetHashCode());
+            Assert.True(_request4.GetHashCode() == _request6.GetHashCode());
+            Assert.True(_request4.GetHashCode() != _request5.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_request1);
@@ -65,7 +64,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.GetActiveContractsResponse protoValue = source.ToProto();
             GetActiveContractsResponse target = GetActiveContractsResponse.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }
