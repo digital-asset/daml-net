@@ -1,77 +1,77 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class DamlOptionalTest
     {
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             var optional1 = DamlOptional.Of(new Int64(long.MaxValue));
             var optional2 = DamlOptional.Of(new Int64(long.MinValue));
             var optional3 = DamlOptional.Of(new Int64(long.MaxValue));
 
-            Assert.IsTrue(optional1.Equals(optional1));
-            Assert.IsTrue(optional1 == optional1);
+            Assert.True(optional1.Equals(optional1));
+            Assert.True(optional1 == optional1);
 
-            Assert.IsTrue(optional1.Equals(optional3));
-            Assert.IsTrue(optional1 == optional3);
+            Assert.True(optional1.Equals(optional3));
+            Assert.True(optional1 == optional3);
 
-            Assert.IsFalse(optional1.Equals(optional2));
-            Assert.IsTrue(optional1 != optional2);
+            Assert.False(optional1.Equals(optional2));
+            Assert.True(optional1 != optional2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             var optional1 = DamlOptional.Of(new Int64(long.MaxValue));
             var optional2 = DamlOptional.Of(new Int64(long.MinValue));
             var optional3 = DamlOptional.Of(new Int64(long.MaxValue));
 
-            Assert.IsTrue(optional1.GetHashCode() == optional3.GetHashCode());
-            Assert.IsTrue(optional1.GetHashCode() != optional2.GetHashCode());
+            Assert.True(optional1.GetHashCode() == optional3.GetHashCode());
+            Assert.True(optional1.GetHashCode() != optional2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(DamlOptional.Of(null));
             ConvertThroughProto(DamlOptional.Of(new Int64(long.MaxValue)));
         }
 
-        [Test]
+        [Fact]
         public void CanHandleNullValues()
         {
             var optional = DamlOptional.Of(null);
             var maybe = optional.Value;
-            Assert.AreEqual(typeof(None<Value>), maybe.GetType());
-            Assert.IsTrue(optional.IsEmpty);
+            maybe.Should().BeOfType<None<Value>>();
+            optional.IsEmpty.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void CanHandleNoneOptionalValues()
         {
             var optional = DamlOptional.Of(None.Value);
             var maybe = optional.Value;
-            Assert.AreEqual(typeof(None<Value>), maybe.GetType());
-            Assert.IsTrue(optional.IsEmpty);
+            maybe.Should().BeOfType<None<Value>>();
+            optional.IsEmpty.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void CanHandleOptionalValues()
         {
             var optional = DamlOptional.Of(Optional.Of((Value)new Text("hello")));
             var maybe = optional.Value;
-            Assert.AreEqual(typeof(Some<Value>), maybe.GetType());
-            Assert.IsFalse(optional.IsEmpty);
+            maybe.Should().BeOfType<Some<Value>>();
+            optional.IsEmpty.Should().BeFalse();
         }
 
         private void ConvertThroughProto(DamlOptional source)
@@ -79,8 +79,8 @@ namespace Daml.Ledger.Api.Data.Test
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsOptional();
 
-            Assert.AreEqual(typeof(Some<DamlOptional>), maybe.GetType());
-            Assert.IsTrue(source == (Some<DamlOptional>)maybe);
+            maybe.Should().BeOfType<Some<DamlOptional>>();
+            Assert.True(source == (Some<DamlOptional>)maybe);
         }
     }
 }

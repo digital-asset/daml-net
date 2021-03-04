@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace Daml.Ledger.Client.Reactive.Test
 {
@@ -53,7 +54,7 @@ namespace Daml.Ledger.Client.Reactive.Test
 
             public void OnError(Exception error)
             {
-                Assert.Fail($"OnError received {error.Message}");
+                _errorMessage = error.Message;
                 _completedEvent.Set();
             }
 
@@ -76,15 +77,24 @@ namespace Daml.Ledger.Client.Reactive.Test
             {
                 _completedEvent.WaitOne();
 
+                if (_errorMessage != null)
+                    Assert.False(false, $"OnError received {_errorMessage}");
+                
                 if (_streamLengthToCheck.HasValue)
-                    Assert.AreEqual(_streamLengthToCheck.Value, Values.Count, "Notification count not as expected");
+                    Values.Count.Should().Be(_streamLengthToCheck.Value, "Notification count not as expected");
 
                 if (_sequenceMillisDelayToCheck.HasValue && _delayTolerance.HasValue)
+                {
+                    var low = _sequenceMillisDelayToCheck.Value - _delayTolerance.Value;
+                    var high = _sequenceMillisDelayToCheck.Value + _delayTolerance.Value;
+
                     foreach (var delay in Delays)
-                        Assert.AreEqual(_sequenceMillisDelayToCheck.Value, delay, _delayTolerance.Value, "Notification delay different then expected");
+                        delay.Should().BeInRange(low, high, "Notification delay different then expected");
+                }
             }
 
             private readonly ManualResetEvent _completedEvent = new ManualResetEvent(false);
+            private string _errorMessage;
             private DateTime _previous = DateTime.MinValue;
 
             private readonly int? _streamLengthToCheck;

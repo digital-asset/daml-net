@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    [TestFixture]
     public class IdentifierTest
     {
         private readonly Identifier _id1 = new Identifier("package1", "module1", "entity1");
@@ -14,47 +13,47 @@ namespace Daml.Ledger.Api.Data.Test
         private readonly Identifier _id3 = new Identifier("package3", "module3", "entity3");
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_id1.Equals(_id1));
-            Assert.IsTrue(_id1 == _id1);
+            Assert.True(_id1.Equals(_id1));
+            Assert.True(_id1 == _id1);
 
-            Assert.IsTrue(_id1.Equals(_id2));
-            Assert.IsTrue(_id1 == _id2);
+            Assert.True(_id1.Equals(_id2));
+            Assert.True(_id1 == _id2);
 
-            Assert.IsFalse(_id1.Equals(_id3));
-            Assert.IsTrue(_id1 != _id3);
+            Assert.False(_id1.Equals(_id3));
+            Assert.True(_id1 != _id3);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_id1.GetHashCode() == _id2.GetHashCode());
-            Assert.IsTrue(_id1.GetHashCode() != _id3.GetHashCode());
+            Assert.True(_id1.GetHashCode() == _id2.GetHashCode());
+            Assert.True(_id1.GetHashCode() != _id3.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_id1);
         }
 
-        [Test]
+        [Fact]
         public void CanConstructWithName()
         {
             var id1 = new Identifier("package1", "module1.entity1");
             var id2 = new Identifier("package1", "module1", "entity1");
 
-            Assert.AreEqual("package1", id1.PackageId);
-            Assert.AreEqual("module1", id1.ModuleName);
-            Assert.AreEqual("entity1", id1.EntityName);
+            Assert.Equal("package1", id1.PackageId);
+            Assert.Equal("module1", id1.ModuleName);
+            Assert.Equal("entity1", id1.EntityName);
             
-            Assert.IsTrue(id1.Equals(id2));
+            Assert.True(id1.Equals(id2));
         }
 
-        [Test]
+        [Fact]
         public void NameMustHaveModuleSpecified()
         {
             Assert.Throws<ArgumentException>(() => new Identifier("Package", ".entity"));
@@ -65,7 +64,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Identifier protoValue = source.ToProto();
             var test = Identifier.FromProto(protoValue);
-            Assert.IsTrue(source == test);
+            Assert.True(source == test);
         }
     }
 }

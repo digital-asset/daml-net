@@ -6,20 +6,29 @@ using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Abstractions;
+using FluentAssertions;
 
 namespace Daml.Ledger.Client.Reactive.Test.Util
 {
     using Daml.Ledger.Client.Reactive.Util;
 
-    [TestFixture, Explicit]  // Tests take 10 seconds or so each...
     public class ServerStreamHelperTest
     {
         const int SequenceMillisDelay = 1050;
         const int DelayTolerance = 20;
+        const double DelayTolerancePercent = 0.01;
         const int StreamLength = 10;
 
-        [Test]
+        private readonly ITestOutputHelper _output;
+
+        public ServerStreamHelperTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+ 
+        [Fact]
         public void SubscriptionToAsyncObservableDoesNotBlockByDefault()
         {
             var observable = CreateIntAsyncEnumerable().CreateAsyncObservable();
@@ -37,10 +46,11 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
 
             int delay = (int)(after - before).TotalMilliseconds;
 
-            Assert.AreEqual(0, delay, DelayTolerance, "Subscribe method blocked");
+            delay.Should().BeInRange(0, DelayTolerance, "Subscribe method blocked");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void ObservationsFromAsyncObservableAreOnTheTaskPoolSchedulerByDefault()
         {
             var observable = CreateIntAsyncEnumerable().CreateAsyncObservable();
@@ -49,12 +59,13 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.IsFalse(observer.NotificationThreadIds.Contains(Thread.CurrentThread.ManagedThreadId), "Unexpectedly notified on main thread");
-            Assert.IsTrue(observer.NotificationTaskIds.Count >= 1);
-            Assert.IsFalse(observer.NotificationTaskIds.Contains(null), "Notifications were not using the Task pool");
+            observer.NotificationThreadIds.Should().NotContain(Thread.CurrentThread.ManagedThreadId, "Unexpectedly notified on main thread");
+            observer.NotificationTaskIds.Should().HaveCountGreaterOrEqualTo(1);
+            observer.NotificationTaskIds.Should().NotContainNulls("Notifications were not using the Task pool");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void CanSpecifySchedulerForSubscriptionForAsyncObservable()
         {
             Thread scheduleThread = null;
@@ -68,14 +79,15 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.IsNotNull(scheduleThread, "Subscription scheduler not used");
-            Assert.AreEqual(1, observer.NotificationThreadIds.Count, "Unexpected number of notification threads");
-            Assert.IsTrue(observer.NotificationThreadIds.Contains(scheduleThread.ManagedThreadId), "Not notified on the scheduler thread");
-            Assert.AreEqual(1, observer.NotificationTaskIds.Count, "Unexpected Task notifier count");
-            Assert.IsTrue(observer.NotificationTaskIds.Contains(null), "Unexpectedly notified by a Task");
+            scheduleThread.Should().NotBeNull("Subscription scheduler not used");
+            observer.NotificationThreadIds.Should().ContainSingle("Unexpected number of notification threads");
+            observer.NotificationThreadIds.Should().Contain(scheduleThread.ManagedThreadId, "Not notified on the scheduler thread");
+            observer.NotificationTaskIds.Should().ContainSingle("Unexpected Task notifier count");
+            observer.NotificationTaskIds.Should().Contain((int?) null, "Unexpectedly notified by a Task");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void CanSpecifySchedulerForObservationsOnAsyncObservable()
         {
             Thread scheduleThread = null;
@@ -88,11 +100,12 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.AreEqual(1, observer.NotificationThreadIds.Count, "Notified on more than one thread");
-            Assert.IsTrue(observer.NotificationThreadIds.Contains(scheduleThread.ManagedThreadId), "Not notified on specified scheduler thread");
+            observer.NotificationThreadIds.Should().ContainSingle("Notified on more than one thread");
+            observer.NotificationThreadIds.Should().Contain(scheduleThread.ManagedThreadId, "Not notified on specified scheduler thread");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void CanSpecifySynchronizationContextForObservationsOnAsyncObservable()
         {
             var synchronizationContext = new TestSynchronizationContext();
@@ -103,10 +116,11 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.AreEqual(StreamLength, synchronizationContext.NotifiedCount);
+            synchronizationContext.NotifiedCount.Should().Be(StreamLength);
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void CannotOverrideSchedulerForSubscriptionOnAsyncObservable()
         {
             Thread scheduleThread = null;
@@ -122,22 +136,25 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.IsNull(scheduleThread, "Overridden scheduler was used");
+            scheduleThread.Should().BeNull("Overridden scheduler was used");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void ObservationsUseTheCurrentThreadIfImmediateSchedulerSpecifiedForSubscriptionOnAsyncObservable()
         {
             CheckNotificationsOnMainThread(CreateIntAsyncEnumerable().CreateAsyncObservable(Scheduler.Immediate));
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void ObservationsOnSyncObservableUseTheCurrentThread()
         {
             CheckNotificationsOnMainThread(CreateIntAsyncEnumerable().CreateSyncObservable());
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void CanSpecifySchedulerForSubscriptionOnSyncObservable()
         {
             Thread scheduleThread = null;
@@ -151,13 +168,14 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
             using (observable.Subscribe(observer))
                 observer.WaitForCompletion();
 
-            Assert.IsNotNull(scheduleThread, "Specified scheduler was not used");
+            scheduleThread.Should().NotBeNull("Specified scheduler was not used");
 
-            Assert.AreEqual(1, observer.NotificationThreadIds.Count, "Notified on more than one thread");
-            Assert.IsTrue(observer.NotificationThreadIds.Contains(scheduleThread.ManagedThreadId), "Not notified on schedule thread");
+            observer.NotificationThreadIds.Should().ContainSingle("Notified on more than one thread");
+            observer.NotificationThreadIds.Should().Contain(scheduleThread.ManagedThreadId, "Not notified on schedule thread");
         }
 
-        [Test]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void MappedAsyncObservablesMaintainAsynchronicity()
         {
             var observable = CreateIntAsyncEnumerable().CreateAsyncObservable().Select(v => (double) v);
@@ -197,11 +215,13 @@ namespace Daml.Ledger.Client.Reactive.Test.Util
 
             int delay = (int)(after - before).TotalMilliseconds;
 
-            Assert.AreEqual(SequenceMillisDelay * StreamLength, delay, DelayTolerance * 2, "Subscribe method blocked");
+            var expectedMinimumDelay = SequenceMillisDelay * StreamLength;
+            var expectedMaximumDelay = (int) (expectedMinimumDelay + (expectedMinimumDelay * DelayTolerancePercent));
 
-            Assert.AreEqual(1, observer.NotificationThreadIds.Count, "Notified on more than one thread");
-            Assert.IsTrue(observer.NotificationThreadIds.Contains(Thread.CurrentThread.ManagedThreadId), "Not notified on main thread");
+            delay.Should().BeInRange(expectedMinimumDelay, expectedMaximumDelay, "Subscribe method blocked");
+
+            observer.NotificationThreadIds.Should().ContainSingle("Notified on more than one thread");
+            observer.NotificationThreadIds.Should().Contain(Thread.CurrentThread.ManagedThreadId, "Not notified on main thread");
         }
-
     }
 }

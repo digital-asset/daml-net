@@ -3,14 +3,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
     using Util;
 
-    [TestFixture]
     public class DamlGenMapTest
     {
         private static readonly DamlGenMap _map1 = DamlGenMap.Of((from v in ValuesFactory.Values1 select (v, v)).ToDictionary(t => t.Item1, t => t.Item2));
@@ -18,28 +18,28 @@ namespace Daml.Ledger.Api.Data.Test
         private static readonly DamlGenMap _map3 = DamlGenMap.Of((from v in ValuesFactory.Values1 select (v, v)).ToDictionary(t => t.Item1, t => t.Item2));
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_map1.Equals(_map1));
-            Assert.IsTrue(_map1 == _map1);
+            Assert.True(_map1.Equals(_map1));
+            Assert.True(_map1 == _map1);
 
-            Assert.IsTrue(_map1.Equals(_map3));
-            Assert.IsTrue(_map1 == _map3);
+            Assert.True(_map1.Equals(_map3));
+            Assert.True(_map1 == _map3);
 
-            Assert.IsFalse(_map1.Equals(_map2));
-            Assert.IsTrue(_map1 != _map2);
+            Assert.False(_map1.Equals(_map2));
+            Assert.True(_map1 != _map2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_map1.GetHashCode() == _map3.GetHashCode());
-            Assert.IsTrue(_map1.GetHashCode() != _map2.GetHashCode());
+            Assert.True(_map1.GetHashCode() == _map3.GetHashCode());
+            Assert.True(_map1.GetHashCode() != _map2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_map1);
@@ -50,8 +50,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsGenMap();
-            Assert.AreEqual(typeof(Some<DamlGenMap>), maybe.GetType());
-            Assert.IsTrue(source == (Some<DamlGenMap>)maybe);
+            maybe.Should().BeOfType<Some<DamlGenMap>>();
+            Assert.True(source == (Some<DamlGenMap>)maybe);
         }
     }
 }

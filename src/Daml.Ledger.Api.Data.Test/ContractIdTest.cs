@@ -2,48 +2,48 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class ContractIdTest
     {
         static readonly string _commonId = Guid.NewGuid().ToString();
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             var contract1 = new ContractId(_commonId);
             var contract2 = new ContractId(_commonId);
             var contract3 = new ContractId(Guid.NewGuid().ToString());
 
-            Assert.IsTrue(contract1.Equals(contract1));
-            Assert.IsTrue(contract1 == contract1);
+            Assert.True(contract1.Equals(contract1));
+            Assert.True(contract1 == contract1);
 
-            Assert.IsTrue(contract1.Equals(contract2));
-            Assert.IsTrue(contract1 == contract2);
+            Assert.True(contract1.Equals(contract2));
+            Assert.True(contract1 == contract2);
 
-            Assert.IsFalse(contract1.Equals(contract3));
-            Assert.IsTrue(contract1 != contract3);
+            Assert.False(contract1.Equals(contract3));
+            Assert.True(contract1 != contract3);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             var contract1 = new ContractId(_commonId);
             var contract2 = new ContractId(_commonId);
             var contract3 = new ContractId(Guid.NewGuid().ToString());
 
-            Assert.IsTrue(contract1.GetHashCode() == contract2.GetHashCode());
-            Assert.IsTrue(contract1.GetHashCode() != contract3.GetHashCode());
+            Assert.True(contract1.GetHashCode() == contract2.GetHashCode());
+            Assert.True(contract1.GetHashCode() != contract3.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(new ContractId(_commonId));
@@ -53,8 +53,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsContractId();
-            Assert.AreEqual(typeof(Some<ContractId>), maybe.GetType());
-            Assert.IsTrue(source == (Some<ContractId>)maybe);
+            maybe.Should().BeOfType<Some<ContractId>>();
+            Assert.True(source == (Some<ContractId>)maybe);
         }
     }
 }

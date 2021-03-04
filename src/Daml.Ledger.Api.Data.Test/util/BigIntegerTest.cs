@@ -19,91 +19,90 @@
  **/
 
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Util.Test
 {    
-    [TestFixture]
     public class BigIntegerTest
     {
 
         #region Basic accessor tests
 
-        [Test]
+        [Fact]
         public void Signum_is_zero_for_zero()
         {
             BigInteger i = BigInteger.Create(0);
-            Assert.AreEqual(0, i.Signum);
+            Assert.Equal(0, i.Signum);
         }
 
-        [Test]
+        [Fact]
         public void Magnitude_is_same_for_pos_and_neg()
         {
             BigInteger neg = BigInteger.Create(-100);
             BigInteger pos = BigInteger.Create(+100);
-            Assert.IsTrue(SameMag(neg.GetMagnitude(), pos.GetMagnitude()));
+            Assert.True(SameMag(neg.GetMagnitude(), pos.GetMagnitude()));
         }
 
 
-        [Test]
+        [Fact]
         public void Magnitude_is_zero_length_for_zero()
         {
             BigInteger i = BigInteger.Create(0);
-            Assert.AreEqual(0, i.GetMagnitude().Length);
+            Assert.Empty(i.GetMagnitude());
         }
 
 
-        [Test]
+        [Fact]
         public void Signum_is_m1_for_negative()
         {
             BigInteger i = BigInteger.Create(-100);
-            Assert.AreEqual(-1, i.Signum);
+            Assert.Equal(-1, i.Signum);
         }
 
-        [Test]
+        [Fact]
         public void Signum_is_1_for_negative()
         {
             BigInteger i = BigInteger.Create(+100);
-            Assert.AreEqual(1, i.Signum);
+            Assert.Equal(1, i.Signum);
         }
 
-        [Test]
+        [Fact]
         public void IsPositive_works()
         {
             BigInteger i = BigInteger.Create(0);
-            Assert.IsFalse(i.IsPositive);
+            Assert.False(i.IsPositive);
 
             i = BigInteger.Create(100);
-            Assert.IsTrue(i.IsPositive);
+            Assert.True(i.IsPositive);
 
             i = BigInteger.Create(-100);
-            Assert.IsFalse(i.IsPositive);
+            Assert.False(i.IsPositive);
         }
 
-        [Test]
+        [Fact]
         public void IsNegative_works()
         {
             BigInteger i = BigInteger.Create(0);
-            Assert.IsFalse(i.IsNegative);
+            Assert.False(i.IsNegative);
 
             i = BigInteger.Create(-100);
-            Assert.IsTrue(i.IsNegative);
+            Assert.True(i.IsNegative);
 
             i = BigInteger.Create(100);
-            Assert.IsFalse(i.IsNegative);
+            Assert.False(i.IsNegative);
         }
 
-        [Test]
+        [Fact]
         public void IsZero_works()
         {
             BigInteger i = BigInteger.Create(0);
-            Assert.IsTrue(i.IsZero);
+            Assert.True(i.IsZero);
 
             i = BigInteger.Create(-100);
-            Assert.IsFalse(i.IsZero);
+            Assert.False(i.IsZero);
 
             i = BigInteger.Create(100);
-            Assert.IsFalse(i.IsZero);
+            Assert.False(i.IsZero);
         }
 
 
@@ -112,137 +111,137 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Basic factory tests
 
-        [Test]
+        [Fact]
         public void Create_ulong_various()
         {
             BigInteger i;
 
             i = BigInteger.Create((ulong)0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create((ulong)100);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 100 }));
+            Assert.True(SameValue(i, 1, new uint[] { 100 }));
 
             i = BigInteger.Create((ulong)0x00ffeeddccbbaa99);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x00ffeedd, 0xccbbaa99 }));
+            Assert.True(SameValue(i, 1, new uint[] { 0x00ffeedd, 0xccbbaa99 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Create_uint_various()
         {
             BigInteger i;
 
             i = BigInteger.Create((uint)0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create((uint)100);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 100 }));
+            Assert.True(SameValue(i, 1, new uint[] { 100 }));
 
             i = BigInteger.Create((ulong)0xffeeddcc);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0xffeeddcc }));
+            Assert.True(SameValue(i, 1, new uint[] { 0xffeeddcc }));
         }
 
-        [Test]
+        [Fact]
         public void Create_long_various()
         {
             BigInteger i;
 
             i = BigInteger.Create((long)0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create(System.Int64.MinValue);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0x80000000, 0 }));
+            Assert.True(SameValue(i, -1, new uint[] { 0x80000000, 0 }));
 
             i = BigInteger.Create((long)100);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 100 }));
+            Assert.True(SameValue(i, 1, new uint[] { 100 }));
 
             i = BigInteger.Create((long)-100);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 100 }));
+            Assert.True(SameValue(i, -1, new uint[] { 100 }));
 
             i = BigInteger.Create((long)0x00ffeeddccbbaa99);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x00ffeedd, 0xccbbaa99 }));
+            Assert.True(SameValue(i, 1, new uint[] { 0x00ffeedd, 0xccbbaa99 }));
 
             i = BigInteger.Create(unchecked((long)0xffffeeddccbbaa99));
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0x00001122, 0x33445567 }));
+            Assert.True(SameValue(i, -1, new uint[] { 0x00001122, 0x33445567 }));
         }
 
-        [Test]
+        [Fact]
         public void Create_int_various()
         {
             BigInteger i;
 
             i = BigInteger.Create((int)0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create(Int32.MinValue);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0x80000000 }));
+            Assert.True(SameValue(i, -1, new uint[] { 0x80000000 }));
 
             i = BigInteger.Create((int)100);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 100 }));
+            Assert.True(SameValue(i, 1, new uint[] { 100 }));
 
             i = BigInteger.Create((int)-100);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 100 }));
+            Assert.True(SameValue(i, -1, new uint[] { 100 }));
 
             i = BigInteger.Create((int)0x00ffeedd);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x00ffeedd }));
+            Assert.True(SameValue(i, 1, new uint[] { 0x00ffeedd }));
 
             i = BigInteger.Create(unchecked((int)0xffffeedd));
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0x00001123 }));
+            Assert.True(SameValue(i, -1, new uint[] { 0x00001123 }));
         }
 
-        [Test]
+        [Fact]
         public void Create_decimal_various()
         {
             BigInteger i;
 
             i = BigInteger.Create(0M);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create(0.9M);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create(Decimal.MinValue);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { uint.MaxValue, uint.MaxValue, uint.MaxValue }));
+            Assert.True(SameValue(i, -1, new uint[] { uint.MaxValue, uint.MaxValue, uint.MaxValue }));
 
             i = BigInteger.Create(Decimal.MaxValue);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { uint.MaxValue, uint.MaxValue, uint.MaxValue }));
+            Assert.True(SameValue(i, 1, new uint[] { uint.MaxValue, uint.MaxValue, uint.MaxValue }));
 
             i = BigInteger.Create(280.77M);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 280 }));
+            Assert.True(SameValue(i, 1, new uint[] { 280 }));
 
             i = BigInteger.Create(-18446744073709551615.994M);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF }));
+            Assert.True(SameValue(i, -1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF }));
         }
 
-        [Test]
+        [Fact]
         public void Create_double_various()
         {
             BigInteger i;
 
             i = BigInteger.Create(0.0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
 
             i = BigInteger.Create(1.0);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 1 }));
+            Assert.True(SameValue(i, 1, new uint[] { 1 }));
 
             i = BigInteger.Create(-1.0);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 1 }));
+            Assert.True(SameValue(i, -1, new uint[] { 1 }));
 
             i = BigInteger.Create(10.0);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 10 }));
+            Assert.True(SameValue(i, 1, new uint[] { 10 }));
 
             i = BigInteger.Create(12345678.123);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 12345678 }));
+            Assert.True(SameValue(i, 1, new uint[] { 12345678 }));
 
             i = BigInteger.Create(4.2949672950000000E+009);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 4294967295 }));
+            Assert.True(SameValue(i, 1, new uint[] { 4294967295 }));
 
             i = BigInteger.Create(4.2949672960000000E+009);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x1, 0x0 }));
+            Assert.True(SameValue(i, 1, new uint[] { 0x1, 0x0 }));
 
             i = BigInteger.Create(-1.2345678901234569E+300);
-            Assert.IsTrue(SameValue(i, -1, new uint[] {
+            Assert.True(SameValue(i, -1, new uint[] {
                 0x1D,
                 0x7EE8BCBB,
                 0xD3520000,
@@ -257,7 +256,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         }
 
-        [Test]
+        [Fact]
         public void Create_double_powers_of_two()
         {
             // Powers of two are special-cased in the code.
@@ -265,24 +264,24 @@ namespace Daml.Ledger.Api.Data.Util.Test
             for (int i = 0; i < Math.Log(Double.MaxValue, 2); i++)
             {
                 BigInteger b = BigInteger.Create(Math.Pow(2.0, i));
-                Assert.IsTrue(b == BigInteger.One << i);
+                Assert.True(b == BigInteger.One << i);
             }
         }
 
 
-        [Test]
+        [Fact]
         public void Create_double_fails_on_pos_infinity()
         {
             Assert.Throws<OverflowException>(() => BigInteger.Create(Double.PositiveInfinity));
         }
 
-        [Test]
+        [Fact]
         public void Create_double_fails_on_neg_infinity()
         {
             Assert.Throws<OverflowException>(() => BigInteger.Create(Double.NegativeInfinity));
         }
 
-        [Test]
+        [Fact]
         public void Create_double_fails_on_NaN()
         {
             Assert.Throws<OverflowException>(() => BigInteger.Create(Double.NaN));
@@ -292,886 +291,886 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Ctor tests
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_handles_zero()
         {
             BigInteger i = new BigInteger(0);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_handles_basic_data_positive()
         {
             uint[] data = new uint[] { 0xffeeddcc, 0xbbaa9988, 0x77665544 };
             BigInteger i = new BigInteger(1, data);
-            Assert.IsTrue(i.IsPositive);
-            Assert.IsTrue(SameValue(i, 1, data));
+            Assert.True(i.IsPositive);
+            Assert.True(SameValue(i, 1, data));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_handles_basic_data_negative()
         {
             uint[] data = new uint[] { 0xffeeddcc, 0xbbaa9988, 0x77665544 };
             BigInteger i = new BigInteger(-1, data);
-            Assert.IsTrue(i.IsNegative);
-            Assert.IsTrue(SameValue(i, -1, data));
+            Assert.True(i.IsNegative);
+            Assert.True(SameValue(i, -1, data));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_fails_on_bad_sign_neg()
         {
             uint[] data = new uint[] { 1 };
             Assert.Throws<ArgumentException>(() => new BigInteger(-2, data));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_fails_on_bad_sign_pos()
         {
             uint[] data = new uint[] { 1 };
             Assert.Throws<ArgumentException>(() => new BigInteger(2, data));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_fails_on_null_mag()
         {
             Assert.Throws<NullReferenceException>(() => new BigInteger(1, null));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_fails_on_zero_sign_on_nonzero_mag()
         {
             uint[] data = new uint[] { 1 };
             Assert.Throws<ArgumentException>(() => new BigInteger(0, data));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_normalized_magnitude()
         {
             uint[] data = new uint[] { 0, 0, 1, 0 };
             uint[] normData = new uint[] { 1, 0 };
             BigInteger i = new BigInteger(1, data);
-            Assert.IsTrue(SameValue(i, 1, normData));
+            Assert.True(SameValue(i, 1, normData));
         }
 
-        [Test]
+        [Fact]
         public void BI_basic_ctor_detects_all_zero_mag()
         {
             uint[] data = new uint[] { 0, 0, 0, 0, 0 };
             BigInteger i = new BigInteger(1, data);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void BI_copy_ctor_works()
         {
             BigInteger i = new BigInteger(1, new uint[] { 1, 2, 3 });
             BigInteger c = new BigInteger(i);
-            Assert.IsTrue(SameValue(c, i.Signum, i.GetMagnitude()));
+            Assert.True(SameValue(c, i.Signum, i.GetMagnitude()));
         }
 
         #endregion
 
         #region Parsing tests
 
-        [Test]
+        [Fact]
         public void Parse_detects_radix_too_small()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("0", 1, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_detects_radix_too_large()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("0", 37, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_zero()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("0", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(result);
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void Parse_negative_zero_just_zero()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("-0", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(result);
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void Parse_multiple_zeros_is_zero()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("00000", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(result);
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void Parse_multiple_zeros_with_leading_minus_is_zero()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("-00000", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 0, new uint[0]));
+            Assert.True(result);
+            Assert.True(SameValue(i, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void Parse_multiple_hyphens_fails()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("-123-4", 10, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_adjacent_hyphens_fails()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("--1234", 10, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_just_adjacent_hyphens_fails()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("--", 10, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_hyphen_only_fails()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("-", 10, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_fails_on_bogus_char()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("123.56", 10, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_fails_on_digit_out_of_range_base_2()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("01010120101", 2, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
 
-        [Test]
+        [Fact]
         public void Parse_fails_on_digit_out_of_range_base_8()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("01234567875", 8, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_fails_on_digit_out_of_range_base_16()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("CabBaGe", 16, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_fails_on_digit_out_of_range_in_later_super_digit_base_16()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("AAAAAAAAAAAAAAAAAAAAAAACabBaGe", 16, out i);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Parse_simple_base_2()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("100", 2, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 4 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 4 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_simple_base_10()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("100", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 100 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 100 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_simple_base_16()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("100", 16, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x100 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 0x100 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_simple_base_36()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("100", 36, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 36 * 36 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 36 * 36 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_works_on_long_string_base_16()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("100000000000000000000", 16, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x00010000, 0, 0 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 0x00010000, 0, 0 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Parse_works_on_long_string_base_10()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("123456789012345678901234567890", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_works_with_leading_minus_sign()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("-123456789012345678901234567890", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, -1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, -1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_works_with_leading_plus_sign()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("+123456789012345678901234567890", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 }));
         }
 
-        [Test]
+        [Fact]
         public void Parse_works_on_long_string_base_10_2()
         {
             BigInteger i;
             bool result = BigInteger.TryParse("1024000001024000001024", 10, out i);
-            Assert.IsTrue(result);
-            Assert.IsTrue(SameValue(i, 1, new uint[] { 0x37, 0x82dacf8b, 0xfb280400 }));
+            Assert.True(result);
+            Assert.True(SameValue(i, 1, new uint[] { 0x37, 0x82dacf8b, 0xfb280400 }));
         }
 
         #endregion
 
         #region ToString tests
 
-        [Test]
+        [Fact]
         public void ToString_fails_on_radix_too_small()
         {
             BigInteger i = new BigInteger(0, new uint[0]);
             Assert.Throws<ArgumentOutOfRangeException>(() => i.ToString(1));
         }
 
-        [Test]
+        [Fact]
         public void ToString_detects_radix_too_large()
         {
             BigInteger i = new BigInteger(0, new uint[0]);
             Assert.Throws<ArgumentOutOfRangeException>(() => i.ToString(37));
         }
 
-        [Test]
+        [Fact]
         public void ToString_on_zero_works_for_all_radixes()
         {
             BigInteger i = new BigInteger(0, new uint[0]);
             for (uint radix = BigInteger.MinRadix; radix <= BigInteger.MaxRadix; radix++)
-                Assert.AreEqual("0", i.ToString(radix));
+                Assert.Equal("0", i.ToString(radix));
         }
 
-        [Test]
+        [Fact]
         public void ToString_simple_base_2()
         {
             BigInteger i = new BigInteger(1, new uint[] { 4 });
             string result = i.ToString(2);
-            Assert.AreEqual("100", result);
+            Assert.Equal("100", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_simple_base_10()
         {
             BigInteger i = new BigInteger(1, new uint[] { 927 });
             string result = i.ToString(10);
-            Assert.AreEqual("927", result);
+            Assert.Equal("927", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_simple_base_16()
         {
             BigInteger i = new BigInteger(1, new uint[] { 0xa20f5 });
             string result = i.ToString(16);
-            Assert.AreEqual("A20F5", result);
+            Assert.Equal("A20F5", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_simple_base_26()
         {
             BigInteger i = new BigInteger(1, new uint[] { 23 * 26 * 26 + 12 * 26 + 15 });
             string result = i.ToString(26);
-            Assert.AreEqual("NCF", result);
+            Assert.Equal("NCF", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_long_base_16()
         {
             BigInteger i = new BigInteger(-1, new uint[] { 0x00FEDCBA, 0x12345678, 0x87654321 });
             string result = i.ToString(16);
-            Assert.AreEqual("-FEDCBA1234567887654321", result);
+            Assert.Equal("-FEDCBA1234567887654321", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_long_base_10()
         {
             BigInteger i = new BigInteger(1, new uint[] { 0x1, 0x8ee90ff6, 0xc373e0ee, 0x4e3f0ad2 });
             string result = i.ToString(10);
-            Assert.AreEqual("123456789012345678901234567890", result);
+            Assert.Equal("123456789012345678901234567890", result);
         }
 
-        [Test]
+        [Fact]
         public void ToString_long_base_10_2()
         {
             BigInteger i = new BigInteger(1, new uint[] { 0x37, 0x82dacf8b, 0xfb280400 });
             string result = i.ToString(10);
-            Assert.AreEqual("1024000001024000001024", result);
+            Assert.Equal("1024000001024000001024", result);
         }
 
         #endregion
 
         #region Comparison tests
 
-        [Test]
+        [Fact]
         public void Compare_on_zeros_is_0()
         {
             BigInteger x = new BigInteger(0, new uint[0]);
             BigInteger y = new BigInteger(0, new uint[0]);
-            Assert.AreEqual(0, BigInteger.Compare(x, y));
+            Assert.Equal(0, BigInteger.Compare(x, y));
         }
 
-        public void Compare_neg_pos_is_minus1()
+        void Compare_neg_pos_is_minus1()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xffffffff, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0x1 });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_pos_neg_is_plus1()
+        void Compare_pos_neg_is_plus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x1 });
             BigInteger y = new BigInteger(-1, new uint[] { 0xffffffff, 0xffffffff });
-            Assert.AreEqual(1, BigInteger.Compare(x, y));
+            Assert.Equal(1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_negs_smaller_len_first_is_plus1()
+        void Compare_negs_smaller_len_first_is_plus1()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xffffffff });
             BigInteger y = new BigInteger(-1, new uint[] { 0xffffffff, 0xffffffff });
-            Assert.AreEqual(1, BigInteger.Compare(x, y));
+            Assert.Equal(1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_negs_larger_len_first_is_minus1()
+        void Compare_negs_larger_len_first_is_minus1()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xffffffff, 0xffffffff });
             BigInteger y = new BigInteger(-1, new uint[] { 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_pos_smaller_len_first_is_minus1()
+        void Compare_pos_smaller_len_first_is_minus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_pos_larger_len_first_is_plus1()
+        void Compare_pos_larger_len_first_is_plus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff });
-            Assert.AreEqual(1, BigInteger.Compare(x, y));
+            Assert.Equal(1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_smaller_first_diff_in_MSB_is_minus1()
+        void Compare_same_len_smaller_first_diff_in_MSB_is_minus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xfffffffe, 0x12345678, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_smaller_first_diff_in_LSB_is_minus1()
+        void Compare_same_len_smaller_first_diff_in_LSB_is_minus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xfffffffe });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_smaller_first_diff_in_middle_is_minus1()
+        void Compare_same_len_smaller_first_diff_in_middle_is_minus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0x12335678, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_larger_first_diff_in_MSB_is_plus1()
+        void Compare_same_len_larger_first_diff_in_MSB_is_plus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xfffffffe, 0x12345678, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_larger_first_diff_in_LSB_is_plus1()
+        void Compare_same_len_larger_first_diff_in_LSB_is_plus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xfffffffe });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_len_larger_first_diff_in_middle_is_plus1()
+        void Compare_same_len_larger_first_diff_in_middle_is_plus1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0x12335678, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(-1, BigInteger.Compare(x, y));
+            Assert.Equal(-1, BigInteger.Compare(x, y));
         }
 
-        public void Compare_same_is_0()
+        void Compare_same_is_0()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
             BigInteger y = new BigInteger(1, new uint[] { 0xffffffff, 0x12345678, 0xffffffff });
-            Assert.AreEqual(0, BigInteger.Compare(x, y));
+            Assert.Equal(0, BigInteger.Compare(x, y));
         }
 
         #endregion
 
         #region Add/Subtract/Negate/Abs tests
 
-        [Test]
+        [Fact]
         public void Negate_zero_is_zero()
         {
             BigInteger x = new BigInteger(0, new uint[0]);
             BigInteger xn = x.Negate();
-            Assert.IsTrue(SameValue(xn, 0, new uint[0]));
+            Assert.True(SameValue(xn, 0, new uint[0]));
         }
 
-        [Test]
+        [Fact]
         public void Negate_positive_is_same_mag_neg()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xfedcba98, 0x87654321 });
             BigInteger xn = x.Negate();
-            Assert.IsTrue(SameValue(xn, -1, x.GetMagnitude()));
+            Assert.True(SameValue(xn, -1, x.GetMagnitude()));
         }
 
-        [Test]
+        [Fact]
         public void Negate_negative_is_same_mag_pos()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xfedcba98, 0x87654321 });
             BigInteger xn = x.Negate();
-            Assert.IsTrue(SameValue(xn, 1, x.GetMagnitude()));
+            Assert.True(SameValue(xn, 1, x.GetMagnitude()));
         }
 
-        [Test]
+        [Fact]
         public void Add_pos_same_length_no_carry()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678 });
             BigInteger y = new BigInteger(1, new uint[] { 0x23456789, 0x13243546 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x3579BE01, 0x25588BBE }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x3579BE01, 0x25588BBE }));
         }
 
-        [Test]
+        [Fact]
         public void Add_neg_same_length_no_carry()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0x12345678, 0x12345678 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x23456789, 0x13243546 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x3579BE01, 0x25588BBE }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x3579BE01, 0x25588BBE }));
         }
 
-        [Test]
+        [Fact]
         public void Add_pos_same_length_some_carry()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF });
             BigInteger y = new BigInteger(1, new uint[] { 0x23456789, 0x13243546, 0x11111111 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x3579BE01, 0x25588BBF, 0x11111110 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x3579BE01, 0x25588BBF, 0x11111110 }));
         }
 
-        [Test]
+        [Fact]
         public void Add_neg_same_length_some_carry()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF });
             BigInteger y = new BigInteger(-1, new uint[] { 0x23456789, 0x13243546, 0x11111111 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x3579BE01, 0x25588BBF, 0x11111110 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x3579BE01, 0x25588BBF, 0x11111110 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_pos_first_longer_one_carry()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x12345678, 0x12345679, 0x11111110, 0x33333333 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x12345678, 0x12345679, 0x11111110, 0x33333333 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_pos_first_longer_more_carry()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x12345678, 0x12345679, 0x00000000, 0x11111110, 0x33333333 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x12345678, 0x12345679, 0x00000000, 0x11111110, 0x33333333 }));
         }
 
-        [Test]
+        [Fact]
         public void Add_pos_first_longer_carry_extend()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Add(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
         }
 
-        [Test]
+        [Fact]
         public void Add_pos_neg_first_larger_mag()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x5 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x3 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x2 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x2 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_pos_neg_second_larger_mag()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x3 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x5 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x2 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x2 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_pos_neg_same_mag()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x3 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x3 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
 
-        [Test]
+        [Fact]
         public void Add_neg_pos_first_larger_mag()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0x5 });
             BigInteger y = new BigInteger(1, new uint[] { 0x3 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x2 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x2 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_neg_pos_second_larger_mag()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0x3 });
             BigInteger y = new BigInteger(1, new uint[] { 0x5 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x2 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x2 }));
         }
 
 
-        [Test]
+        [Fact]
         public void Add_neg_pos_same_mag()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0x3 });
             BigInteger y = new BigInteger(1, new uint[] { 0x3 });
             BigInteger z = x.Add(y);
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Add_zero_to_pos()
         {
             BigInteger x = new BigInteger(0, new uint[0]);
             BigInteger y = new BigInteger(1, new uint[] { 0x3 });
             BigInteger z = x.Add(y);
-            Assert.AreEqual(y, z);
+            Assert.Equal(y, z);
         }
 
 
-        [Test]
+        [Fact]
         public void Subtract_zero_yields_this()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(0, new uint[0]);
             BigInteger z = x.Subtract(y);
 
-            Assert.AreEqual(x, z);
+            Assert.Equal(x, z);
         }
 
-        [Test]
+        [Fact]
         public void Subtract_from_zero_yields_negation()
         {
             BigInteger x = new BigInteger(0, new uint[0]);
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, -1, y.GetMagnitude()));
+            Assert.True(SameValue(z, -1, y.GetMagnitude()));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_opposite_sign_first_pos_is_add()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_opposite_sign_first_neg_is_add()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x00000001, 0x00000000, 0x00000000, 0x11111110, 0x33333333 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_equal_pos_is_zero()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Subtract_equal_neg_is_zero()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger y = new BigInteger(-1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x22222222 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_pos_first_larger_no_borrow()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0x33333333 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_pos_first_smaller_no_borrow()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0x33333333 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_neg_first_larger_no_borrow()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0x33333333 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_neg_first_smaller_no_borrow()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0xFFFFFFFF, 0x33333333 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, -1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
+            Assert.True(SameValue(z, -1, new uint[] { 0x12345678, 0x12345678, 0xEEEEEEEE, 0x22222222 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_pos_first_larger_some_borrow()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0x00000000, 0x03333333 });
             BigInteger y = new BigInteger(1, new uint[] { 0x11111111, 0x11111111 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x12345678, 0x12345677, 0xEEEEEEEE, 0xF2222222 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x12345678, 0x12345677, 0xEEEEEEEE, 0xF2222222 }));
         }
 
-        [Test]
+        [Fact]
         public void Subtract_both_pos_first_larger_lose_MSB()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0x00000000, 0x33333333 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0x12345676, 0x00000000, 0x44444444 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xEEEEEEEF }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xEEEEEEEF }));
         }
 
 
-        [Test]
+        [Fact]
         public void Subtract_both_pos_first_larger_lose_several_MSB()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0x12345678, 0x00000000, 0x33333333 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0x12345678, 0x12345676, 0x00000000, 0x44444444 });
             BigInteger z = x.Subtract(y);
 
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xEEEEEEEF }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xEEEEEEEF }));
         }
 
 
-        [Test]
+        [Fact]
         public void Abs_zero_is_zero()
         {
             BigInteger z = new BigInteger(0);
-            Assert.IsTrue(z.Abs().IsZero);
+            Assert.True(z.Abs().IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Abs_pos_is_pos()
         {
             uint[] data = new uint[] { 0x1, 0x2, 0x3 };
             BigInteger i = new BigInteger(1, data);
-            Assert.IsTrue(SameValue(i.Abs(), 1, data));
+            Assert.True(SameValue(i.Abs(), 1, data));
         }
 
-        [Test]
+        [Fact]
         public void Abs_neg_is_pos()
         {
             uint[] data = new uint[] { 0x1, 0x2, 0x3 };
             BigInteger i = new BigInteger(-1, data);
-            Assert.IsTrue(SameValue(i.Abs(), 1, data));
+            Assert.True(SameValue(i.Abs(), 1, data));
         }
 
         #endregion
 
         #region Multiplication
 
-        [Test]
+        [Fact]
         public void Mult_x_by_zero_is_zero()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678 });
             BigInteger y = new BigInteger(0, new uint[0]);
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Mult_zero_by_y_is_zero()
         {
             BigInteger x = new BigInteger(0, new uint[0]);
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsZero);
+            Assert.True(z.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Mult_two_pos_is_pos()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xDEFCBA98 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsPositive);
+            Assert.True(z.IsPositive);
         }
 
-        [Test]
+        [Fact]
         public void Mult_two_neg_is_pos()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xDEFCBA98 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x12345678 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsPositive);
+            Assert.True(z.IsPositive);
         }
 
-        [Test]
+        [Fact]
         public void Mult_pos_neg_is_neg()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xDEFCBA98 });
             BigInteger y = new BigInteger(-1, new uint[] { 0x12345678 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsNegative);
+            Assert.True(z.IsNegative);
         }
 
-        [Test]
+        [Fact]
         public void Mult_neg_pos_is_neg()
         {
             BigInteger x = new BigInteger(-1, new uint[] { 0xDEFCBA98 });
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(z.IsNegative);
+            Assert.True(z.IsNegative);
         }
 
-        [Test]
+        [Fact]
         public void Mult_1()
         {
             BigInteger x = new BigInteger(1, new uint[] { 100 });
             BigInteger y = new BigInteger(1, new uint[] { 200 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 20000 }));
+            Assert.True(SameValue(z, 1, new uint[] { 20000 }));
         }
 
-        [Test]
+        [Fact]
         public void Mult_2()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xF0000000 });
             BigInteger y = new BigInteger(1, new uint[] { 0x2 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xE0000000 }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x1, 0xFFFFFFFF, 0xE0000000 }));
         }
 
-        [Test]
+        [Fact]
         public void Mult_3()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF });
             BigInteger y = new BigInteger(1, new uint[] { 0x1, 0x1 });
             BigInteger z = x.Multiply(y);
-            Assert.IsTrue(SameValue(z, 1, new uint[] { 0x1, 0x0, 0xFFFFFFFF, 0xFFFFFFFE, 0xFFFFFFFF }));
+            Assert.True(SameValue(z, 1, new uint[] { 0x1, 0x0, 0xFFFFFFFF, 0xFFFFFFFE, 0xFFFFFFFF }));
         }
 
         #endregion
@@ -1179,47 +1178,47 @@ namespace Daml.Ledger.Api.Data.Util.Test
         #region Division
 
         // We test some of the internals, too.
-        [Test]
+        [Fact]
         public void Normalize_shifts_happens_different_len()
         {
             uint[] x = new uint[] { 0x8421FEC8, 0xFE62F731 };
             uint[] xn = new uint[3];
 
             BigInteger.Normalize(xn, 3, x, 2, 0);
-            Assert.AreEqual(x[1], xn[2]);
-            Assert.AreEqual(x[0], xn[1]);
-            Assert.AreEqual(0, xn[0]);
+            Assert.Equal(x[1], xn[2]);
+            Assert.Equal(x[0], xn[1]);
+            Assert.Equal(0U, xn[0]);
 
             for (int i = 1; i < 32; i++)
             {
                 int rshift = 32 - i;
                 BigInteger.Normalize(xn, 3, x, 2, i);
-                Assert.AreEqual(x[1] << i, xn[2]);
-                Assert.AreEqual(x[0] << i | x[1] >> rshift, xn[1]);
-                Assert.AreEqual(x[0] >> rshift, xn[0]);
+                Assert.Equal(x[1] << i, xn[2]);
+                Assert.Equal(x[0] << i | x[1] >> rshift, xn[1]);
+                Assert.Equal(x[0] >> rshift, xn[0]);
             }
         }
 
-        [Test]
+        [Fact]
         public void Normalize_shifts_happens_same_len()
         {
             uint[] x = new uint[] { 0x0421FEC8, 0xFE62F731 };
             uint[] xn = new uint[2];
 
             BigInteger.Normalize(xn, 2, x, 2, 0);
-            Assert.AreEqual(x[1], xn[1]);
-            Assert.AreEqual(x[0], xn[0]);
+            Assert.Equal(x[1], xn[1]);
+            Assert.Equal(x[0], xn[0]);
 
             for (int i = 1; i < 5; i++)
             {
                 int rshift = 32 - i;
                 BigInteger.Normalize(xn, 2, x, 2, i);
-                Assert.AreEqual(x[1] << i, xn[1]);
-                Assert.AreEqual(x[0] << i | x[1] >> rshift, xn[0]);
+                Assert.Equal(x[1] << i, xn[1]);
+                Assert.Equal(x[0] << i | x[1] >> rshift, xn[0]);
             }
         }
 
-        [Test]
+        [Fact]
         public void Normalize_shifts_over_left_end_throws()
         {
             uint[] x = new uint[] { 0x0421FEC8, 0xFE62F731 };
@@ -1228,7 +1227,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             Assert.Throws<InvalidOperationException>(() => BigInteger.Normalize(xn, 2, x, 2, 8));
         }
 
-        [Test]
+        [Fact]
         public void Divide_by_zero_throws()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF });
@@ -1236,7 +1235,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             Assert.Throws<DivideByZeroException>(() => x.Divide(y));
         }
 
-        [Test]
+        [Fact]
         public void Divide_into_zero_is_zero()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x1234, 0xabcd });
@@ -1245,7 +1244,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestDivRem(y, q, r);
         }
 
-        [Test]
+        [Fact]
         public void Divide_into_smaller_is_zero_plus_remainder_is_dividend()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678, 0xabcdef23, 0x88776654 });
@@ -1253,12 +1252,12 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger q;
             BigInteger r;
             q = x.DivRem(y, out r);
-            Assert.IsTrue(r == x);
-            Assert.IsTrue(q.IsZero);
+            Assert.True(r == x);
+            Assert.True(q.IsZero);
         }
 
         // This is because the code had a fall-through error due to a missing return statement.
-        [Test]
+        [Fact]
         public void Divide_into_smaller_is_zero_plus_remainder_is_dividend_len_difference()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0x12345678 });
@@ -1266,11 +1265,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger q;
             BigInteger r;
             q = x.DivRem(y, out r);
-            Assert.IsTrue(r == x);
-            Assert.IsTrue(q.IsZero);
+            Assert.True(r == x);
+            Assert.True(q.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Divide_same_on_len_1()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678 });
@@ -1280,7 +1279,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestDivRem(y, q, r);
         }
 
-        [Test]
+        [Fact]
         public void Divide_same_on_len_3()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0xabcdef23, 0x88776655 });
@@ -1290,7 +1289,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestDivRem(y, q, r);
         }
 
-        [Test]
+        [Fact]
         public void Divide_same_except_small_remainder()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678 });
@@ -1300,7 +1299,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestDivRem(y, q, r);
         }
 
-        [Test]
+        [Fact]
         public void Divide_same_except_small_remainder_2()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x12345678, 0xabcdef23, 0x88776655 });
@@ -1311,7 +1310,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
         }
 
 
-        [Test]
+        [Fact]
         public void Divide_two_digits_with_small_remainder_no_shift()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0xFF000000 });
@@ -1322,7 +1321,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
         }
 
 
-        [Test]
+        [Fact]
         public void Divide_two_digits_with_small_remainder_no_shift2()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0xFF000000, 0x000000aa });
@@ -1332,7 +1331,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestDivRem(y, q, r);
         }
 
-        [Test]
+        [Fact]
         public void Divide_two_digits_with_small_remainder_small_shift()
         {
             BigInteger y = new BigInteger(1, new uint[] { 0x0F000000, 0x000000aa });
@@ -1390,7 +1389,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
         }
 
 
-        [Test]
+        [Fact]
         public void TestKnuthExamples()
         {
             BigInteger bm;
@@ -1409,8 +1408,8 @@ namespace Daml.Ledger.Api.Data.Util.Test
                     BigInteger r;
 
                     q = x.DivRem(bm, out r);
-                    Assert.IsTrue(r == add);
-                    Assert.IsTrue(q == bn);
+                    Assert.True(r == add);
+                    Assert.True(q == bn);
                 }
         }
 
@@ -1422,8 +1421,8 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger r;
             q = x.DivRem(y, out r);
 
-            Assert.IsTrue(q == mult);
-            Assert.IsTrue(r == add);
+            Assert.True(q == mult);
+            Assert.True(r == add);
         }
 
 
@@ -1431,58 +1430,58 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Power, ModPower tests
 
-        [Test]
+        [Fact]
         public void Power_on_negative_exponent_fails()
         {
             BigInteger i = new BigInteger(1, 0x1);
             Assert.Throws<ArgumentOutOfRangeException>(() => i.Power(-2));
         }
 
-        [Test]
+        [Fact]
         public void Power_with_exponent_0_is_one()
         {
             BigInteger i = new BigInteger(1, 0x1);
-            Assert.IsTrue(SameValue(i.Power(0), 1, new uint[] { 1 }));
+            Assert.True(SameValue(i.Power(0), 1, new uint[] { 1 }));
         }
 
-        [Test]
+        [Fact]
         public void Power_on_zero_is_zero()
         {
             BigInteger z = BigInteger.Create(0);
-            Assert.IsTrue(z.Power(12).IsZero);
+            Assert.True(z.Power(12).IsZero);
         }
 
-        [Test]
+        [Fact]
         public void Power_on_small_exponent_works()
         {
             BigInteger i = BigInteger.Create(3);
             BigInteger p = i.Power(6);
             BigInteger e = BigInteger.Create(729);
-            Assert.IsTrue(p == e);
+            Assert.True(p == e);
         }
 
-        [Test]
+        [Fact]
         public void Power_on_completely_odd_exponent_works()
         {
             BigInteger i = new BigInteger(1, 0x2);
             BigInteger p = i.Power(255);
             BigInteger p2_to_255 = new BigInteger(1,
                 0x80000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0);
-            Assert.IsTrue(p == p2_to_255);
+            Assert.True(p == p2_to_255);
         }
 
 
-        [Test]
+        [Fact]
         public void Power_on_power_of_two_exponent_works()
         {
             BigInteger i = new BigInteger(1, 0x2);
             BigInteger p = i.Power(256);
             BigInteger p2_to_256 = new BigInteger(1,
                 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0);
-            Assert.IsTrue(p == p2_to_256);
+            Assert.True(p == p2_to_256);
         }
 
-        [Test]
+        [Fact]
         public void ModPow_on_negative_exponent_fails()
         {
             BigInteger i = new BigInteger(1, 0x1);
@@ -1490,23 +1489,23 @@ namespace Daml.Ledger.Api.Data.Util.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => i.ModPow(-2, m));
         }
 
-        [Test]
+        [Fact]
         public void ModPow_with_exponent_0_is_one()
         {
             BigInteger i = new BigInteger(1, 0x1);
             BigInteger m = new BigInteger(1, 0x1);
-            Assert.IsTrue(SameValue(i.ModPow(0, m), 1, new uint[] { 1 }));
+            Assert.True(SameValue(i.ModPow(0, m), 1, new uint[] { 1 }));
         }
 
-        [Test]
+        [Fact]
         public void ModPow_on_zero_is_zero()
         {
             BigInteger z = BigInteger.Create(0);
             BigInteger m = new BigInteger(1, 0x1);
-            Assert.IsTrue(z.ModPow(12, m).IsZero);
+            Assert.True(z.ModPow(12, m).IsZero);
         }
 
-        [Test]
+        [Fact]
         public void ModPow_on_small_exponent_works()
         {
             BigInteger i = BigInteger.Create(3);
@@ -1514,10 +1513,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger e = BigInteger.Create(6);
             BigInteger p = i.ModPow(e, m);
             BigInteger a = BigInteger.Create(29);
-            Assert.IsTrue(p == a);
+            Assert.True(p == a);
         }
 
-        [Test]
+        [Fact]
         public void ModPow_on_completely_odd_exponent_works()
         {
             BigInteger i = new BigInteger(1, 0x2);
@@ -1525,11 +1524,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger e = BigInteger.Create(255);
             BigInteger p = i.ModPow(e, m);
             BigInteger a = new BigInteger(1, 0x1);
-            Assert.IsTrue(p == a);
+            Assert.True(p == a);
         }
 
 
-        [Test]
+        [Fact]
         public void ModPow_on_power_of_two_exponent_works()
         {
             BigInteger i = new BigInteger(1, 0x2);
@@ -1537,7 +1536,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger e = BigInteger.Create(256);
             BigInteger p = i.ModPow(e, m);
             BigInteger a = new BigInteger(1, 0x2);
-            Assert.IsTrue(p == a);
+            Assert.True(p == a);
         }
 
 
@@ -1545,7 +1544,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region misc tests
 
-        [Test]
+        [Fact]
         public void IsOddWorks()
         {
             BigInteger x1 = new BigInteger(0, new uint[] { 0x0 });
@@ -1562,26 +1561,26 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x12 = new BigInteger(1, new uint[] { 0x2, 0x2 });
             BigInteger x13 = new BigInteger(1, new uint[] { 0x1, 0x1 });
 
-            Assert.IsFalse(x1.IsOdd);
-            Assert.IsTrue(x2.IsOdd);
-            Assert.IsTrue(x3.IsOdd);
-            Assert.IsFalse(x4.IsOdd);
-            Assert.IsFalse(x5.IsOdd);
-            Assert.IsFalse(x6.IsOdd);
-            Assert.IsFalse(x7.IsOdd);
-            Assert.IsTrue(x8.IsOdd);
-            Assert.IsTrue(x9.IsOdd);
-            Assert.IsFalse(x10.IsOdd);
-            Assert.IsTrue(x11.IsOdd);
-            Assert.IsFalse(x12.IsOdd);
-            Assert.IsTrue(x13.IsOdd);
+            Assert.False(x1.IsOdd);
+            Assert.True(x2.IsOdd);
+            Assert.True(x3.IsOdd);
+            Assert.False(x4.IsOdd);
+            Assert.False(x5.IsOdd);
+            Assert.False(x6.IsOdd);
+            Assert.False(x7.IsOdd);
+            Assert.True(x8.IsOdd);
+            Assert.True(x9.IsOdd);
+            Assert.False(x10.IsOdd);
+            Assert.True(x11.IsOdd);
+            Assert.False(x12.IsOdd);
+            Assert.True(x13.IsOdd);
         }
 
         #endregion
 
         #region GCD tests
 
-        [Test]
+        [Fact]
         public void GDC_simple_case()
         {
             int[] primes = { 2, 3 };
@@ -1591,7 +1590,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestGDC(primes, true, apowers, true, bpowers);
         }
 
-        [Test]
+        [Fact]
         public void GDC_test_signs()
         {
             int[] primes = { 2, 3, 5, 17, 73 };
@@ -1604,7 +1603,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
         }
 
 
-        [Test]
+        [Fact]
         public void GDC_test_disparity_in_size()
         {
             int[] primes = { 2, 3, 5, 17, 73 };
@@ -1613,7 +1612,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestGDC(primes, true, apowers, true, bpowers);
         }
 
-        [Test]
+        [Fact]
         public void GDC_test_many_powers_of_two()
         {
             int[] primes = { 2, 3, 5, 17, 73 };
@@ -1622,7 +1621,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestGDC(primes, true, apowers, true, bpowers);
         }
 
-        [Test]
+        [Fact]
         public void GDC_test_relatively_prime()
         {
             int[] primes = { 2, 3, 5, 17, 73 };
@@ -1631,7 +1630,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             TestGDC(primes, true, apowers, true, bpowers);
         }
 
-        [Test]
+        [Fact]
         public void GDC_test_multiple()
         {
             int[] primes = { 2, 3, 5, 17, 73 };
@@ -1653,7 +1652,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
             BigInteger c = CreateFromPrimePowers(primes, MinPowers(apowers, bpowers));
             BigInteger g = a.Gcd(b);
-            Assert.IsTrue(g == c);
+            Assert.True(g == c);
         }
 
         BigInteger CreateFromPrimePowers(int[] primes, int[] powers)
@@ -1679,7 +1678,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region Bitwise operation tests -- Boolean ops
 
-        [Test]
+        [Fact]
         public void BitAnd_pos_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1696,10 +1695,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             //BigInteger z = new BigInteger(1, new uint[] { digit2 & digit1, digit1 & digit2, 0 });
             BigInteger w = x & y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAnd_pos_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1717,10 +1716,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             //BigInteger z = new BigInteger(1, new uint[] { digit1, digit2 & ~digit1, digit1 & (~digit2 + 1), 0 });
             BigInteger w = x & y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAnd_neg_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1737,10 +1736,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             //BigInteger z = new BigInteger(1, new uint[] { ~digit2 & digit1, ~digit1 & digit2, 0 });
             BigInteger w = x & y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAnd_neg_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1757,10 +1756,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x & y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitOr_pos_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1777,10 +1776,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x | y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitOr_pos_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1796,10 +1795,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2 });
             BigInteger w = x | y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitOr_neg_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1816,10 +1815,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x | y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitOr_neg_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1835,10 +1834,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2 });
             BigInteger w = x | y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitXor_pos_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1855,10 +1854,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x ^ y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitXor_pos_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1875,10 +1874,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x ^ y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitXor_neg_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1895,10 +1894,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x ^ y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitXor_neg_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1915,11 +1914,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x ^ y;
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
 
-        [Test]
+        [Fact]
         public void BitAndNot_pos_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1936,10 +1935,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x.BitwiseAndNot(y);
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAndNot_pos_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1955,10 +1954,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2 });
             BigInteger w = x.BitwiseAndNot(y);
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAndNot_neg_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -1976,10 +1975,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2, d3 });
             BigInteger w = x.BitwiseAndNot(y);
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        [Test]
+        [Fact]
         public void BitAndNot_neg_neg()
         {
             uint digit1 = 0xACACACAC;
@@ -1995,11 +1994,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2 });
             BigInteger w = x.BitwiseAndNot(y);
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
 
-        [Test]
+        [Fact]
         public void BitNot_pos()
         {
             uint digit1 = 0xACACACAC;
@@ -2014,10 +2013,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(-1, new uint[] { d0, d1, d2 });
             BigInteger w = x.OnesComplement();
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
-        public void BitNot_neg()
+        void BitNot_neg()
         {
             uint digit1 = 0xACACACAC;
             uint digit2 = 0xCACACACA;
@@ -2031,212 +2030,212 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger z = new BigInteger(1, new uint[] { d0, d1, d2 });
             BigInteger w = x.OnesComplement();
 
-            Assert.IsTrue(w == z);
+            Assert.True(w == z);
         }
 
         #endregion
 
         #region Bitwise operation tests -- single bit
 
-        [Test]
+        [Fact]
         public void TestBit_pos_inside()
         {
             BigInteger x = new BigInteger(1, 0xAAAAAAAA, 0xAAAAAAAA);
 
             for (int i = 0; i < 64; i++)
-                Assert.AreEqual(i % 2 != 0, x.TestBit(i));
+                Assert.Equal(i % 2 != 0, x.TestBit(i));
         }
 
-        [Test]
+        [Fact]
         public void TestBit_neg_inside()
         {
             BigInteger x = new BigInteger(-1, 0xAAAAAAAA, 0xAAAAAAAA);
 
-            Assert.IsFalse(x.TestBit(0));
-            Assert.IsTrue(x.TestBit(1));
+            Assert.False(x.TestBit(0));
+            Assert.True(x.TestBit(1));
 
             for (int i = 2; i < 64; i++)
-                Assert.AreEqual(i % 2 == 0, x.TestBit(i));
+                Assert.Equal(i % 2 == 0, x.TestBit(i));
         }
 
-        [Test]
+        [Fact]
         public void TestBit_pos_outside()
         {
             BigInteger x = new BigInteger(1, 0xAAAAAAAA, 0xAAAAAAAA);
-            Assert.IsFalse(x.TestBit(1000));
+            Assert.False(x.TestBit(1000));
         }
 
-        [Test]
+        [Fact]
         public void TestBit_neg_outside()
         {
             BigInteger x = new BigInteger(-1, 0xAAAAAAAA, 0xAAAAAAAA);
-            Assert.IsTrue(x.TestBit(1000));
+            Assert.True(x.TestBit(1000));
         }
 
-        [Test]
+        [Fact]
         public void SetBit_pos_inside_initial_set()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.SetBit(56);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        [Test]
+        [Fact]
         public void SetBit_pos_inside_initial_clear()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(1, 0xFFFF0080, 0xFFFF0000);
             BigInteger y = x.SetBit(39);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void SetBit_pos_outside()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.SetBit(99);
-            Assert.IsTrue(SameValue(y, 1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
+            Assert.True(SameValue(y, 1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
         }
 
-        [Test]
+        [Fact]
         public void SetBit_neg_inside_initial_set()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.SetBit(39);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        [Test]
+        [Fact]
         public void SetBit_neg_inside_initial_clear()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(-1, 0xFEFF0000, 0xFFFF0000);
             BigInteger y = x.SetBit(56);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void SetBit_neg_outside()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.SetBit(99);
-            Assert.IsTrue(SameValue(y, -1, new uint[] { 0xFFFF0000, 0xFFFF0000 }));
+            Assert.True(SameValue(y, -1, new uint[] { 0xFFFF0000, 0xFFFF0000 }));
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_pos_inside_initial_set()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(1, 0xFEFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(56);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_pos_inside_initial_clear()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(39);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_pos_outside()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(99);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_neg_inside_initial_set()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(39);
-            Assert.IsTrue(SameValue(y, -1, new uint[] { 0xFFFF0080, 0xFFFF0000 }));
+            Assert.True(SameValue(y, -1, new uint[] { 0xFFFF0080, 0xFFFF0000 }));
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_neg_inside_initial_clear()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(56);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        [Test]
+        [Fact]
         public void ClearBit_neg_outside()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.ClearBit(99);
-            Assert.IsTrue(SameValue(y, -1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
+            Assert.True(SameValue(y, -1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_pos_inside_initial_set()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(1, 0xFEFF0000, 0xFFFF0000);
             BigInteger y = x.FlipBit(56);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_pos_inside_initial_clear()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(1, 0xFFFF0080, 0xFFFF0000);
             BigInteger y = x.FlipBit(39);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_pos_outside()
         {
             BigInteger x = new BigInteger(1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.FlipBit(99);
-            Assert.IsTrue(SameValue(y, 1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
+            Assert.True(SameValue(y, 1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_neg_inside_initial_set()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(-1, 0xFFFF0080, 0xFFFF0000);
             BigInteger y = x.FlipBit(39);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_neg_inside_initial_clear()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger w = new BigInteger(-1, 0xFEFF0000, 0xFFFF0000);
             BigInteger y = x.FlipBit(56);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void FlipBit_neg_outside()
         {
             BigInteger x = new BigInteger(-1, 0xFFFF0000, 0xFFFF0000);
             BigInteger y = x.FlipBit(99);
-            Assert.IsTrue(SameValue(y, -1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
+            Assert.True(SameValue(y, -1, new uint[] { 8, 0, 0xFFFF0000, 0xFFFF0000 }));
         }
 
         #endregion
 
         #region Bitwise operation tests -- shifts
 
-        [Test]
+        [Fact]
         public void LeftShift_zero_is_zero()
         {
             BigInteger x = new BigInteger(0);
             BigInteger y = x.LeftShift(1000);
-            Assert.IsTrue(y.IsZero);
+            Assert.True(y.IsZero);
         }
 
-        [Test]
+        [Fact]
         public void LeftShift_neg_shift_same_as_right_shift()
         {
             uint digit1 = 0xC1F0F1CD;
@@ -2245,10 +2244,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.LeftShift(-40);
             BigInteger z = x.RightShift(40);
-            Assert.IsTrue(y == z);
+            Assert.True(y == z);
         }
 
-        [Test]
+        [Fact]
         public void LeftShift_zero_shift_is_this()
         {
             uint digit1 = 0xC1F0F1CD;
@@ -2256,10 +2255,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             uint digit3 = 0x1234678;
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.LeftShift(0);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        public void LeftShift_pos_whole_digit_shift_adds_zeros_at_end()
+        void LeftShift_pos_whole_digit_shift_adds_zeros_at_end()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2267,10 +2266,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.LeftShift(64);
             BigInteger w = new BigInteger(1, digit1, digit2, digit3, 0, 0);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void LeftShift_neg_whole_digit_shift_adds_zeros_at_end()
+        void LeftShift_neg_whole_digit_shift_adds_zeros_at_end()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2278,11 +2277,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(-1, digit1, digit2, digit3);
             BigInteger y = x.LeftShift(64);
             BigInteger w = new BigInteger(-1, digit1, digit2, digit3, 0, 0);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void LeftShift_pos_small_shift()
+        void LeftShift_pos_small_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2294,10 +2293,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit1 << 7 | digit2 >> 25,
                 digit2 << 7 | digit3 >> 25,
                 digit3 << 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void LeftShift_neg_small_shift()
+        void LeftShift_neg_small_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2309,11 +2308,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit1 << 7 | digit2 >> 25,
                 digit2 << 7 | digit3 >> 25,
                 digit3 << 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void LeftShift_pos_big_shift()
+        void LeftShift_pos_big_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2326,11 +2325,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit2 << 7 | digit3 >> 25,
                 digit3 << 7,
                 0, 0);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void LeftShift_neg_big_shift()
+        void LeftShift_neg_big_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2343,10 +2342,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit2 << 7 | digit3 >> 25,
                 digit3 << 7,
                 0, 0);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void LeftShift_pos_big_shift_zero_high_bits()
+        void LeftShift_pos_big_shift_zero_high_bits()
         {
             uint digit1 = 0x0000F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2359,19 +2358,19 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit2 << 7 | digit3 >> 25,
                 digit3 << 7,
                 0, 0);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        [Test]
+        [Fact]
         public void RightShift_zero_is_zero()
         {
             BigInteger x = new BigInteger(0);
             BigInteger y = x.RightShift(1000);
-            Assert.IsTrue(y.IsZero);
+            Assert.True(y.IsZero);
         }
 
 
-        [Test]
+        [Fact]
         public void RightShift_neg_shift_same_as_left_shift()
         {
             uint digit1 = 0xC1F0F1CD;
@@ -2380,10 +2379,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.RightShift(-40);
             BigInteger z = x.LeftShift(40);
-            Assert.IsTrue(y == z);
+            Assert.True(y == z);
         }
 
-        [Test]
+        [Fact]
         public void RightShift_zero_shift_is_this()
         {
             uint digit1 = 0xC1F0F1CD;
@@ -2391,10 +2390,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             uint digit3 = 0x1234678;
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.RightShift(0);
-            Assert.AreSame(y, x);
+            Assert.Same(y, x);
         }
 
-        public void RightShift_pos_whole_digit_shift_loses_whole_digits()
+        void RightShift_pos_whole_digit_shift_loses_whole_digits()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2402,10 +2401,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(1, digit1, digit2, digit3);
             BigInteger y = x.RightShift(64);
             BigInteger w = new BigInteger(1, digit1);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void RightShift_neg_whole_digit_shift_loses_whole_digits()
+        void RightShift_neg_whole_digit_shift_loses_whole_digits()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2413,11 +2412,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger x = new BigInteger(-1, digit1, digit2, digit3);
             BigInteger y = x.RightShift(64);
             BigInteger w = new BigInteger(-1, digit1);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void RightShift_pos_small_shift()
+        void RightShift_pos_small_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2428,10 +2427,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit1 >> 7,
                 digit1 << 25 | digit2 >> 7,
                 digit2 << 25 | digit3 >> 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void RightShift_neg_small_shift()
+        void RightShift_neg_small_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2442,11 +2441,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
                 digit1 >> 7,
                 digit1 << 25 | digit2 >> 7,
                 digit2 << 25 | digit3 >> 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void RightShift_pos_big_shift()
+        void RightShift_pos_big_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2456,11 +2455,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger w = new BigInteger(1,
                 digit1 >> 7,
                 digit1 << 25 | digit2 >> 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
 
-        public void RightShift_neg_big_shift()
+        void RightShift_neg_big_shift()
         {
             uint digit1 = 0xC1F0F1CD;
             uint digit2 = 0xB38F4F83;
@@ -2470,10 +2469,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger w = new BigInteger(-1,
                 digit1 >> 7,
                 digit1 << 25 | digit2 >> 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
-        public void RightShift_pos_big_shift_zero_high_bits()
+        void RightShift_pos_big_shift_zero_high_bits()
         {
             uint digit1 = 0x00001D;
             uint digit2 = 0xB38F4F83;
@@ -2483,7 +2482,7 @@ namespace Daml.Ledger.Api.Data.Util.Test
             BigInteger w = new BigInteger(1,
                 digit1 >> 7,
                 digit1 << 25 | digit2 >> 7);
-            Assert.IsTrue(y == w);
+            Assert.True(y == w);
         }
 
         #endregion
@@ -2494,11 +2493,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             int v;
             bool b = i.AsInt32(out v);
-            Assert.AreEqual(expRet, b);
-            Assert.AreEqual(expInt, v);
+            Assert.Equal(expRet, b);
+            Assert.Equal(expInt, v);
         }
 
-        [Test]
+        [Fact]
         public void AsInt32_various()
         {
             AsInt32Test(BigInteger.Create(0),
@@ -2528,11 +2527,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             long v;
             bool b = i.AsInt64(out v);
-            Assert.AreEqual(expRet, b);
-            Assert.AreEqual(expInt, v);
+            Assert.Equal(expRet, b);
+            Assert.Equal(expInt, v);
         }
 
-        [Test]
+        [Fact]
         public void AsInt64_various()
         {
             AsInt64Test(BigInteger.Create(0),
@@ -2576,11 +2575,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             uint v;
             bool b = i.AsUInt32(out v);
-            Assert.AreEqual(expRet, b);
-            Assert.AreEqual(expInt, v);
+            Assert.Equal(expRet, b);
+            Assert.Equal(expInt, v);
         }
 
-        [Test]
+        [Fact]
         public void AsUInt32_various()
         {
             AsUInt32Test(BigInteger.Create(-1),
@@ -2600,11 +2599,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             ulong v;
             bool b = i.AsUInt64(out v);
-            Assert.AreEqual(expRet, b);
-            Assert.AreEqual(expInt, v);
+            Assert.Equal(expRet, b);
+            Assert.Equal(expInt, v);
         }
 
-        [Test]
+        [Fact]
         public void AsUInt64_various()
         {
             AsUInt64Test(BigInteger.Create(-1),
@@ -2628,11 +2627,11 @@ namespace Daml.Ledger.Api.Data.Util.Test
         {
             decimal v;
             bool b = i.AsDecimal(out v);
-            Assert.AreEqual(expRet, b);
-            Assert.AreEqual(expDec, v);
+            Assert.Equal(expRet, b);
+            Assert.Equal(expDec, v);
         }
 
-        [Test]
+        [Fact]
         public void AsDecimal_various()
         {
             AsDecimalTest(new BigInteger(0),
@@ -2664,89 +2663,89 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
         #region IEquatable<BigInteger>
 
-        [Test]
+        [Fact]
         public void Equals_BI_on_null_is_false()
         {
             BigInteger i = new BigInteger(1, 0x1, 0x2, 0x3);
-            Assert.IsFalse(i.Equals(null));
+            Assert.False(i.Equals(null));
         }
 
-        [Test]
+        [Fact]
         public void Equals_BI_on_same_is_true()
         {
             BigInteger i = new BigInteger(1, 0x1, 0x2, 0x3);
             BigInteger j = new BigInteger(1, 0x1, 0x2, 0x3);
-            Assert.IsTrue(i.Equals(j));
+            Assert.True(i.Equals(j));
         }
 
-        [Test]
+        [Fact]
         public void Equals_BI_on_different_is_false()
         {
             BigInteger i = new BigInteger(1, 0x1, 0x2, 0x3);
             BigInteger j = new BigInteger(1, 0x1, 0x2, 0x4);
-            Assert.IsFalse(i.Equals(j));
+            Assert.False(i.Equals(j));
         }
 
         #endregion
 
         #region Precision tests
 
-        [Test]
+        [Fact]
         public void PrecisionSingleDigitsIsOne()
         {
             for (int i = -9; i <= 9; i++)
             {
                 BigInteger bi = BigInteger.Create(i);
-                Assert.AreEqual(1, bi.Precision);
+                Assert.Equal(1U, bi.Precision);
             }
         }
 
-        [Test]
+        [Fact]
         public void PrecisionTwoDigitsIsTwo()
         {
             int[] values = { -99, -50, -11, -10, 10, 11, 50, 99 };
             foreach (int v in values)
             {
                 BigInteger bi = BigInteger.Create(v);
-                Assert.AreEqual(2, bi.Precision);
+                Assert.Equal(2U, bi.Precision);
             }
         }
 
-        [Test]
+        [Fact]
         public void PrecisionThreeDigitsIsThree()
         {
             int[] values = { -999, -509, -101, -100, 100, 101, 500, 999 };
             foreach (int v in values)
             {
                 BigInteger bi = BigInteger.Create(v);
-                Assert.AreEqual(3, bi.Precision);
+                Assert.Equal(3U, bi.Precision);
             }
         }
 
-        [Test]
+        [Fact]
         public void PrecisionBoundaryCases()
         {
             string nines = "";
             string tenpow = "1";
 
-            for (int i = 1; i < 30; i++)
+            for (uint i = 1; i < 30; i++)
             {
                 nines += "9";
                 tenpow += "0";
                 BigInteger bi9 = BigInteger.Parse(nines);
                 BigInteger bi0 = BigInteger.Parse(tenpow);
-                Assert.AreEqual(i, bi9.Precision);
-                Assert.AreEqual(i + 1, bi0.Precision);
+                Assert.Equal(i, bi9.Precision);
+                Assert.Equal(i + 1, bi0.Precision);
             }
         }
 
-        [Test]
+        [Fact]
         public void PrecisionBoundaryCase2()
         {
             BigInteger x = new BigInteger(1, new uint[] { 0xFFFFFFFF });
             BigInteger y = new BigInteger(1, new uint[] { 0x1, 0x0 });
-            Assert.AreEqual(10, x.Precision);
-            Assert.AreEqual(10, y.Precision);
+            Assert.Equal(10U, x.Precision);
+            Assert.Equal(10U, y.Precision);
         }
 
         #endregion

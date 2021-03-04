@@ -1,18 +1,18 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
     using Util;
     
-    [TestFixture]
     public class DamlEnumTest
     {
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             // With identifier
@@ -21,14 +21,14 @@ namespace Daml.Ledger.Api.Data.Test
                 var de2 = new DamlEnum(IdentifierFactory.Id2, "constructor2");
                 var de3 = new DamlEnum(IdentifierFactory.Id1, "constructor1");
 
-                Assert.IsTrue(de1.Equals(de1));
-                Assert.IsTrue(de1 == de1);
+                Assert.True(de1.Equals(de1));
+                Assert.True(de1 == de1);
 
-                Assert.IsTrue(de1.Equals(de3));
-                Assert.IsTrue(de1 == de3);
+                Assert.True(de1.Equals(de3));
+                Assert.True(de1 == de3);
 
-                Assert.IsFalse(de1.Equals(de2));
-                Assert.IsTrue(de1 != de2);
+                Assert.False(de1.Equals(de2));
+                Assert.True(de1 != de2);
             }
 
             // Without identifier
@@ -37,16 +37,16 @@ namespace Daml.Ledger.Api.Data.Test
                 var de2 = new DamlEnum("constructor2");
                 var de3 = new DamlEnum("constructor1");
 
-                Assert.IsTrue(de1.Equals(de3));
-                Assert.IsTrue(de1 == de3);
+                Assert.True(de1.Equals(de3));
+                Assert.True(de1 == de3);
 
-                Assert.IsFalse(de1.Equals(de2));
-                Assert.IsTrue(de1 != de2);
+                Assert.False(de1.Equals(de2));
+                Assert.True(de1 != de2);
             }
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             // With identifier
@@ -55,8 +55,8 @@ namespace Daml.Ledger.Api.Data.Test
                 var de2 = new DamlEnum(IdentifierFactory.Id2, "constructor2");
                 var de3 = new DamlEnum(IdentifierFactory.Id1, "constructor1");
 
-                Assert.IsTrue(de1.GetHashCode() == de3.GetHashCode());
-                Assert.IsTrue(de1.GetHashCode() != de2.GetHashCode());
+                Assert.True(de1.GetHashCode() == de3.GetHashCode());
+                Assert.True(de1.GetHashCode() != de2.GetHashCode());
             }
 
             // Without identifier
@@ -65,12 +65,12 @@ namespace Daml.Ledger.Api.Data.Test
                 var de2 = new DamlEnum("constructor2");
                 var de3 = new DamlEnum("constructor1");
 
-                Assert.IsTrue(de1.GetHashCode() == de3.GetHashCode());
-                Assert.IsTrue(de1.GetHashCode() != de2.GetHashCode());
+                Assert.True(de1.GetHashCode() == de3.GetHashCode());
+                Assert.True(de1.GetHashCode() != de2.GetHashCode());
             }
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(new DamlEnum(IdentifierFactory.Id1, "constructor1"));
@@ -81,8 +81,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsEnum();
-            Assert.AreEqual(typeof(Some<DamlEnum>), maybe.GetType());
-            Assert.IsTrue(source == (Some<DamlEnum>)maybe);
+            maybe.Should().BeOfType<Some<DamlEnum>>();
+            Assert.True(source == (Some<DamlEnum>)maybe);
         }
     }
 }

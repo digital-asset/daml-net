@@ -1,46 +1,46 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
     using Util;
 
-    [TestFixture]
     public class Int64Test
     {
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             var num1 = new Int64(long.MaxValue);
             var num2 = new Int64(long.MinValue);
             var num3 = new Int64(long.MaxValue);
 
-            Assert.IsTrue(num1.Equals(num1));
-            Assert.IsTrue(num1 == num1);
+            Assert.True(num1.Equals(num1));
+            Assert.True(num1 == num1);
 
-            Assert.IsTrue(num1.Equals(num3));
-            Assert.IsTrue(num1 == num3);
+            Assert.True(num1.Equals(num3));
+            Assert.True(num1 == num3);
 
-            Assert.IsFalse(num1.Equals(num2));
-            Assert.IsTrue(num1 != num2);
+            Assert.False(num1.Equals(num2));
+            Assert.True(num1 != num2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             var num1 = new Int64(long.MaxValue);
             var num2 = new Int64(long.MinValue);
             var num3 = new Int64(long.MaxValue);
 
-            Assert.IsTrue(num1.GetHashCode() == num3.GetHashCode());
-            Assert.IsTrue(num1.GetHashCode() != num2.GetHashCode());
+            Assert.True(num1.GetHashCode() == num3.GetHashCode());
+            Assert.True(num1.GetHashCode() != num2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(new Int64(long.MaxValue));
@@ -51,8 +51,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsInt64();
-            Assert.AreEqual(typeof(Some<Int64>), maybe.GetType());
-            Assert.IsTrue(source == (Some<Int64>)maybe);
+            maybe.Should().BeOfType<Some<Int64>>();
+            Assert.True(source == (Some<Int64>)maybe);
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿// Copyright(c) 2021 Digital Asset(Switzerland) GmbH and/or its affiliates.All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
     using Util;
 
-    [TestFixture]
     public class VariantTest
     {
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
             {
@@ -20,14 +20,14 @@ namespace Daml.Ledger.Api.Data.Test
                 var variant2 = new Variant(IdentifierFactory.Id2, "constructor2", new Int64(long.MinValue));
                 var variant3 = new Variant(IdentifierFactory.Id1, "constructor1", new Int64(long.MaxValue));
 
-                Assert.IsTrue(variant1.Equals(variant1));
-                Assert.IsTrue(variant1 == variant1);
+                Assert.True(variant1.Equals(variant1));
+                Assert.True(variant1 == variant1);
 
-                Assert.IsTrue(variant1.Equals(variant3));
-                Assert.IsTrue(variant1 == variant3);
+                Assert.True(variant1.Equals(variant3));
+                Assert.True(variant1 == variant3);
 
-                Assert.IsFalse(variant1.Equals(variant2));
-                Assert.IsTrue(variant1 != variant2);
+                Assert.False(variant1.Equals(variant2));
+                Assert.True(variant1 != variant2);
             }
 
             {
@@ -35,20 +35,20 @@ namespace Daml.Ledger.Api.Data.Test
                 var variant2 = new Variant("constructor2", new Int64(long.MinValue));
                 var variant3 = new Variant("constructor1", new Int64(long.MaxValue));
 
-                Assert.IsTrue(variant1.Equals(variant1));
-                Assert.IsTrue(variant1 == variant1);
+                Assert.True(variant1.Equals(variant1));
+                Assert.True(variant1 == variant1);
 
-                Assert.IsTrue(variant1.Equals(variant3));
-                Assert.IsTrue(variant1 == variant3);
+                Assert.True(variant1.Equals(variant3));
+                Assert.True(variant1 == variant3);
 
-                Assert.IsFalse(variant1.Equals(variant2));
-                Assert.IsTrue(variant1 != variant2);
+                Assert.False(variant1.Equals(variant2));
+                Assert.True(variant1 != variant2);
             }
 
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
             {
@@ -56,8 +56,8 @@ namespace Daml.Ledger.Api.Data.Test
                 var variant2 = new Variant(IdentifierFactory.Id2, "constructor2", new Int64(long.MinValue));
                 var variant3 = new Variant(IdentifierFactory.Id1, "constructor1", new Int64(long.MaxValue));
 
-                Assert.IsTrue(variant1.GetHashCode() == variant3.GetHashCode());
-                Assert.IsTrue(variant1.GetHashCode() != variant2.GetHashCode());
+                Assert.True(variant1.GetHashCode() == variant3.GetHashCode());
+                Assert.True(variant1.GetHashCode() != variant2.GetHashCode());
             }
 
             {
@@ -65,12 +65,12 @@ namespace Daml.Ledger.Api.Data.Test
                 var variant2 = new Variant("constructor2", new Int64(long.MinValue));
                 var variant3 = new Variant("constructor1", new Int64(long.MaxValue));
 
-                Assert.IsTrue(variant1.GetHashCode() == variant3.GetHashCode());
-                Assert.IsTrue(variant1.GetHashCode() != variant2.GetHashCode());
+                Assert.True(variant1.GetHashCode() == variant3.GetHashCode());
+                Assert.True(variant1.GetHashCode() != variant2.GetHashCode());
             }
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(new Variant(IdentifierFactory.Id1, "constructor1", new Int64(long.MaxValue)));
@@ -81,8 +81,8 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsVariant();
-            Assert.AreEqual(typeof(Some<Variant>), maybe.GetType());
-            Assert.IsTrue(source == (Some<Variant>)maybe);
+            maybe.Should().BeOfType<Some<Variant>>();
+            Assert.True(source == (Some<Variant>)maybe);
         }
     }
 }

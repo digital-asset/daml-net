@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    [TestFixture]
     public class CheckpointTest
     {
         private static readonly Checkpoint _checkPoint1 = new Checkpoint(DateTimeOffset.UnixEpoch, LedgerOffset.LedgerBegin.Instance);
@@ -14,28 +13,28 @@ namespace Daml.Ledger.Api.Data.Test
         private static readonly Checkpoint _checkPoint3 = new Checkpoint(DateTimeOffset.UnixEpoch, LedgerOffset.LedgerBegin.Instance);
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_checkPoint1.Equals(_checkPoint1));
-            Assert.IsTrue(_checkPoint1 == _checkPoint1);
+            Assert.True(_checkPoint1.Equals(_checkPoint1));
+            Assert.True(_checkPoint1 == _checkPoint1);
 
-            Assert.IsTrue(_checkPoint1.Equals(_checkPoint3));
-            Assert.IsTrue(_checkPoint1 == _checkPoint3);
+            Assert.True(_checkPoint1.Equals(_checkPoint3));
+            Assert.True(_checkPoint1 == _checkPoint3);
 
-            Assert.IsFalse(_checkPoint1.Equals(_checkPoint2));
-            Assert.IsTrue(_checkPoint1 != _checkPoint2);
+            Assert.False(_checkPoint1.Equals(_checkPoint2));
+            Assert.True(_checkPoint1 != _checkPoint2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_checkPoint1.GetHashCode() == _checkPoint3.GetHashCode());
-            Assert.IsTrue(_checkPoint1.GetHashCode() != _checkPoint2.GetHashCode());
+            Assert.True(_checkPoint1.GetHashCode() == _checkPoint3.GetHashCode());
+            Assert.True(_checkPoint1.GetHashCode() != _checkPoint2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_checkPoint2);
@@ -45,7 +44,7 @@ namespace Daml.Ledger.Api.Data.Test
         {
             Com.Daml.Ledger.Api.V1.Checkpoint protoValue = source.ToProto();
             Checkpoint target = Checkpoint.FromProto(protoValue);
-            Assert.IsTrue(source == target);
+            Assert.True(source == target);
         }
     }
 }

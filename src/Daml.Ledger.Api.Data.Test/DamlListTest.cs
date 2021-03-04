@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
     using Util;
 
-    [TestFixture]
     public class DamlListTest
     {
         private readonly DamlList _list1 = DamlList.Of(ValuesFactory.Values1[0], ValuesFactory.Values1[1], ValuesFactory.Values1[2]);
@@ -17,57 +17,57 @@ namespace Daml.Ledger.Api.Data.Test
         private readonly DamlList _list3 = DamlList.Of(ValuesFactory.Values1);
 
 #pragma warning disable CS1718
-        [Test]
+        [Fact]
         public void EqualityHasValueSemantics()
         {
-            Assert.IsTrue(_list1.Equals(_list1));
-            Assert.IsTrue(_list1 == _list1);
+            Assert.True(_list1.Equals(_list1));
+            Assert.True(_list1 == _list1);
 
-            Assert.IsTrue(_list1.Equals(_list3));
-            Assert.IsTrue(_list1 == _list3);
+            Assert.True(_list1.Equals(_list3));
+            Assert.True(_list1 == _list3);
 
-            Assert.IsFalse(_list1.Equals(_list2));
-            Assert.IsTrue(_list1 != _list2);
+            Assert.False(_list1.Equals(_list2));
+            Assert.True(_list1 != _list2);
         }
 #pragma warning restore CS1718
 
-        [Test]
+        [Fact]
         public void HashCodeHasValueSemantics()
         {
-            Assert.IsTrue(_list1.GetHashCode() == _list3.GetHashCode());
-            Assert.IsTrue(_list1.GetHashCode() != _list2.GetHashCode());
+            Assert.True(_list1.GetHashCode() == _list3.GetHashCode());
+            Assert.True(_list1.GetHashCode() != _list2.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void CanConvertBetweenProto()
         {
             ConvertThroughProto(_list1);
             ConvertThroughProto(DamlList.Of(new Value[] {}));
         }
 
-        [Test]
+        [Fact]
         public void FieldOrderDoesNotAffectEquality()
         {
             var list = DamlList.Of(ValuesFactory.Values1.Reverse());
 
-            Assert.IsTrue(_list1.Equals(list));
+            Assert.True(_list1.Equals(list));
         }
 
-        [Test]
+        [Fact]
         public void FieldOrderDoesNotAffectHashCode()
         {
             var list1 = DamlList.Of(new Int64(12345), new Party("party1"), new Bool(false));
             var list2 = DamlList.Of(new Party("party1"), new Int64(12345), new Bool(false));
 
-            Assert.IsTrue(list1.GetHashCode() == list2.GetHashCode());
+            Assert.True(list1.GetHashCode() == list2.GetHashCode());
         }
 
         private void ConvertThroughProto(DamlList source)
         {
             Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsList();
-            Assert.AreEqual(typeof(Some<DamlList>), maybe.GetType());
-            Assert.IsTrue(source == (Some<DamlList>)maybe);
+            maybe.Should().BeOfType<Some<DamlList>>();
+            Assert.True(source == (Some<DamlList>)maybe);
         }
     }
 }

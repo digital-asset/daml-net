@@ -3,25 +3,25 @@
 
 using System.Text;
 using Google.Protobuf;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 using Com.Daml.Ledger.Api.V1;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    [TestFixture]
     public class GetPackageResponseTest
     {
-        [Test]
+        [Fact]
         public void CanConvertFromProto()
         {
             Com.Daml.Ledger.Api.V1.GetPackageResponse protoValue = new Com.Daml.Ledger.Api.V1.GetPackageResponse() { HashFunction = HashFunction.Sha256, Hash = "hash", ArchivePayload = ByteString.CopyFromUtf8("ArchivePayload") };
 
             GetPackageResponse response = GetPackageResponse.FromProto(protoValue);
 
-            Assert.AreEqual("hash", response.Hash);
-            Assert.AreEqual("ArchivePayload", Encoding.UTF8.GetString(response.ArchivePayload, 0, response.ArchivePayload.Length));
-            Assert.AreEqual(GetPackageResponse.HashFunction.ValueOf(0), response.Function);
+            response.Hash.Should().Be("hash");
+            Encoding.UTF8.GetString(response.ArchivePayload, 0, response.ArchivePayload.Length).Should().Be("ArchivePayload");
+            response.Function.Should().Be(GetPackageResponse.HashFunction.ValueOf(0));
         }
     }
 }

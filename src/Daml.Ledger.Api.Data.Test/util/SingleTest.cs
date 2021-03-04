@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace Daml.Ledger.Api.Data.Util.Test
 {
-    [TestFixture]
     public class SingleTest
     {
-        [Test]
+        [Fact]
         public void CanCreateSingleForImmediateValue()
         {
             var single = Single.Just(5);
 
-            Assert.AreEqual(5, single.Result);
+            single.Result.Should().Be(5);
 
             int notificationCount = 0;
             int errorCount = 0;
@@ -30,12 +30,12 @@ namespace Daml.Ledger.Api.Data.Util.Test
             using (var subscription = single.Subscribe(v => { ++notificationCount; values += v; }, e => ++errorCount))
             { }
 
-            Assert.AreEqual(2, notificationCount);
-            Assert.AreEqual(0, errorCount);
-            Assert.AreEqual(10, values);
+            notificationCount.Should().Be(2);
+            errorCount.Should().Be(0);
+            values.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void CanCreateFailedSingle()
         {
             var exception = new Exception("failed");
@@ -52,13 +52,13 @@ namespace Daml.Ledger.Api.Data.Util.Test
             using (var subscription = single.Subscribe(v => ++notificationCount, e => errors.Add(e)))
             { }
 
-            Assert.AreEqual(0, notificationCount);
-            Assert.AreEqual(2, errors.Count);
-            Assert.AreEqual(exception, errors[0]);
-            Assert.AreEqual(exception, errors[1]);
+            notificationCount.Should().Be(0);
+            errors.Count.Should().Be(2);
+            errors[0].Should().Be(exception);
+            errors[1].Should().Be(exception);
         }
 
-        [Test]
+        [Fact]
         public void AccessingResultForFailedSingleResultsInException()
         {
             var single = Single.Error<int>(new Exception("failed"));
@@ -70,19 +70,19 @@ namespace Daml.Ledger.Api.Data.Util.Test
             }
             catch (Exception e)
             {
-                Assert.AreEqual("One or more errors occurred. (failed)", e.Message);
+                e.Message.Should().Be("One or more errors occurred. (failed)");
             }
         }
         
-        [Test]
+        [Fact]
         public void CanCreateSingleFromCompletedTask()
         {
             var single = Single.Just(Task.FromResult(5));
 
-            Assert.AreEqual(5, single.Result);
+            single.Result.Should().Be(5);
         }
 
-        [Test]
+        [Fact]
         public void WillBlockOnResultOfAsyncTask()
         {
             int millisDelay = 2000;
@@ -100,12 +100,12 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
             timer.Stop();
 
-            Assert.AreEqual(5, val);
+            val.Should().Be(5);
 
-            Assert.AreEqual(millisDelay, timer.ElapsedMilliseconds, 20, "Blocking delay different then expected");
+            timer.ElapsedMilliseconds.Should().BeInRange(millisDelay - 20, millisDelay + 20);
         }
 
-        [Test]
+        [Fact]
         public void IsNotifiedByAsyncTask()
         {
             int millisDelay = 2000;
@@ -133,12 +133,12 @@ namespace Daml.Ledger.Api.Data.Util.Test
 
                 var notificationDelay = (notificationTime - startTime).TotalMilliseconds;
 
-                Assert.IsNull(notifiedException);
-                Assert.AreEqual(millisDelay, notificationDelay, 20, $"Notification delay different then expected : got {notificationDelay} : expected {millisDelay}");
+                notifiedException.Should().BeNull();
+                notificationDelay.Should().BeInRange(millisDelay - 20, millisDelay + 20);
             }
         }
 
-        [Test]
+        [Fact]
         public void CancellingAsyncTaskThrowsErrorToObserver()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -170,11 +170,10 @@ namespace Daml.Ledger.Api.Data.Util.Test
                         break;
                 }
 
-                Assert.AreEqual(DateTime.MinValue, notificationTime, "Have been notified after cancellation");
-                Assert.IsNotNull(notifiedException, "Exception not notified");
-                Assert.AreEqual("A task was canceled.", notifiedException.Message);
+                notificationTime.Should().Be(DateTime.MinValue, "have been notified after cancellation");
+                notifiedException.Should().NotBeNull("exception not notified");
+                notifiedException.Message.Should().Be("A task was canceled.");
             }
         }
-
     }
 }
