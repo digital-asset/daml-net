@@ -3,10 +3,11 @@
 
 using System.Collections.Generic;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class ActiveContractsClient : IActiveContractsClient
@@ -27,10 +28,7 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            var request = new GetActiveContractsRequest { LedgerId = LedgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
-            var response = _activeContractsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetActiveContracts(r, co));
-
-            return response.ResponseStream;
+            return GetActiveContractsImpl(transactionFilter, verbose, accessToken, traceContext).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<GetActiveContractsResponse> GetActiveContractsSync(
@@ -39,13 +37,14 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = GetActiveContracts(transactionFilter, verbose, accessToken, traceContext))
-            {
-                while (stream.MoveNext().Result)
-                {
-                    yield return stream.Current;
-                }
+            return GetActiveContractsImpl(transactionFilter, verbose, accessToken, traceContext).ToListAsync().Result;
             }
+
+        private IAsyncStreamReader<GetActiveContractsResponse> GetActiveContractsImpl(TransactionFilter transactionFilter, bool verbose, string accessToken, TraceContext traceContext)
+        {
+            var request = new GetActiveContractsRequest { LedgerId = LedgerId, Filter = transactionFilter, Verbose = verbose, TraceContext = traceContext };
+            var response = _activeContractsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetActiveContracts(r, co));
+            return response.ResponseStream;
         }
     }
 }

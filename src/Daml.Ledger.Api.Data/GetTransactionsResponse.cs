@@ -17,11 +17,11 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().AddRange(Transactions).ToHashCode();
         }
 
-        public static GetTransactionsResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse response) => new GetTransactionsResponse(from t in response.Transactions select Transaction.FromProto(t));
+        public static GetTransactionsResponse FromProto(Com.Daml.Ledger.Api.V1.GetTransactionsResponse response) => new GetTransactionsResponse(from t in response.Transactions select Transaction.FromProto(t));
 
-        public Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse ToProto()
+        public Com.Daml.Ledger.Api.V1.GetTransactionsResponse ToProto()
         {
-            var response = new Com.DigitalAsset.Ledger.Api.V1.GetTransactionsResponse();
+            var response = new Com.Daml.Ledger.Api.V1.GetTransactionsResponse();
             response.Transactions.AddRange(from t in Transactions select t.ToProto());
             return response;
         }

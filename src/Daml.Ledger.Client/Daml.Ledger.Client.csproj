@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Daml.Ledger.Client</RootNamespace>
     <Configuration>Release</Configuration>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
@@ -33,6 +34,9 @@
     <Folder Include="Admin\" />
     <Folder Include="Auth\" />
     <Folder Include="Testing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.Net.Common" Version="2.35.0" />
   </ItemGroup>
 
    <Choose>

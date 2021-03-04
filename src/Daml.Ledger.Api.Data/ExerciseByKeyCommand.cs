@@ -15,14 +15,14 @@ namespace Daml.Ledger.Api.Data
             ChoiceArgument = choiceArgument;
         }
 
-        public static ExerciseByKeyCommand FromProto(Com.DigitalAsset.Ledger.Api.V1.ExerciseByKeyCommand command)
+        public static ExerciseByKeyCommand FromProto(Com.Daml.Ledger.Api.V1.ExerciseByKeyCommand command)
         {
             return new ExerciseByKeyCommand(Identifier.FromProto(command.TemplateId), Value.FromProto(command.ContractKey), command.Choice, Value.FromProto(command.ChoiceArgument));
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.ExerciseByKeyCommand ToProto()
+        public Com.Daml.Ledger.Api.V1.ExerciseByKeyCommand ToProto()
         {
-            return new Com.DigitalAsset.Ledger.Api.V1.ExerciseByKeyCommand { TemplateId = TemplateId.ToProto(), ContractKey = ContractKey.ToProto(), Choice = Choice, ChoiceArgument = ChoiceArgument.ToProto() };
+            return new Com.Daml.Ledger.Api.V1.ExerciseByKeyCommand { TemplateId = TemplateId.ToProto(), ContractKey = ContractKey.ToProto(), Choice = Choice, ChoiceArgument = ChoiceArgument.ToProto() };
         }
 
         public override Identifier TemplateId {  get; }

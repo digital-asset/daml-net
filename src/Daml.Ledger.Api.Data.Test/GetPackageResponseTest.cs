@@ -5,7 +5,7 @@ using System.Text;
 using Google.Protobuf;
 using NUnit.Framework;
 
-using Com.DigitalAsset.Ledger.Api.V1;
+using Com.Daml.Ledger.Api.V1;
 
 namespace Daml.Ledger.Api.Data.Test
 {
@@ -15,7 +15,7 @@ namespace Daml.Ledger.Api.Data.Test
         [Test]
         public void CanConvertFromProto()
         {
-            Com.DigitalAsset.Ledger.Api.V1.GetPackageResponse protoValue = new Com.DigitalAsset.Ledger.Api.V1.GetPackageResponse() { HashFunction = HashFunction.Sha256, Hash = "hash", ArchivePayload = ByteString.CopyFromUtf8("ArchivePayload") };
+            Com.Daml.Ledger.Api.V1.GetPackageResponse protoValue = new Com.Daml.Ledger.Api.V1.GetPackageResponse() { HashFunction = HashFunction.Sha256, Hash = "hash", ArchivePayload = ByteString.CopyFromUtf8("ArchivePayload") };
 
             GetPackageResponse response = GetPackageResponse.FromProto(protoValue);
 

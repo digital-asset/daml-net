@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Daml.Ledger.Client.Admin
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Com.Daml.Ledger.Api.V1.Admin;
 
     public interface IPartyManagementClient
     {
@@ -15,6 +15,10 @@ namespace Daml.Ledger.Client.Admin
         Task<PartyDetails> AllocatePartyAsync(string displayName, string partyIdHint, string accessToken = null);
 
         string GetParticipantId(string accessToken = null);
+
+        IEnumerable<PartyDetails> GetParties(IList<string> parties, string accessToken = null);
+
+        Task<IEnumerable<PartyDetails>> GetPartiesAsync(IList<string> parties, string accessToken = null);
 
         Task<string> GetParticipantIdAsync(string accessToken = null);
 

@@ -7,7 +7,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class PackageClient : IPackageClient

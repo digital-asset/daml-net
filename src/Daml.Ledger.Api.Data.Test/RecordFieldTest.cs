@@ -78,7 +78,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Record.Field source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.RecordField protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.RecordField protoValue = source.ToProto();
             Record.Field field = Record.Field.FromProto(protoValue);
             Assert.IsTrue(source == field);
         }

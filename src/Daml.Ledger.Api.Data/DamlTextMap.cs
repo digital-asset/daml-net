@@ -58,16 +58,16 @@ namespace Daml.Ledger.Api.Data
             return sb.ToString();
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto()
+        public override Com.Daml.Ledger.Api.V1.Value ToProto()
         {
-            var mb = new Com.DigitalAsset.Ledger.Api.V1.Map();
+            var mb = new Com.Daml.Ledger.Api.V1.Map();
             foreach (var pair in Map)
-                mb.Entries.Add(new Com.DigitalAsset.Ledger.Api.V1.Map.Types.Entry { Key = pair.Key, Value = pair.Value.ToProto() });
+                mb.Entries.Add(new Com.Daml.Ledger.Api.V1.Map.Types.Entry { Key = pair.Key, Value = pair.Value.ToProto() });
 
-            return new Com.DigitalAsset.Ledger.Api.V1.Value { Map = mb };
+            return new Com.Daml.Ledger.Api.V1.Value { Map = mb };
         }
 
-        public static DamlTextMap FromProto(Com.DigitalAsset.Ledger.Api.V1.Map map)
+        public static DamlTextMap FromProto(Com.Daml.Ledger.Api.V1.Map map)
         {
             var textMap = map.Entries.Aggregate(new Dictionary<string, Value>(), (s, p) => { s.Add(p.Key, Value.FromProto(p.Value)); return s; });
             return Of(textMap);

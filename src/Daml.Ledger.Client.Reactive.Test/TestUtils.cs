@@ -15,7 +15,7 @@ namespace Daml.Ledger.Client.Reactive.Test
     {
         public static IAsyncEnumerable<T> CreateAsyncStream<T>(T initialState, Func<T, bool> condition, Func<T, T> iterate, int millisDelay)
         {
-            return AsyncEnumerable.Generate(initialState, condition, v =>
+            return AsyncEnumerableEx.Generate(initialState, condition, v =>
             {
                 Thread.Sleep(millisDelay);
                 return iterate(v);

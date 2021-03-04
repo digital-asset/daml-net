@@ -20,7 +20,7 @@ namespace Daml.Ledger.Api.Data
 
             static HashFunction()
             {
-                foreach (var e in Enum.GetValues(typeof(Com.DigitalAsset.Ledger.Api.V1.HashFunction)))
+                foreach (var e in Enum.GetValues(typeof(Com.Daml.Ledger.Api.V1.HashFunction)))
                     _valueToEnumMap.Add((int)e, new HashFunction((int)e));
             }
 
@@ -46,6 +46,6 @@ namespace Daml.Ledger.Api.Data
 
         public byte[] ArchivePayload => _archivePayload.ToByteArray();
 
-        public static GetPackageResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.GetPackageResponse p) => new GetPackageResponse(HashFunction.ValueOf((int) p.HashFunction), p.Hash, p.ArchivePayload);
+        public static GetPackageResponse FromProto(Com.Daml.Ledger.Api.V1.GetPackageResponse p) => new GetPackageResponse(HashFunction.ValueOf((int) p.HashFunction), p.Hash, p.ArchivePayload);
     }
 }

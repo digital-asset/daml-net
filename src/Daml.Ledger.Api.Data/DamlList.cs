@@ -38,14 +38,14 @@ namespace Daml.Ledger.Api.Data
 
         public List<T> ToList<T>(Func<Value, T> valueMapper) => Values.Select(valueMapper).ToList();
         
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto()
+        public override Com.Daml.Ledger.Api.V1.Value ToProto()
         {
-            var list = new Com.DigitalAsset.Ledger.Api.V1.List();
+            var list = new Com.Daml.Ledger.Api.V1.List();
             list.Elements.AddRange(from v in Values select v.ToProto());
-            return new Com.DigitalAsset.Ledger.Api.V1.Value { List = list };
+            return new Com.Daml.Ledger.Api.V1.Value { List = list };
         }
 
-        public static DamlList FromProto(Com.DigitalAsset.Ledger.Api.V1.List list) => new DamlList(new List<Value>(from v in list.Elements select Value.FromProto(v)));
+        public static DamlList FromProto(Com.Daml.Ledger.Api.V1.List list) => new DamlList(new List<Value>(from v in list.Elements select Value.FromProto(v)));
 
         public override bool Equals(object obj) => Equals((Value)obj);
         public override bool Equals(Value obj) => this.Compare(obj, rhs => _hashCode == rhs._hashCode && !Values.Except(rhs.Values).Any());

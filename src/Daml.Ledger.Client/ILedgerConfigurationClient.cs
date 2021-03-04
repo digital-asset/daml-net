@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
 
     public interface ILedgerConfigurationClient
     {

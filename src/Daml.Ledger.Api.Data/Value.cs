@@ -9,43 +9,43 @@ namespace Daml.Ledger.Api.Data
 
     public abstract class Value : IComparable<Value>, IEquatable<Value>
     {
-        public static Value FromProto(Com.DigitalAsset.Ledger.Api.V1.Value value)
+        public static Value FromProto(Com.Daml.Ledger.Api.V1.Value value)
         {
             switch (value.SumCase)
             {
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Record:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Record:
                     return Record.FromProto(value.Record);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Variant:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Variant:
                     return Variant.FromProto(value.Variant);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Enum:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Enum:
                     return DamlEnum.FromProto(value.Enum);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.ContractId:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.ContractId:
                     return new ContractId(value.ContractId);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.List:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.List:
                     return DamlList.FromProto(value.List);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Int64:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Int64:
                     return new Int64(value.Int64);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Numeric:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Numeric:
                     return Numeric.FromProto(value.Numeric);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Text:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Text:
                     return new Text(value.Text);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Timestamp:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Timestamp:
                     return new Timestamp(value.Timestamp);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Party:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Party:
                     return new Party(value.Party);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Bool:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Bool:
                     return new Bool(value.Bool);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Unit:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Unit:
                     return Unit.Instance;
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Date:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Date:
                     return new Date(value.Date);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Optional:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Optional:
                     return DamlOptional.FromProto(value.Optional);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.Map:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.Map:
                     return DamlTextMap.FromProto(value.Map);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.GenMap:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.GenMap:
                     return DamlGenMap.FromProto(value.GenMap);
-                case Com.DigitalAsset.Ledger.Api.V1.Value.SumOneofCase.None:
+                case Com.Daml.Ledger.Api.V1.Value.SumOneofCase.None:
                     throw new SumNotSetException(value);
                 default:
                     throw new UnknownValueException(value);
@@ -163,7 +163,7 @@ namespace Daml.Ledger.Api.Data
             return None.Value;
         }
 
-        public abstract Com.DigitalAsset.Ledger.Api.V1.Value ToProto();
+        public abstract Com.Daml.Ledger.Api.V1.Value ToProto();
 
         public int CompareTo(Value rhs) => GetHashCode().CompareTo(rhs.GetHashCode());
 
@@ -178,7 +178,7 @@ namespace Daml.Ledger.Api.Data
 
     class SumNotSetException : Exception
     {
-        public SumNotSetException(Com.DigitalAsset.Ledger.Api.V1.Value value)
+        public SumNotSetException(Com.Daml.Ledger.Api.V1.Value value)
          : base($"Sum not set for value {value}")
         {
         }
@@ -186,7 +186,7 @@ namespace Daml.Ledger.Api.Data
 
     class UnknownValueException : Exception
     {
-        public UnknownValueException(Com.DigitalAsset.Ledger.Api.V1.Value value)
+        public UnknownValueException(Com.Daml.Ledger.Api.V1.Value value)
          :base($"value unknown {value}")
         {
         }
@@ -194,7 +194,7 @@ namespace Daml.Ledger.Api.Data
 
     class InvalidKeyValue : Exception
     {
-        public InvalidKeyValue(Com.DigitalAsset.Ledger.Api.V1.Value value)  
+        public InvalidKeyValue(Com.Daml.Ledger.Api.V1.Value value)  
          : base($"invalid key value, expected TEXT, found {value.SumCase.ToString()}")
         { 
         }

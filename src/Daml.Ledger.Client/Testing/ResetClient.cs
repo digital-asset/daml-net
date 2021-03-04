@@ -6,7 +6,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Client.Testing
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Testing;
+    using Com.Daml.Ledger.Api.V1.Testing;
     using Daml.Ledger.Client.Auth.Client;
 
     public class ResetClient : IResetClient

@@ -18,7 +18,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Unit source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Value protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsUnit();
             Assert.AreEqual(typeof(Some<Unit>), maybe.GetType());
             Assert.IsTrue(source == ((Some<Unit>)maybe).Content);

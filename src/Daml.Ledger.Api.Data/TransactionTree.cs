@@ -28,15 +28,15 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().Add(TransactionId).Add(CommandId).Add(WorkflowId).Add(EffectiveAt).AddDictionary(EventsById).AddRange(RootEventIds).Add(Offset).ToHashCode();
         }
 
-        public static TransactionTree FromProto(Com.DigitalAsset.Ledger.Api.V1.TransactionTree tree)
+        public static TransactionTree FromProto(Com.Daml.Ledger.Api.V1.TransactionTree tree)
         {
             var eventsById = tree.EventsById.Values.Select(e => (e.Created?.EventId ?? e.Exercised?.EventId, TreeEvent.FromProtoTreeEvent(e))).ToDictionary(p => p.Item1, p => p.Item2);
             return new TransactionTree(tree.TransactionId, tree.CommandId, tree.WorkflowId, tree.EffectiveAt.ToDateTimeOffset(), eventsById, tree.RootEventIds.ToList(), tree.Offset);
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.TransactionTree ToProto()
+        public Com.Daml.Ledger.Api.V1.TransactionTree ToProto()
         {
-            var transactionTree = new Com.DigitalAsset.Ledger.Api.V1.TransactionTree { TransactionId = TransactionId, CommandId = CommandId, WorkflowId = WorkflowId,
+            var transactionTree = new Com.Daml.Ledger.Api.V1.TransactionTree { TransactionId = TransactionId, CommandId = CommandId, WorkflowId = WorkflowId,
                                                                                    EffectiveAt = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(EffectiveAt), Offset = Offset };
 
             transactionTree.EventsById.Add(EventsById.Select(p => (p.Key, p.Value.ToProtoTreeEvent())).ToDictionary(p => p.Item1, p => p.Item2));

@@ -40,47 +40,47 @@ namespace Daml.Ledger.Api.Data
 
         public abstract string Offset { get; }
 
-        public static LedgerOffset FromProto(Com.DigitalAsset.Ledger.Api.V1.LedgerOffset ledgerOffset)
+        public static LedgerOffset FromProto(Com.Daml.Ledger.Api.V1.LedgerOffset ledgerOffset)
         {
             switch (ledgerOffset.ValueCase)
             {
-                case Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.ValueOneofCase.Absolute:
+                case Com.Daml.Ledger.Api.V1.LedgerOffset.ValueOneofCase.Absolute:
                     return new Absolute(ledgerOffset.Absolute);
-                case Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.ValueOneofCase.Boundary:
+                case Com.Daml.Ledger.Api.V1.LedgerOffset.ValueOneofCase.Boundary:
                     switch (ledgerOffset.Boundary)
                     {
-                        case Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin:
+                        case Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin:
                             return LedgerBegin.Instance;
-                        case Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd:
+                        case Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd:
                             return LedgerEnd.Instance;
                         default:
                             throw new LedgerBoundaryUnrecognized(ledgerOffset.Boundary);
                     }
-                case Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.ValueOneofCase.None:
+                case Com.Daml.Ledger.Api.V1.LedgerOffset.ValueOneofCase.None:
                 default:
                     throw new LedgerBoundaryUnset(ledgerOffset);
             }
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.LedgerOffset ToProto()
+        public Com.Daml.Ledger.Api.V1.LedgerOffset ToProto()
         {
             if (this is LedgerBegin)
-                return new Com.DigitalAsset.Ledger.Api.V1.LedgerOffset { Boundary = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin };
+                return new Com.Daml.Ledger.Api.V1.LedgerOffset { Boundary = Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin };
 
             if (this is LedgerEnd) 
-                return new Com.DigitalAsset.Ledger.Api.V1.LedgerOffset { Boundary = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd };
+                return new Com.Daml.Ledger.Api.V1.LedgerOffset { Boundary = Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd };
 
             if (this is Absolute)
             {
                 var thisAbsolute = (Absolute) this;
 
                 if (thisAbsolute.Offset == LedgerBegin.Instance.Offset)
-                    return new Com.DigitalAsset.Ledger.Api.V1.LedgerOffset { Boundary = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin };
+                    return new Com.Daml.Ledger.Api.V1.LedgerOffset { Boundary = Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerBegin };
 
                 if (thisAbsolute.Offset == LedgerEnd.Instance.Offset)
-                    return new Com.DigitalAsset.Ledger.Api.V1.LedgerOffset { Boundary = Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd };
+                    return new Com.Daml.Ledger.Api.V1.LedgerOffset { Boundary = Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary.LedgerEnd };
 
-                return new Com.DigitalAsset.Ledger.Api.V1.LedgerOffset { Absolute = ((Absolute)this).Offset };
+                return new Com.Daml.Ledger.Api.V1.LedgerOffset { Absolute = ((Absolute)this).Offset };
             }
 
             throw new LedgerOffsetUnknown(this);
@@ -96,7 +96,7 @@ namespace Daml.Ledger.Api.Data
 
     class LedgerBoundaryUnrecognized : Exception
     {
-        public LedgerBoundaryUnrecognized(Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary boundary)
+        public LedgerBoundaryUnrecognized(Com.Daml.Ledger.Api.V1.LedgerOffset.Types.LedgerBoundary boundary)
             : base($"Ledger Boundary unknown {boundary}")
         { 
         }
@@ -104,7 +104,7 @@ namespace Daml.Ledger.Api.Data
 
     class LedgerBoundaryUnset : Exception
     {
-        public LedgerBoundaryUnset(Com.DigitalAsset.Ledger.Api.V1.LedgerOffset offset)
+        public LedgerBoundaryUnset(Com.Daml.Ledger.Api.V1.LedgerOffset offset)
          : base($"Ledger Offset unset {offset}")
         {
         }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Grpc.Core;
@@ -39,14 +40,14 @@ namespace Daml.Ledger.Client.Reactive.Util
         /// <param name="asyncServerStreamingCall">The pull stream to iterate over and convert into a push stream</param>
         /// <param name="subscriptionScheduler">The scheduler to specify to SubscribeOn, that will run the subscription task, and notification tasks by default</param>
         /// <returns></returns>
-        public static IObservable<TResult> CreateAsyncObservable<TResult>(this AsyncServerStreamingCall<TResult> asyncServerStreamingCall, IScheduler subscriptionScheduler = null)
-        {
-            return CreateObservable(asyncServerStreamingCall.ResponseStream, subscriptionScheduler ?? TaskPoolScheduler.Default);
-        }
+        //public static IObservable<TResult> CreateAsyncObservable<TResult>(this AsyncServerStreamingCall<TResult> asyncServerStreamingCall, IScheduler subscriptionScheduler = null)
+        //{
+        //    return CreateObservable(asyncServerStreamingCall.ResponseStream, subscriptionScheduler ?? TaskPoolScheduler.Default);
+        //}
 
         public static IObservable<TResult> CreateAsyncObservable<TResult>(this IAsyncEnumerable<TResult> asyncEnumerable, IScheduler subscriptionScheduler = null)
         {
-            return CreateObservable(asyncEnumerable.GetEnumerator(), subscriptionScheduler ?? TaskPoolScheduler.Default);
+            return CreateObservable(asyncEnumerable.GetAsyncEnumerator(), subscriptionScheduler ?? TaskPoolScheduler.Default);
         }
 
         public static IObservable<TResult> CreateAsyncObservable<TResult>(this IAsyncEnumerator<TResult> asyncEnumerator, IScheduler subscriptionScheduler = null)
@@ -62,14 +63,19 @@ namespace Daml.Ledger.Client.Reactive.Util
         /// <typeparam name="TResult"></typeparam>
         /// <param name="asyncServerStreamingCall">The pull stream to iterate over and convert into a push stream</param>
         /// <returns></returns>
-        public static IObservable<TResult> CreateSyncObservable<TResult>(this AsyncServerStreamingCall<TResult> asyncServerStreamingCall)
+        //public static IObservable<TResult> CreateSyncObservable<TResult>(this AsyncServerStreamingCall<TResult> asyncServerStreamingCall)
+        //{
+        //    return CreateObservable(asyncServerStreamingCall.ResponseStream, null);
+        //}
+
+        public static IObservable<TResult> CreateSyncObservable<TResult>(this IAsyncStreamReader<TResult> asyncStreamReader)
         {
-            return CreateObservable(asyncServerStreamingCall.ResponseStream, null);
+            return CreateObservable(asyncStreamReader.ReadAllAsync().GetAsyncEnumerator(), null);
         }
 
         public static IObservable<TResult> CreateSyncObservable<TResult>(this IAsyncEnumerable<TResult> asyncEnumerable)
         {
-            return CreateObservable(asyncEnumerable.GetEnumerator(), null);
+            return CreateObservable(asyncEnumerable.GetAsyncEnumerator(), null);
         }
 
         private static IObservable<TResult> CreateObservable<TResult>(IAsyncEnumerator<TResult> asyncEnumerator, IScheduler subscriptionScheduler)
@@ -78,7 +84,7 @@ namespace Daml.Ledger.Client.Reactive.Util
             {
                 try
                 {
-                    while (await asyncEnumerator.MoveNext())
+                    while (await asyncEnumerator.MoveNextAsync())
                         obs.OnNext(asyncEnumerator.Current);
 
                     obs.OnCompleted();

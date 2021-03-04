@@ -22,15 +22,15 @@ namespace Daml.Ledger.Api.Data
 
         public IImmutableSet<Identifier> TemplateIds { get; }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Filters ToProto()
+        public override Com.Daml.Ledger.Api.V1.Filters ToProto()
         {
-            var inclusiveFilter = new Com.DigitalAsset.Ledger.Api.V1.InclusiveFilters();
+            var inclusiveFilter = new Com.Daml.Ledger.Api.V1.InclusiveFilters();
             inclusiveFilter.TemplateIds.AddRange(from id in TemplateIds select id.ToProto());
 
-            return new Com.DigitalAsset.Ledger.Api.V1.Filters { Inclusive = inclusiveFilter };
+            return new Com.Daml.Ledger.Api.V1.Filters { Inclusive = inclusiveFilter };
         }
 
-        public static InclusiveFilter FromProto(Com.DigitalAsset.Ledger.Api.V1.InclusiveFilters inclusiveFilters) => new InclusiveFilter(from templateId in inclusiveFilters.TemplateIds select Identifier.FromProto(templateId));
+        public static InclusiveFilter FromProto(Com.Daml.Ledger.Api.V1.InclusiveFilters inclusiveFilters) => new InclusiveFilter(from templateId in inclusiveFilters.TemplateIds select Identifier.FromProto(templateId));
 
         public override string ToString() => $"InclusiveFilter{{templateIds={TemplateIds}}}";
 

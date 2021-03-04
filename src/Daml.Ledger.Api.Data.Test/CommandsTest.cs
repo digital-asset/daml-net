@@ -6,16 +6,17 @@ using NUnit.Framework;
 
 namespace Daml.Ledger.Api.Data.Test
 {
-    using Daml.Ledger.Api.Data.Test.Factories;
+    using Factories;
+    using Util;
 
     [TestFixture]
     public class CommandsTest
     {
         private static readonly DateTimeOffset _now = DateTimeOffset.UtcNow;
 
-        private static readonly Commands _commands1 = new Commands("workflowId1", "applicationId1", "commandId1", "party1", _now, _now.AddDays(5), CreateCommandsFactory.Commands1);
-        private static readonly Commands _commands2 = new Commands("workflowId2", "applicationId2", "commandId2", "party2", _now.AddDays(1), _now.AddDays(6), CreateCommandsFactory.Commands2);
-        private static readonly Commands _commands3 = new Commands("workflowId1", "applicationId1", "commandId1", "party1", _now, _now.AddDays(5), CreateCommandsFactory.Commands1);
+        private static readonly Commands _commands1 = new Commands("workflowId1", "applicationId1", "commandId1", "party1", _now, None.Value, None.Value, CreateCommandsFactory.Commands1);
+        private static readonly Commands _commands2 = new Commands("workflowId2", "applicationId2", "commandId2", "party2", _now.AddDays(1), None.Value, None.Value, CreateCommandsFactory.Commands2);
+        private static readonly Commands _commands3 = new Commands("workflowId1", "applicationId1", "commandId1", "party1", _now, None.Value, None.Value, CreateCommandsFactory.Commands1);
 
 #pragma warning disable CS1718
         [Test]
@@ -47,7 +48,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Commands source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Commands protoValue = source.ToProto("ledgerId");
+            Com.Daml.Ledger.Api.V1.Commands protoValue = source.ToProto("ledgerId");
             Commands target = Commands.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

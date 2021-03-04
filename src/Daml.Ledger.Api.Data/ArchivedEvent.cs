@@ -39,13 +39,13 @@ namespace Daml.Ledger.Api.Data
 
         public override string ToString() => $"ArchivedEvent{{witnessParties={WitnessParties}, eventId='{EventId}', templateId={TemplateId}, contractId='{ContractId}'}}";
 
-        public Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent ToProto()
+        public Com.Daml.Ledger.Api.V1.ArchivedEvent ToProto()
         {
-            var archivedEvent = new Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent { ContractId = ContractId, EventId = EventId, TemplateId = TemplateId.ToProto() };
+            var archivedEvent = new Com.Daml.Ledger.Api.V1.ArchivedEvent { ContractId = ContractId, EventId = EventId, TemplateId = TemplateId.ToProto() };
             archivedEvent.WitnessParties.AddRange(WitnessParties);
             return archivedEvent;
         }
 
-        public static ArchivedEvent FromProto(Com.DigitalAsset.Ledger.Api.V1.ArchivedEvent archivedEvent) => new ArchivedEvent(archivedEvent.WitnessParties, archivedEvent.EventId, Identifier.FromProto(archivedEvent.TemplateId), archivedEvent.ContractId);
+        public static ArchivedEvent FromProto(Com.Daml.Ledger.Api.V1.ArchivedEvent archivedEvent) => new ArchivedEvent(archivedEvent.WitnessParties, archivedEvent.EventId, Identifier.FromProto(archivedEvent.TemplateId), archivedEvent.ContractId);
     }
 } 

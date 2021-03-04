@@ -15,14 +15,14 @@ namespace Daml.Ledger.Api.Data
             ChoiceArgument = choiceArgument;
         }
 
-        public static CreateAndExerciseCommand FromProto(Com.DigitalAsset.Ledger.Api.V1.CreateAndExerciseCommand command)
+        public static CreateAndExerciseCommand FromProto(Com.Daml.Ledger.Api.V1.CreateAndExerciseCommand command)
         {
             return new CreateAndExerciseCommand(Identifier.FromProto(command.TemplateId), Record.FromProto(command.CreateArguments), command.Choice, Value.FromProto(command.ChoiceArgument));
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.CreateAndExerciseCommand ToProto()
+        public Com.Daml.Ledger.Api.V1.CreateAndExerciseCommand ToProto()
         {
-            return new Com.DigitalAsset.Ledger.Api.V1.CreateAndExerciseCommand { TemplateId = TemplateId.ToProto(), CreateArguments = CreateArguments.ToProtoRecord(),
+            return new Com.Daml.Ledger.Api.V1.CreateAndExerciseCommand { TemplateId = TemplateId.ToProto(), CreateArguments = CreateArguments.ToProtoRecord(),
                                                                              Choice = Choice, ChoiceArgument = ChoiceArgument.ToProto() };
         }
 

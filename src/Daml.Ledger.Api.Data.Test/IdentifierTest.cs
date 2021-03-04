@@ -63,7 +63,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Identifier source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Identifier protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Identifier protoValue = source.ToProto();
             var test = Identifier.FromProto(protoValue);
             Assert.IsTrue(source == test);
         }

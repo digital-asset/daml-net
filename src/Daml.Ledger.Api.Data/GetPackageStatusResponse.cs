@@ -18,7 +18,7 @@ namespace Daml.Ledger.Api.Data
 
             static PackageStatus()
             {
-                foreach (var s in Enum.GetValues(typeof(Com.DigitalAsset.Ledger.Api.V1.PackageStatus)))
+                foreach (var s in Enum.GetValues(typeof(Com.Daml.Ledger.Api.V1.PackageStatus)))
                     _valueToEnumMap.Add((int) s, new PackageStatus((int) s));
             }
 
@@ -37,6 +37,6 @@ namespace Daml.Ledger.Api.Data
         
         public PackageStatus PackageStatusValue { get; }
 
-        public static GetPackageStatusResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.PackageStatus packageStatus) => new GetPackageStatusResponse(PackageStatus.ValueOf((int) packageStatus));
+        public static GetPackageStatusResponse FromProto(Com.Daml.Ledger.Api.V1.PackageStatus packageStatus) => new GetPackageStatusResponse(PackageStatus.ValueOf((int) packageStatus));
     }
 } 

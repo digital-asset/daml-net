@@ -9,7 +9,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Client.Admin
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Com.Daml.Ledger.Api.V1.Admin;
     using Daml.Ledger.Client.Auth.Client;
 
     public class PackageManagementClient : IPackageManagementClient

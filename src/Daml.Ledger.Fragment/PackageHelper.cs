@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Com.DigitalAsset.Daml_Lf_1_7.DamlLf1
+namespace Com.DigitalAsset.Daml_Lf_1_8.DamlLf1
 {
     public static class PackageHelper
     {

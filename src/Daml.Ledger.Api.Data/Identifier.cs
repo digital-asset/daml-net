@@ -32,7 +32,7 @@ namespace Daml.Ledger.Api.Data
         }
 
 #pragma warning disable CS0612
-        public static Identifier FromProto(Com.DigitalAsset.Ledger.Api.V1.Identifier identifier)
+        public static Identifier FromProto(Com.Daml.Ledger.Api.V1.Identifier identifier)
         {
             if (!string.IsNullOrEmpty(identifier.ModuleName) && !string.IsNullOrEmpty(identifier.EntityName))
                 return new Identifier(identifier.PackageId, identifier.ModuleName, identifier.EntityName);
@@ -41,7 +41,7 @@ namespace Daml.Ledger.Api.Data
         }
 #pragma warning restore CS0612
 
-        public Com.DigitalAsset.Ledger.Api.V1.Identifier ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Identifier { PackageId = PackageId, ModuleName = ModuleName, EntityName = EntityName };
+        public Com.Daml.Ledger.Api.V1.Identifier ToProto() => new Com.Daml.Ledger.Api.V1.Identifier { PackageId = PackageId, ModuleName = ModuleName, EntityName = EntityName };
 
         public string PackageId { get; }
 

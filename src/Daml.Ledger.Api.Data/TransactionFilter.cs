@@ -10,13 +10,13 @@ namespace Daml.Ledger.Api.Data
 
     public abstract class TransactionFilter : IComparable<TransactionFilter>, IEquatable<TransactionFilter>
     {
-        public static TransactionFilter FromProto(Com.DigitalAsset.Ledger.Api.V1.TransactionFilter transactionFilter)
+        public static TransactionFilter FromProto(Com.Daml.Ledger.Api.V1.TransactionFilter transactionFilter)
         {
             // at the moment, the only transaction filter supported is FiltersByParty
             return FiltersByParty.FromProto(transactionFilter);
         }
 
-        public abstract Com.DigitalAsset.Ledger.Api.V1.TransactionFilter ToProto();
+        public abstract Com.Daml.Ledger.Api.V1.TransactionFilter ToProto();
 
         public abstract IImmutableSet<string> Parties { get; }
 

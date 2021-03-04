@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Daml.Ledger.Client.Testing
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Testing;
+    using Com.Daml.Ledger.Api.V1.Testing;
 
     public interface ITimeClient
     {

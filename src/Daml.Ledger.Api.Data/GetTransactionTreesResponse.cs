@@ -19,11 +19,11 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().AddRange(Transactions).ToHashCode();
         }
 
-        public static GetTransactionTreesResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse response) => new GetTransactionTreesResponse(from t in response.Transactions select TransactionTree.FromProto(t));
+        public static GetTransactionTreesResponse FromProto(Com.Daml.Ledger.Api.V1.GetTransactionTreesResponse response) => new GetTransactionTreesResponse(from t in response.Transactions select TransactionTree.FromProto(t));
 
-        public Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse ToProto()
+        public Com.Daml.Ledger.Api.V1.GetTransactionTreesResponse ToProto()
         {
-            var response = new Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse();
+            var response = new Com.Daml.Ledger.Api.V1.GetTransactionTreesResponse();
             response.Transactions.AddRange(from t in Transactions select t.ToProto());
             return response;
         }

@@ -8,8 +8,8 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Examples.Bindings.Grpc
 {
-    using Com.DigitalAsset.Daml_Lf_1_7.DamlLf1;
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.DigitalAsset.Daml_Lf_1_8.DamlLf1;
+    using Com.Daml.Ledger.Api.V1;
 
     public class PingPongGrpcMain
     {
@@ -114,10 +114,6 @@ namespace Daml.Ledger.Examples.Bindings.Grpc
                     Commands = new Commands
                     {
                         LedgerId = ledgerId,
-                        // set current time to ledger effective time (LET)
-                        LedgerEffectiveTime = new Google.Protobuf.WellKnownTypes.Timestamp { Seconds = 0 },
-                        // set maximum record time (MRT) to now + 5s
-                        MaximumRecordTime = new Google.Protobuf.WellKnownTypes.Timestamp { Seconds = 5 },
                         CommandId = Guid.NewGuid().ToString(),
                         WorkflowId = $"Ping-{sender}-{i}",
                         Party = sender,
@@ -168,7 +164,7 @@ namespace Daml.Ledger.Examples.Bindings.Grpc
                 try
                 {
                     // parse the archive payload
-                    var payload = Com.DigitalAsset.Daml_Lf_1_7.DamlLf.ArchivePayload.Parser.ParseFrom(packageResponse.ArchivePayload);
+                    var payload = Com.DigitalAsset.Daml_Lf_1_8.DamlLf.ArchivePayload.Parser.ParseFrom(packageResponse.ArchivePayload);
 
                     // get the DAML LF package
                     Package lfPackage = payload.DamlLf1;

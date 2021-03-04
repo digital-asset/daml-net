@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
 
     public interface ICommandClient
     {
@@ -18,8 +18,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime, 
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        void SubmitAndWait(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string>actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -28,8 +41,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        Task SubmitAndWaitAsync(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -42,8 +68,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        Transaction SubmitAndWaitForTransaction(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -52,8 +91,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+           IEnumerable<Command> commands,
+            string accessToken = null);
+
+        string SubmitAndWaitForTransactionId(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -62,8 +114,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        TransactionTree SubmitAndWaitForTransactionTree(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -72,8 +137,9 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -82,8 +148,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        Task<string> SubmitAndWaitForTransactionIdAsync(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
 
@@ -92,8 +171,21 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null);
+
+        Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null);
     }

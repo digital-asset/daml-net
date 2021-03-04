@@ -9,10 +9,10 @@ namespace Daml.Ledger.Examples.Test
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client;
     using Grpc.Core;
-    using static Com.DigitalAsset.Ledger.Api.V1.LedgerOffset.Types;
+    using static Com.Daml.Ledger.Api.V1.LedgerOffset.Types;
 
     internal class Program
     {
@@ -70,9 +70,9 @@ namespace Daml.Ledger.Examples.Test
             var beginOffset = new LedgerOffset { Boundary = LedgerBoundary.LedgerBegin };
             var endOffset = new LedgerOffset { Boundary = LedgerBoundary.LedgerEnd };
 
-            using (var stream = _clients.TransactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset))
+            await using (var stream = _clients.TransactionsClient.GetTransactions(transactionFilter, beginOffset, endOffset))
             {
-                while (await stream.MoveNext(CancellationToken.None))
+                while (await stream.MoveNextAsync())
                 {
                     foreach (var tx in stream.Current.Transactions) Console.WriteLine($"Transaction: {tx.ToString()}");
                 }
@@ -84,9 +84,9 @@ namespace Daml.Ledger.Examples.Test
             var transactionFilter = new TransactionFilter();
             transactionFilter.FiltersByParty.Add(party, new Filters());
 
-            using (var stream = _clients.ActiveContractsClient.GetActiveContracts(transactionFilter))
+            await using (var stream = _clients.ActiveContractsClient.GetActiveContracts(transactionFilter))
             {
-                while (await stream.MoveNext(CancellationToken.None))
+                while (await stream.MoveNextAsync())
                 {
                     foreach (var c in stream.Current.ActiveContracts) Console.WriteLine($"ActiveContract: {c.ToString()}");
                 }
@@ -95,9 +95,6 @@ namespace Daml.Ledger.Examples.Test
 
         private async Task<string> CreateContract(string packageId, string party)
         {
-            var ledgerEffectiveTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var maximumRecordTime = ledgerEffectiveTime.AddSeconds(5);
-
             var commandId = Guid.NewGuid().ToString();
 
             var templateId = new Identifier { PackageId = packageId, ModuleName = "Main", EntityName = "Asset" };
@@ -110,7 +107,7 @@ namespace Daml.Ledger.Examples.Test
             var command = new Command { Create = new CreateCommand { TemplateId = templateId, CreateArguments = createArgs } };
             Console.WriteLine($"Command: {command.ToString()}");
 
-            var tx = await _clients.CommandClient.SubmitAndWaitForTransactionAsync("myApplicationId", "myWorkflowId", commandId, party, ledgerEffectiveTime, maximumRecordTime, new[] { command });
+            var tx = await _clients.CommandClient.SubmitAndWaitForTransactionAsync("myApplicationId", "myWorkflowId", commandId, party, null, null, null, new[] { command });
             Console.WriteLine($"Transaction: {tx.ToString()}");
 
             if (tx.Events.Count != 1)
@@ -124,9 +121,6 @@ namespace Daml.Ledger.Examples.Test
 
         private async Task ExerciseChoice(string packageId, string party, string party2, string contractId)
         {
-            var ledgerEffectiveTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var maximumRecordTime = ledgerEffectiveTime.AddSeconds(5);
-
             var commandId = Guid.NewGuid().ToString();
 
             var templateId = new Identifier { PackageId = packageId, ModuleName = "Main", EntityName = "Asset" };
@@ -138,7 +132,7 @@ namespace Daml.Ledger.Examples.Test
             var command = new Command { Exercise = new ExerciseCommand { TemplateId = templateId, ContractId = contractId, Choice = "Give", ChoiceArgument = choiceArgs } };
             Console.WriteLine($"Command: {command.ToString()}");
 
-            var tx = await _clients.CommandClient.SubmitAndWaitForTransactionAsync("myApplicationId", "myWorkflowId", commandId, party, ledgerEffectiveTime, maximumRecordTime, new[] { command });
+            var tx = await _clients.CommandClient.SubmitAndWaitForTransactionAsync("myApplicationId", "myWorkflowId", commandId, party, null, null, null, new[] { command });
             Console.WriteLine($"Transaction: {tx.ToString()}");
         }
     }
