@@ -28,8 +28,8 @@ namespace Daml.Ledger.Api.Data
 
         public Record CreateArguments { get; }
 
-        public static CreateCommand FromProto(Com.DigitalAsset.Ledger.Api.V1.CreateCommand create) => new CreateCommand(Identifier.FromProto(create.TemplateId), Record.FromProto(create.CreateArguments));
+        public static CreateCommand FromProto(Com.Daml.Ledger.Api.V1.CreateCommand create) => new CreateCommand(Identifier.FromProto(create.TemplateId), Record.FromProto(create.CreateArguments));
 
-        public Com.DigitalAsset.Ledger.Api.V1.CreateCommand ToProto() => new Com.DigitalAsset.Ledger.Api.V1.CreateCommand { TemplateId = TemplateId.ToProto(), CreateArguments = CreateArguments.ToProtoRecord() };
+        public Com.Daml.Ledger.Api.V1.CreateCommand ToProto() => new Com.Daml.Ledger.Api.V1.CreateCommand { TemplateId = TemplateId.ToProto(), CreateArguments = CreateArguments.ToProtoRecord() };
     }
 } 

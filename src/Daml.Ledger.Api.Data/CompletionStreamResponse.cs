@@ -8,13 +8,13 @@ namespace Daml.Ledger.Api.Data
 {
     using Util;
     
-    using Completion = Com.DigitalAsset.Ledger.Api.V1.Completion;
+    using Completion = Com.Daml.Ledger.Api.V1.Completion;
 
     public class CompletionStreamResponse
     {
         private readonly int _hashCode;
 
-        public CompletionStreamResponse(Optional<Checkpoint> checkpoint, IEnumerable<Com.DigitalAsset.Ledger.Api.V1.Completion> completions)
+        public CompletionStreamResponse(Optional<Checkpoint> checkpoint, IEnumerable<Com.Daml.Ledger.Api.V1.Completion> completions)
         {
             Checkpoint = checkpoint;
             Completions.AddRange(completions);
@@ -22,7 +22,7 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().Add(Checkpoint).AddRange(Completions, CompletionComparer).ToHashCode();
         }
 
-        public static CompletionStreamResponse FromProto(Com.DigitalAsset.Ledger.Api.V1.CompletionStreamResponse response)
+        public static CompletionStreamResponse FromProto(Com.Daml.Ledger.Api.V1.CompletionStreamResponse response)
         {
             if (response.Checkpoint != null)
                 return new CompletionStreamResponse(Optional.Of(Data.Checkpoint.FromProto(response.Checkpoint)), response.Completions);
@@ -30,9 +30,9 @@ namespace Daml.Ledger.Api.Data
             return new CompletionStreamResponse(None.Value, response.Completions);
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.CompletionStreamResponse ToProto()
+        public Com.Daml.Ledger.Api.V1.CompletionStreamResponse ToProto()
         {
-            var response = new Com.DigitalAsset.Ledger.Api.V1.CompletionStreamResponse();
+            var response = new Com.Daml.Ledger.Api.V1.CompletionStreamResponse();
             Checkpoint.IfPresent(c => response.Checkpoint = c.ToProto());
             response.Completions.AddRange(Completions);
             return response;

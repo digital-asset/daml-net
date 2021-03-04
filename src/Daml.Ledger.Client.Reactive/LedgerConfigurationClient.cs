@@ -9,8 +9,8 @@ namespace Daml.Ledger.Client.Reactive
     using Daml.Ledger.Client.Reactive.Util;
     using Daml.Ledger.Api.Data.Util;
 
-    using GetLedgerConfigurationResponse = Com.DigitalAsset.Ledger.Api.V1.GetLedgerConfigurationResponse;
-    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
+    using GetLedgerConfigurationResponse = Com.Daml.Ledger.Api.V1.GetLedgerConfigurationResponse;
+    using TraceContext = Com.Daml.Ledger.Api.V1.TraceContext;
 
     public class LedgerConfigurationClient
     {

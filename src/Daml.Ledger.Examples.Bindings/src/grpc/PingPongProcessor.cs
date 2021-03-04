@@ -10,7 +10,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Examples.Bindings.Grpc
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
 
     /// This class subscribes to the stream of transactions for a given party and reacts to Ping or Pong contracts.
     public class PingPongProcessor 
@@ -86,8 +86,6 @@ namespace Daml.Ledger.Examples.Bindings.Grpc
         private void ProcessTransaction(Transaction tx) 
         {
             var request = new SubmitRequest { Commands = new Commands { CommandId = Guid.NewGuid().ToString(), 
-                                                                        LedgerEffectiveTime = new Google.Protobuf.WellKnownTypes.Timestamp { Seconds = 0 },
-                                                                        MaximumRecordTime = new Google.Protobuf.WellKnownTypes.Timestamp { Seconds = 10 },
                                                                         WorkflowId = tx.WorkflowId,
                                                                         LedgerId = _ledgerId,
                                                                         Party = _party,

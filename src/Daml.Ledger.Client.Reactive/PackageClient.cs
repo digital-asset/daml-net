@@ -8,9 +8,9 @@ namespace Daml.Ledger.Client.Reactive
 {
     using Daml.Ledger.Api.Data.Util;
     
-    using GetPackageResponse = Com.DigitalAsset.Ledger.Api.V1.GetPackageResponse;
-    using TraceContext = Com.DigitalAsset.Ledger.Api.V1.TraceContext;
-    using PackageStatus = Com.DigitalAsset.Ledger.Api.V1.PackageStatus;
+    using GetPackageResponse = Com.Daml.Ledger.Api.V1.GetPackageResponse;
+    using TraceContext = Com.Daml.Ledger.Api.V1.TraceContext;
+    using PackageStatus = Com.Daml.Ledger.Api.V1.PackageStatus;
 
     public class PackageClient
     {

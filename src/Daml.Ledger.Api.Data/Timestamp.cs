@@ -10,7 +10,7 @@ namespace Daml.Ledger.Api.Data
     /**
      * A Timestamp value is represented as microseconds since the UNIX epoch.
      *
-     * @see Com.DigitalAsset.Ledger.Api.V1.ValueOuterClass.Value#getTimestamp()
+     * @see Com.Daml.Ledger.Api.V1.ValueOuterClass.Value#getTimestamp()
      *
      * Instead of the Java Instant class we are using a DateTimeOffset and we lose any precision below Ticks.
      */
@@ -63,7 +63,7 @@ namespace Daml.Ledger.Api.Data
          */
         public DateTimeOffset ToDateTimeOffset() => _unixEpoch + TimeSpan.FromTicks(_ticksSinceUnixEpoch);
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Timestamp = Microseconds };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Timestamp = Microseconds };
 
         public override string ToString() => $"Timestamp{{value={Microseconds}}}";
 

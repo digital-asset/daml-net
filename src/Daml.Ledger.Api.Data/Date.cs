@@ -16,7 +16,7 @@ namespace Daml.Ledger.Api.Data
             Value = DateTimeOffset.FromUnixTimeSeconds(epochDay * SecondsInDay).UtcDateTime;
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Date = (int) new DateTimeOffset(Value).ToUnixTimeSeconds() / SecondsInDay };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Date = (int) new DateTimeOffset(Value).ToUnixTimeSeconds() / SecondsInDay };
 
         public DateTime Value { get; }
 

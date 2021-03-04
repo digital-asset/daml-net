@@ -9,7 +9,7 @@ namespace Daml.Ledger.Api.Data
 
     public abstract class Filter : IComparable<Filter>, IEquatable<Filter>
     {
-        public static Filter FromProto(Com.DigitalAsset.Ledger.Api.V1.Filters filters)
+        public static Filter FromProto(Com.Daml.Ledger.Api.V1.Filters filters)
         {
             if (filters.Inclusive != null)
                 return InclusiveFilter.FromProto(filters.Inclusive);
@@ -17,7 +17,7 @@ namespace Daml.Ledger.Api.Data
             return NoFilter.Instance;
         }
 
-        public abstract Com.DigitalAsset.Ledger.Api.V1.Filters ToProto();
+        public abstract Com.Daml.Ledger.Api.V1.Filters ToProto();
 
         public int CompareTo(Filter rhs) => GetHashCode().CompareTo(rhs.GetHashCode());
 

@@ -4,10 +4,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class CommandCompletionClient : ICommandCompletionClient
@@ -24,23 +25,12 @@ namespace Daml.Ledger.Client
 
         public IAsyncEnumerator<CompletionStreamResponse> CompletionStream(string applicationId, LedgerOffset offset, IEnumerable<string> parties, string accessToken = null)
         {
-            var request = new CompletionStreamRequest { LedgerId = LedgerId, ApplicationId = applicationId };
-            if (offset != null)
-                request.Offset = offset;
-            request.Parties.AddRange(parties);
-            var response = _commandCompletionClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.CompletionStream(r, co));
-            return response.ResponseStream;
+            return CompletionStreamImpl(applicationId, offset, parties, accessToken).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<CompletionStreamResponse> CompletionStreamSync(string applicationId, LedgerOffset offset, IEnumerable<string> parties, string accessToken = null)
         {
-            using (var stream = CompletionStream(applicationId, offset, parties, accessToken))
-            {
-                while (stream.MoveNext().Result)
-                {
-                    yield return stream.Current;
-                }
-            }
+            return CompletionStreamImpl(applicationId, offset, parties, accessToken).ToListAsync().Result;
         }
 
         public LedgerOffset CompletionEnd(string accessToken = null, TraceContext traceContext = null)
@@ -56,5 +46,16 @@ namespace Daml.Ledger.Client
             var response = await _commandCompletionClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.CompletionEndAsync(r, co));
             return response.Offset;
         }
+
+        private IAsyncStreamReader<CompletionStreamResponse> CompletionStreamImpl(string applicationId, LedgerOffset offset, IEnumerable<string> parties, string accessToken)
+        {
+            var request = new CompletionStreamRequest { LedgerId = LedgerId, ApplicationId = applicationId };
+            if (offset != null)
+                request.Offset = offset;
+            request.Parties.AddRange(parties);
+            var response = _commandCompletionClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.CompletionStream(r, co));
+            return response.ResponseStream;
+        }
+
     }
 }

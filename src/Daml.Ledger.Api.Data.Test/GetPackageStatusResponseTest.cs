@@ -11,7 +11,7 @@ namespace Daml.Ledger.Api.Data.Test
         [Test]
         public void CanConvertFromProto()
         {
-            Com.DigitalAsset.Ledger.Api.V1.GetPackageStatusResponse protoValue = new Com.DigitalAsset.Ledger.Api.V1.GetPackageStatusResponse() { PackageStatus = Com.DigitalAsset.Ledger.Api.V1.PackageStatus.Registered };
+            Com.Daml.Ledger.Api.V1.GetPackageStatusResponse protoValue = new Com.Daml.Ledger.Api.V1.GetPackageStatusResponse() { PackageStatus = Com.Daml.Ledger.Api.V1.PackageStatus.Registered };
 
             GetPackageStatusResponse response = GetPackageStatusResponse.FromProto(protoValue.PackageStatus);
 

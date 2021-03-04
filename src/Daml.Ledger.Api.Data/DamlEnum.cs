@@ -19,7 +19,7 @@ namespace Daml.Ledger.Api.Data
             Constructor = constructor;
         }
 
-        public static DamlEnum FromProto(Com.DigitalAsset.Ledger.Api.V1.Enum value)
+        public static DamlEnum FromProto(Com.Daml.Ledger.Api.V1.Enum value)
         {
             string constructor = value.Constructor;
             if (value.EnumId != null)
@@ -35,11 +35,11 @@ namespace Daml.Ledger.Api.Data
 
         public string Constructor {  get; }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Enum = ToProtoEnum() };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Enum = ToProtoEnum() };
 
-        public Com.DigitalAsset.Ledger.Api.V1.Enum ToProtoEnum()
+        public Com.Daml.Ledger.Api.V1.Enum ToProtoEnum()
         {
-             var val = new Com.DigitalAsset.Ledger.Api.V1.Enum { Constructor = Constructor };
+             var val = new Com.Daml.Ledger.Api.V1.Enum { Constructor = Constructor };
              EnumId.IfPresent(identifier => val.EnumId = identifier.ToProto());
              return val;
         }

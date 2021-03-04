@@ -48,7 +48,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(DamlGenMap source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Value protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsGenMap();
             Assert.AreEqual(typeof(Some<DamlGenMap>), maybe.GetType());
             Assert.IsTrue(source == (Some<DamlGenMap>)maybe);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Daml.Ledger.Client.Admin
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Com.Daml.Ledger.Api.V1.Admin;
 
     public interface IConfigManagementClient
     {

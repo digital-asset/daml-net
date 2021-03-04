@@ -79,7 +79,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(DamlEnum source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Value protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Value protoValue = source.ToProto();
             var maybe = Value.FromProto(protoValue).AsEnum();
             Assert.AreEqual(typeof(Some<DamlEnum>), maybe.GetType());
             Assert.IsTrue(source == (Some<DamlEnum>)maybe);

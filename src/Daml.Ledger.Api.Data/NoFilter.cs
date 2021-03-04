@@ -11,7 +11,7 @@ namespace Daml.Ledger.Api.Data
 
         private NoFilter() { }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Filters ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Filters();
+        public override Com.Daml.Ledger.Api.V1.Filters ToProto() => new Com.Daml.Ledger.Api.V1.Filters();
 
         public override bool Equals(object obj) => Equals((Filter)obj);
         public override bool Equals(Filter obj) => this.Compare(obj, rhs => true);

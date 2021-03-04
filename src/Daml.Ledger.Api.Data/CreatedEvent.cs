@@ -64,9 +64,9 @@ namespace Daml.Ledger.Api.Data
             return $"CreatedEvent{{witnessParties={WitnessParties}, eventId='{EventId}', templateId={TemplateId}, contractId='{ContractId}', arguments={Arguments}, agreementText='{AgreementText}', contractKey={ContractKey}, signatories={Signatories}, observers={Observers}}}";
         }
 
-        public Com.DigitalAsset.Ledger.Api.V1.CreatedEvent ToProto()
+        public Com.Daml.Ledger.Api.V1.CreatedEvent ToProto()
         {
-            var createdEvent = new Com.DigitalAsset.Ledger.Api.V1.CreatedEvent
+            var createdEvent = new Com.Daml.Ledger.Api.V1.CreatedEvent
             {
                 ContractId = ContractId,
                 CreateArguments = Arguments.ToProtoRecord(),
@@ -84,7 +84,7 @@ namespace Daml.Ledger.Api.Data
             return createdEvent;
         }
 
-        public static CreatedEvent FromProto(Com.DigitalAsset.Ledger.Api.V1.CreatedEvent createdEvent)
+        public static CreatedEvent FromProto(Com.Daml.Ledger.Api.V1.CreatedEvent createdEvent)
         {
             return new CreatedEvent(createdEvent.WitnessParties, 
                                     createdEvent.EventId, 

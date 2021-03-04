@@ -8,7 +8,7 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace Daml.Ledger.Client.Admin
 {
-    using Com.DigitalAsset.Ledger.Api.V1.Admin;
+    using Com.Daml.Ledger.Api.V1.Admin;
     using Daml.Ledger.Client.Auth.Client;
 
     public class ConfigManagementClient : IConfigManagementClient
@@ -17,7 +17,7 @@ namespace Daml.Ledger.Client.Admin
 
         public ConfigManagementClient(Channel channel, string accessToken)
         {
-            _configManagementClient = new ClientStub<ConfigManagementService.ConfigManagementServiceClient>(new Com.DigitalAsset.Ledger.Api.V1.Admin.ConfigManagementService.ConfigManagementServiceClient(channel), accessToken);
+            _configManagementClient = new ClientStub<ConfigManagementService.ConfigManagementServiceClient>(new Com.Daml.Ledger.Api.V1.Admin.ConfigManagementService.ConfigManagementServiceClient(channel), accessToken);
         }
 
         public (TimeModel, long) GetTimeModel(string accessToken = null)

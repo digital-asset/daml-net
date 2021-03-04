@@ -4,12 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class CommandClient : ICommandClient
@@ -29,12 +28,18 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
+            SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
+        }
+
+        public void SubmitAndWait(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            SubmitAndWait(BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
         }
 
         public async Task SubmitAndWaitAsync(
@@ -42,12 +47,18 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
+            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
+        }
+
+        public async Task SubmitAndWaitAsync(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            await SubmitAndWaitAsync(BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
         }
 
         public void SubmitAndWait(Commands commands, string accessToken = null)
@@ -65,14 +76,20 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands, 
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co));
-            return response.Transaction;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co)).Transaction;
+        }
+
+        public Transaction SubmitAndWaitForTransaction(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransaction(r, co)).Transaction;
         }
 
         public string SubmitAndWaitForTransactionId(
@@ -80,14 +97,20 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands, 
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co));
-            return response.TransactionId;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co)).TransactionId;
+        }
+
+        public string SubmitAndWaitForTransactionId(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionId(r, co)).TransactionId;
         }
 
         public TransactionTree SubmitAndWaitForTransactionTree(
@@ -95,14 +118,20 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co));
-            return response.Transaction;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co)).Transaction;
+        }
+
+        public TransactionTree SubmitAndWaitForTransactionTree(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTree(r, co)).Transaction;
         }
 
         public async Task<Transaction> SubmitAndWaitForTransactionAsync(
@@ -110,14 +139,14 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co));
-            return response.Transaction;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return (await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionAsync(r, co))).Transaction;
         }
 
         public async Task<string> SubmitAndWaitForTransactionIdAsync(
@@ -125,14 +154,20 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co));
-            return response.TransactionId;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return (await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co))).TransactionId;
+        }
+
+        public async Task<string> SubmitAndWaitForTransactionIdAsync(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return (await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionIdAsync(r, co))).TransactionId;
         }
 
         public async Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(
@@ -140,14 +175,20 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands) };
-            var response = await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co));
-            return response.Transaction;
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return (await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co))).Transaction;
+        }
+
+        public async Task<TransactionTree> SubmitAndWaitForTransactionTreeAsync(string applicationId, string workflowId, string commandId, IEnumerable<string> actAs, IEnumerable<string> readAs, DateTimeOffset? minLedgerTimeAbs, TimeSpan? minLedgerTimeRel, TimeSpan? deduplicationTime, IEnumerable<Command> commands, string accessToken = null)
+        {
+            var request = new SubmitAndWaitRequest { Commands = BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands) };
+            return (await _commandClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.SubmitAndWaitForTransactionTreeAsync(r, co))).Transaction;
         }
 
         private Commands BuildCommands(
@@ -155,20 +196,46 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands)
+        {
+            return BuildCommands(applicationId, workflowId, commandId, new List<string> { party }, new List<string>(), minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands);
+        }
+
+        private Commands BuildCommands(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands)
         {
             var cmds = new Commands
-                {
-                    LedgerId = LedgerId,
-                    ApplicationId = applicationId,
-                    WorkflowId = workflowId,
-                    CommandId = commandId,
-                    Party = party,
-                    LedgerEffectiveTime = Timestamp.FromDateTime(ledgerEffectiveTime),
-                    MaximumRecordTime = Timestamp.FromDateTime(maximumRecordTime)
-                };
+            {
+                LedgerId = LedgerId,
+                ApplicationId = applicationId,
+                WorkflowId = workflowId,
+                CommandId = commandId
+            };
+
+            cmds.ActAs.AddRange(actAs);
+            cmds.ReadAs.AddRange(readAs);
+            cmds.Party = cmds.ActAs[0];
+
+            if (minLedgerTimeAbs.HasValue)
+                cmds.MinLedgerTimeAbs = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(minLedgerTimeAbs.Value);
+
+            if (minLedgerTimeRel.HasValue)
+                cmds.MinLedgerTimeRel = Google.Protobuf.WellKnownTypes.Duration.FromTimeSpan(minLedgerTimeRel.Value);
+
+            if (deduplicationTime.HasValue)
+                cmds.DeduplicationTime = Google.Protobuf.WellKnownTypes.Duration.FromTimeSpan(deduplicationTime.Value);
+
             cmds.Commands_.AddRange(commands);
             return cmds;
         }

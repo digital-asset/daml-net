@@ -23,14 +23,14 @@ namespace Daml.Ledger.Api.Data
             _hashCode = new HashCodeHelper().AddDictionary(PartyToFilters).ToHashCode();
         }
 
-        public override Com.DigitalAsset.Ledger.Api.V1.TransactionFilter ToProto()
+        public override Com.Daml.Ledger.Api.V1.TransactionFilter ToProto()
         {
-            var filter = new Com.DigitalAsset.Ledger.Api.V1.TransactionFilter();
+            var filter = new Com.Daml.Ledger.Api.V1.TransactionFilter();
             filter.FiltersByParty.Add(PartyToFilters.Select(p => (p.Key, p.Value.ToProto())).ToDictionary(p => p.Item1, p => p.Item2));
             return filter;
         }
 
-        public new static FiltersByParty FromProto(Com.DigitalAsset.Ledger.Api.V1.TransactionFilter transactionFilter)
+        public new static FiltersByParty FromProto(Com.Daml.Ledger.Api.V1.TransactionFilter transactionFilter)
         {
             return new FiltersByParty(transactionFilter.FiltersByParty.Select(p => (p.Key, Filter.FromProto(p.Value))).ToDictionary(p => p.Item1, p => p.Item2));
         }

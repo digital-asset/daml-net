@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Daml.Ledger.Client.Reactive</RootNamespace>
     <Configuration>Release</Configuration>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'ReleaseNuget'">
@@ -30,8 +31,8 @@
     <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reactive" Version="4.1.5" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="log4net" Version="2.0.12" />
   </ItemGroup>
 
   <Choose>

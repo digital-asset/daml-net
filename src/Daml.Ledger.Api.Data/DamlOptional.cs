@@ -43,9 +43,9 @@ namespace Daml.Ledger.Api.Data
 
         public override string ToString() => $"Optional{{value={_value?.ToString() ?? "None"}}}";
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Optional = new Com.DigitalAsset.Ledger.Api.V1.Optional { Value = _value?.ToProto() } };
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Optional = new Com.Daml.Ledger.Api.V1.Optional { Value = _value?.ToProto() } };
 
-        public static DamlOptional FromProto(Com.DigitalAsset.Ledger.Api.V1.Optional optional)
+        public static DamlOptional FromProto(Com.Daml.Ledger.Api.V1.Optional optional)
         {
             return optional.Value != null ? new DamlOptional(FromProto(optional.Value)) : Empty;
         }

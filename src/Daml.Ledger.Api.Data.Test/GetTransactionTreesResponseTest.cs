@@ -44,7 +44,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(GetTransactionTreesResponse source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.GetTransactionTreesResponse protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.GetTransactionTreesResponse protoValue = source.ToProto();
             GetTransactionTreesResponse target = GetTransactionTreesResponse.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

@@ -9,7 +9,7 @@ using Grpc.Core;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class CommandSubmissionClient : ICommandSubmissionClient
@@ -29,12 +29,28 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            Submit(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
+            Submit(BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
+        }
+
+        public void Submit(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands,
+            string accessToken = null)
+        {
+            Submit(BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
         }
 
         public async Task SubmitAsync(
@@ -42,12 +58,28 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+           IEnumerable<Command> commands,
+            string accessToken = null)
+        {
+            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, party, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
+        }
+
+        public async Task SubmitAsync(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands,
             string accessToken = null)
         {
-            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, party, ledgerEffectiveTime, maximumRecordTime, commands), accessToken);
+            await SubmitAsync(BuildCommands(applicationId, workflowId, commandId, actAs, readAs, minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands), accessToken);
         }
 
         public void Submit(Commands commands, string accessToken = null)
@@ -65,8 +97,23 @@ namespace Daml.Ledger.Client
             string workflowId,
             string commandId,
             string party,
-            DateTime ledgerEffectiveTime,
-            DateTime maximumRecordTime,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
+            IEnumerable<Command> commands)
+        {
+            return BuildCommands(applicationId, workflowId, commandId, new List<string>() { party }, new List<string>(), minLedgerTimeAbs, minLedgerTimeRel, deduplicationTime, commands);
+        }
+
+        private Commands BuildCommands(
+            string applicationId,
+            string workflowId,
+            string commandId,
+            IEnumerable<string> actAs,
+            IEnumerable<string> readAs,
+            DateTimeOffset? minLedgerTimeAbs,
+            TimeSpan? minLedgerTimeRel,
+            TimeSpan? deduplicationTime,
             IEnumerable<Command> commands)
         {
             var cmds = new Commands
@@ -74,11 +121,22 @@ namespace Daml.Ledger.Client
                 LedgerId = LedgerId,
                 ApplicationId = applicationId,
                 WorkflowId = workflowId,
-                CommandId = commandId,
-                Party = party,
-                LedgerEffectiveTime = Timestamp.FromDateTime(ledgerEffectiveTime),
-                MaximumRecordTime = Timestamp.FromDateTime(maximumRecordTime)
+                CommandId = commandId
             };
+
+            cmds.ActAs.AddRange(actAs);
+            cmds.ReadAs.AddRange(readAs);
+            cmds.Party = cmds.ActAs[0];
+
+            if (minLedgerTimeAbs.HasValue)
+                cmds.MinLedgerTimeAbs = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(minLedgerTimeAbs.Value);
+
+            if (minLedgerTimeRel.HasValue)
+                cmds.MinLedgerTimeRel = Google.Protobuf.WellKnownTypes.Duration.FromTimeSpan(minLedgerTimeRel.Value);
+
+            if (deduplicationTime.HasValue)
+                cmds.DeduplicationTime = Google.Protobuf.WellKnownTypes.Duration.FromTimeSpan(deduplicationTime.Value);
+
             cmds.Commands_.AddRange(commands);
             return cmds;
         }

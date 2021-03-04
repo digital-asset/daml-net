@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
 
 namespace DigitalAsset.Ledger.Automation
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client;
 
     public class StatelessBot
@@ -32,9 +31,9 @@ namespace DigitalAsset.Ledger.Automation
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = _transactionClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
+            await using (var stream = _transactionClient.GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
             {
-                while (stream.MoveNext().Result)
+                while (await stream.MoveNextAsync())
                 {
                     foreach (var tx in stream.Current.Transactions)
                     {

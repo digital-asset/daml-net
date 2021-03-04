@@ -43,7 +43,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(Checkpoint source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Checkpoint protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Checkpoint protoValue = source.ToProto();
             Checkpoint target = Checkpoint.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

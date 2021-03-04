@@ -81,7 +81,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(LedgerOffset source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.LedgerOffset protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.LedgerOffset protoValue = source.ToProto();
             LedgerOffset target = LedgerOffset.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }

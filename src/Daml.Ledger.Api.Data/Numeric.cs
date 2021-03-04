@@ -14,7 +14,7 @@ namespace Daml.Ledger.Api.Data
 
         public static Numeric FromProto(string number) => new Numeric(BigDecimal.Create(number));
 
-        public override Com.DigitalAsset.Ledger.Api.V1.Value ToProto() => new Com.DigitalAsset.Ledger.Api.V1.Value { Numeric = Value.ToPlainString()};
+        public override Com.Daml.Ledger.Api.V1.Value ToProto() => new Com.Daml.Ledger.Api.V1.Value { Numeric = Value.ToPlainString()};
 
         public BigDecimal Value { get; }
 

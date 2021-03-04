@@ -4,10 +4,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace Daml.Ledger.Client
 {
-    using Com.DigitalAsset.Ledger.Api.V1;
+    using Com.Daml.Ledger.Api.V1;
     using Daml.Ledger.Client.Auth.Client;
 
     public class TransactionsClient : ITransactionsClient
@@ -100,17 +101,7 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            var request = new GetTransactionsRequest
-                {
-                    LedgerId = LedgerId,
-                    Filter = transactionFilter,
-                    Begin = beginOffset,
-                    End = endOffset,
-                    Verbose = verbose,
-                    TraceContext = traceContext
-                };
-            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactions(r, co));
-            return response.ResponseStream;
+            return GetTransactionsImpl(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<GetTransactionsResponse> GetTransactionsSync(
@@ -121,13 +112,7 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = GetTransactions(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
-            {
-                while (stream.MoveNext().Result)
-                {
-                    yield return stream.Current;
-                }
-            }
+            return GetTransactionsImpl(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext).ToListAsync().Result;
         }
 
         public IAsyncEnumerator<GetTransactionTreesResponse> GetTransactionTrees(
@@ -138,17 +123,7 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            var request = new GetTransactionsRequest
-                {
-                    LedgerId = LedgerId,
-                    Filter = transactionFilter,
-                    Begin = beginOffset,
-                    End = endOffset,
-                    Verbose = verbose,
-                    TraceContext = traceContext
-                };
-            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionTrees(r, co));
-            return response.ResponseStream;
+            return GetTransactionTreesImpl(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext).ReadAllAsync().GetAsyncEnumerator();
         }
 
         public IEnumerable<GetTransactionTreesResponse> GetTransactionTreesSync(
@@ -159,13 +134,39 @@ namespace Daml.Ledger.Client
             string accessToken = null,
             TraceContext traceContext = null)
         {
-            using (var stream = GetTransactionTrees(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext))
+            return GetTransactionTreesImpl(transactionFilter, beginOffset, endOffset, verbose, accessToken, traceContext).ToListAsync().Result;
+        }
+
+        private IAsyncStreamReader<GetTransactionsResponse> GetTransactionsImpl(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, string accessToken, TraceContext traceContext)
             {
-                while (stream.MoveNext().Result)
+            var request = new GetTransactionsRequest
                 {
-                    yield return stream.Current;
-                }
+                LedgerId = LedgerId,
+                Filter = transactionFilter,
+                Begin = beginOffset,
+                End = endOffset,
+                Verbose = verbose,
+                TraceContext = traceContext
+            };
+
+            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactions(r, co));
+            return response.ResponseStream;
             }
+
+        private IAsyncStreamReader<GetTransactionTreesResponse> GetTransactionTreesImpl(TransactionFilter transactionFilter, LedgerOffset beginOffset, LedgerOffset endOffset, bool verbose, string accessToken, TraceContext traceContext)
+        {
+            var request = new GetTransactionsRequest
+            {
+                LedgerId = LedgerId,
+                Filter = transactionFilter,
+                Begin = beginOffset,
+                End = endOffset,
+                Verbose = verbose,
+                TraceContext = traceContext
+            };
+            
+            var response = _transactionsClient.WithAccess(accessToken).Dispatch(request, (c, r, co) => c.GetTransactionTrees(r, co));
+            return response.ResponseStream;
         }
     }
 }

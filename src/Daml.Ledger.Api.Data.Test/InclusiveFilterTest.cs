@@ -51,7 +51,7 @@ namespace Daml.Ledger.Api.Data.Test
 
         private void ConvertThroughProto(InclusiveFilter source)
         {
-            Com.DigitalAsset.Ledger.Api.V1.Filters protoValue = source.ToProto();
+            Com.Daml.Ledger.Api.V1.Filters protoValue = source.ToProto();
             var target = Filter.FromProto(protoValue);
             Assert.IsTrue(source == target);
         }
