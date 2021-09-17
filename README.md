@@ -14,7 +14,7 @@ The build process has been tested on 64bit Windows 10, MacOS Catalina (v10.15.2)
 
 # Support
 
-This project is a community-driven effort and contributions are welcome. For questions or support with using the library please join the [DAML Community Slack channel](https://damldriven.slack.com/)
+This project is a community-driven effort and contributions are welcome. If you are in need of support, have questions or just want to engage in friendly conversation anything Daml, contact us on our [Daml Community Forum](https://discuss.daml.com).
 
 # Usage
 
